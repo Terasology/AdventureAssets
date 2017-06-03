@@ -1,0 +1,14 @@
+{
+  "Mesh": {
+    "mesh": "AdventureAssets:swingingBlade",
+    "material": "engine:monkeyHead9"
+  },
+  "BoxShape" : {
+    "extents" : [3, 5, 7]
+  },
+  "Location" : {},
+  "SwingingBlade" : {
+    "amplitude" : 0.523,
+    "timePeriod" : 4
+  }
+}

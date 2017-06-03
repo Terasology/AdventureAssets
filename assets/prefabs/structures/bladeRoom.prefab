@@ -1,0 +1,44 @@
+{
+  "StructureTemplate": {
+  },
+  "SpawnBlockRegions": {
+    "regionsToFill": [
+      { "blockType": "Core:stone", "region": { "min": [-5, 0, 0], "size": [5, 2, 1]}},
+      { "blockType": "Core:stone", "region": { "min": [1, 0, 0], "size": [5, 2, 1]}},
+      { "blockType": "Core:stone", "region": { "min": [-5, 0, 1], "size": [1, 2, 1]}},
+      { "blockType": "Core:stone", "region": { "min": [-5, 0, 2], "size": [1, 1, 6]}},
+      { "blockType": "Core:stone", "region": { "min": [-5, 0, 8], "size": [1, 2, 1]}},
+      { "blockType": "Core:torch.TOP", "region": { "min": [0, 1, 2], "size": [1, 1, 1]}},
+      { "blockType": "core:Sand", "region": { "min": [-5, 2, 0], "size": [11, 7, 1]}},
+      { "blockType": "core:Sand", "region": { "min": [-5, 2, 1], "size": [1, 7, 1]}},
+      { "blockType": "core:Sand", "region": { "min": [-5, 8, 2], "size": [1, 1, 6]}},
+      { "blockType": "core:Sand", "region": { "min": [-5, 2, 8], "size": [1, 7, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-4, 0, 1], "size": [10, 1, 7]}},
+      { "blockType": "core:hardStone", "region": { "min": [-4, 1, 1], "size": [4, 1, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-4, 2, 1], "size": [10, 7, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [1, 1, 1], "size": [5, 1, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 2], "size": [1, 7, 6]}},
+      { "blockType": "core:hardStone", "region": { "min": [-4, 8, 2], "size": [10, 1, 6]}},
+      { "blockType": "core:hardStone", "region": { "min": [5, 1, 2], "size": [1, 7, 6]}},
+      { "blockType": "core:hardStone", "region": { "min": [-4, 0, 8], "size": [10, 9, 1]}},
+      { "blockType": "engine:air", "region": { "min": [0, 0, 0], "size": [1, 2, 1]}},
+      { "blockType": "engine:air", "region": { "min": [0, 1, 1], "size": [1, 1, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 2], "size": [4, 1, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 2, 2], "size": [9, 6, 1]}},
+      { "blockType": "engine:air", "region": { "min": [1, 1, 2], "size": [4, 1, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 3], "size": [9, 7, 2]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 5], "size": [9, 6, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 7, 5], "size": [4, 1, 1]}},
+      { "blockType": "engine:air", "region": { "min": [1, 7, 5], "size": [4, 1, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 6], "size": [9, 7, 2]}}
+    ]
+  },
+  "SpawnPrefabs": {
+    "prefabsToSpawn": [
+      {
+        "prefab": "AdventureAssets:swingingBlade",
+        "position": [0, 7, 5]
+      }
+    ]
+  }
+}
