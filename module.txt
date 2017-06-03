@@ -1,0 +1,9 @@
+{
+    "id" : "AdventureAssets",
+    "version" : "0.1.0-SNAPSHOT",
+    "author" : "",
+    "displayName" : "AdventureAssets",
+    "description" : "",
+    "dependencies" : [],
+    "serverSideOnly" : false
+}
