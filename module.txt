@@ -1,9 +1,17 @@
 {
     "id" : "AdventureAssets",
     "version" : "0.1.0-SNAPSHOT",
-    "author" : "",
+    "author" : "flo, nihal111",
     "displayName" : "AdventureAssets",
     "description" : "",
-    "dependencies" : [],
+    "dependencies" : [
+    {
+      "id" : "Core",
+      "minVersion" : "1.0.0"
+    },{
+       "id" : "StructureTemplates",
+       "minVersion" : "0.2.0"
+    }
+    ],
     "serverSideOnly" : false
 }
