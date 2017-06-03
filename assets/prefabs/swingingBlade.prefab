@@ -4,11 +4,16 @@
     "material": "AdventureAssets:swingingBlade"
   },
   "BoxShape" : {
-    "extents" : [3, 5, 7]
+    "extents" : [1, 7, 1]
   },
   "Location" : {},
   "SwingingBlade" : {
     "amplitude" : 0.523,
     "timePeriod" : 4
+  },
+  "RigidBody": {
+    "kinematic": true,
+    "collisionGroup": "engine:world",
+    "collidesWith": ["engine:debris", "engine:sensor", "engine:character"]
   }
 }

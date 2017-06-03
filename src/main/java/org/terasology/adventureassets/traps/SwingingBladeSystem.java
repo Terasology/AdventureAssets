@@ -17,20 +17,33 @@ package org.terasology.adventureassets.traps;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.assets.management.AssetManager;
 import org.terasology.engine.Time;
+import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.entitySystem.event.EventPriority;
+import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
+import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.logic.nameTags.NameTagComponent;
 import org.terasology.logic.permission.PermissionManager;
+import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.physics.events.CollideEvent;
+import org.terasology.physics.events.EntityImpactEvent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
 
 @RegisterSystem
 public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -40,41 +53,32 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
     @In
     private EntityManager entityManager;
 
-    @Command(shortDescription = "Set rotation for all blades", runOnServer = true,
-            requiredPermission = PermissionManager.USER_MANAGEMENT_PERMISSION)
-    public String setBladeRotation(@CommandParam("x") float x, @CommandParam("y") float y, @CommandParam("z") float z) {
-
-        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class)) {
-            LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
-            if (locationComponent != null) {
-                locationComponent.setLocalRotation(new Quat4f(x, y, z));
-                blade.saveComponent(locationComponent);
-                logger.info("Changed rotation to: " + locationComponent.getLocalRotation());
-            }
-        }
-
-        return "Changed rotation of all blades";
+    @ReceiveEvent(priority = EventPriority.PRIORITY_LOW)
+    public void onPlayerSpawnedEvent(OnPlayerSpawnedEvent event, EntityRef player) {
+        EntityRef toolbox = entityManager.create("StructureTemplates:toolbox");
+        CoreRegistry.get(InventoryManager.class).giveItem(player, EntityRef.NULL, toolbox);
+        Prefab prefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:bladeRoom", Prefab.class).get();
+        toolbox.send(new StructureSpawnerFromToolboxRequest(prefab));
     }
 
-    @Command(shortDescription = "Sets offset rotation for all blades", runOnServer = true,
-            requiredPermission = PermissionManager.USER_MANAGEMENT_PERMISSION)
-    public String setBladeOffset(@CommandParam("x") float x, @CommandParam("y") float y, @CommandParam("z") float z) {
+    @ReceiveEvent
+    public void onCollide(CollideEvent event, EntityRef entity) {
+        logger.info("collision detected with " + event.getOtherEntity().getParentPrefab().getName());
+    }
 
-        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class)) {
-            LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
-            if (locationComponent != null) {
-                Quat4f xRot = new Quat4f(Vector3f.west(), (float) Math.toRadians(x));
-                Quat4f yRot = new Quat4f(Vector3f.up(), (float) Math.toRadians(y));
-                Quat4f zRot = new Quat4f(Vector3f.north(), (float) Math.toRadians(z));
-                xRot.mul(yRot);
-                xRot.mul(zRot);
-                locationComponent.setLocalRotation(xRot);
-                blade.saveComponent(locationComponent);
-                logger.info("Changed rotation to: " + locationComponent.getLocalRotation());
-            }
-        }
+    @ReceiveEvent
+    public void onImpact(EntityImpactEvent event, EntityRef entity) {
+        logger.info("impact detected with " + event.getImpactEntity().getParentPrefab().getName());
+    }
 
-        return "Changed rotation of all blades";
+    @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
+    public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
+                                        SwingingBladeComponent swingingBladeComponent) {
+        Prefab bladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:blade", Prefab.class).get();
+        EntityBuilder entityBuilder = entityManager.newBuilder(bladePrefab);
+        entityBuilder.setOwner(entity);
+        EntityRef blade = entityBuilder.build();
+        Location.attachChild(entity, blade, new Vector3f(0, -6,0), new Quat4f(Quat4f.IDENTITY));
     }
 
     @Override
@@ -86,8 +90,8 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
                 float t = CoreRegistry.get(Time.class).getGameTime();
                 float T = swingingBladeComponent.timePeriod;
                 float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
-                float w = (float) (2*Math.PI/T);
-                pitch = (float) (A * Math.cos(w*t + phi));
+                float w = (float) (2 * Math.PI / T);
+                pitch = (float) (A * Math.cos(w * t + phi));
                 Quat4f rotation = locationComponent.getLocalRotation();
                 locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
                 blade.saveComponent(locationComponent);
