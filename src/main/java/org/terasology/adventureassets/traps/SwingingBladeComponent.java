@@ -24,4 +24,7 @@ import org.terasology.entitySystem.Component;
 public class SwingingBladeComponent implements Component {
     public float timePeriod = 2f;
     public float amplitude = 3.14f/6;
+
+    /* Should be a fraction of the time period */
+    public float offset = 0f;
 }

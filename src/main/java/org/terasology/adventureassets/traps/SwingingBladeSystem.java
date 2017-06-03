@@ -83,14 +83,11 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
             LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
             SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
             if (locationComponent != null) {
-                float gameTime = CoreRegistry.get(Time.class).getGameTime();
-                float timePeriod = swingingBladeComponent.timePeriod;
-                float pitch, amplitude = swingingBladeComponent.amplitude, t = gameTime % timePeriod;
-                if (t < timePeriod / 2) {
-                    pitch = amplitude * (-1 + 4 * t / timePeriod);
-                } else {
-                    pitch = amplitude * (1 - 4 * (t - timePeriod / 2) / timePeriod);
-                }
+                float t = CoreRegistry.get(Time.class).getGameTime();
+                float T = swingingBladeComponent.timePeriod;
+                float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
+                float w = 2*A/T;
+                pitch = (float) (A * Math.cos(w*t + phi));
                 Quat4f rotation = locationComponent.getLocalRotation();
                 locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
                 blade.saveComponent(locationComponent);
