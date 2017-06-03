@@ -28,6 +28,7 @@ import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.math.geom.Quat4f;
+import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 
@@ -48,6 +49,28 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
             if (locationComponent != null) {
                 locationComponent.setLocalRotation(new Quat4f(x, y, z));
                 blade.saveComponent(locationComponent);
+                logger.info("Changed rotation to: " + locationComponent.getLocalRotation());
+            }
+        }
+
+        return "Changed rotation of all blades";
+    }
+
+    @Command(shortDescription = "Sets offset rotation for all blades", runOnServer = true,
+            requiredPermission = PermissionManager.USER_MANAGEMENT_PERMISSION)
+    public String setBladeOffset(@CommandParam("x") float x, @CommandParam("y") float y, @CommandParam("z") float z) {
+
+        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class)) {
+            LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
+            if (locationComponent != null) {
+                Quat4f xRot = new Quat4f(Vector3f.west(), (float) Math.toRadians(x));
+                Quat4f yRot = new Quat4f(Vector3f.up(), (float) Math.toRadians(y));
+                Quat4f zRot = new Quat4f(Vector3f.north(), (float) Math.toRadians(z));
+                xRot.mul(yRot);
+                xRot.mul(zRot);
+                locationComponent.setLocalRotation(xRot);
+                blade.saveComponent(locationComponent);
+                logger.info("Changed rotation to: " + locationComponent.getLocalRotation());
             }
         }
 
