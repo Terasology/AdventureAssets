@@ -1,7 +1,7 @@
 {
   "Mesh": {
     "mesh": "AdventureAssets:swingingBlade",
-    "material": "engine:monkeyHead9"
+    "material": "AdventureAssets:swingingBlade"
   },
   "BoxShape" : {
     "extents" : [3, 5, 7]

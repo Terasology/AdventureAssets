@@ -86,7 +86,7 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
                 float t = CoreRegistry.get(Time.class).getGameTime();
                 float T = swingingBladeComponent.timePeriod;
                 float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
-                float w = 2*A/T;
+                float w = (float) (2*Math.PI/T);
                 pitch = (float) (A * Math.cos(w*t + phi));
                 Quat4f rotation = locationComponent.getLocalRotation();
                 locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
