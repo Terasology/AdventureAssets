@@ -15,7 +15,7 @@
     "kinematic": true,
     "mass" : 100,
     "collisionGroup" : "engine:sensor",
-    "collidesWith" : ["engine:sensor"]
+    "collidesWith" : ["engine:sensor", "engine:character"]
   },
   "Network" :{}
 }

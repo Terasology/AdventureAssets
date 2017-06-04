@@ -62,14 +62,14 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
         toolbox.send(new StructureSpawnerFromToolboxRequest(prefab));
     }
 
-    @ReceiveEvent
-    public void onCollide(CollideEvent event, EntityRef entity, DamagePlayerComponent damagePlayerComponent) {
-        EntityRef player = event.getOtherEntity();
-        if (player.hasComponent(AliveCharacterComponent.class)) {
-            player.send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-5)));
-            player.send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
-        }
-    }
+//    @ReceiveEvent
+//    public void onCollide(CollideEvent event, EntityRef entity, DamagePlayerComponent damagePlayerComponent) {
+//        EntityRef player = event.getOtherEntity();
+//        if (player.hasComponent(AliveCharacterComponent.class)) {
+//            player.send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-5)));
+//            player.send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
+//        }
+//    }
 
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
