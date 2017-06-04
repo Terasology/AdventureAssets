@@ -16,5 +16,6 @@
     "mass" : 100,
     "collisionGroup" : "engine:sensor",
     "collidesWith" : ["engine:sensor"]
-  }
+  },
+  "Network" :{}
 }

@@ -65,10 +65,8 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
     @ReceiveEvent
     public void onCollide(CollideEvent event, EntityRef entity, DamagePlayerComponent damagePlayerComponent) {
         EntityRef player = event.getOtherEntity();
-        logger.info("collision detected with " + player.getParentPrefab().getName());
-        logger.info("normal: " + event.getNormal());
         if (player.hasComponent(AliveCharacterComponent.class)) {
-            player.send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-10)));
+            player.send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-5)));
             player.send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
         }
     }

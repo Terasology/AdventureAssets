@@ -1,6 +1,6 @@
 {
   "BoxShape" : {
-    "extents" : [1, 2, 5]
+    "extents" : [0.5, 2, 5]
   },
   "Location" : {},
   "RigidBody": {
@@ -9,5 +9,6 @@
     "collisionGroup" : "engine:sensor",
     "collidesWith" : ["engine:sensor"]
   },
-  "DamagePlayer" : {}
+  "DamagePlayer" : {},
+  "Network" :{}
 }
