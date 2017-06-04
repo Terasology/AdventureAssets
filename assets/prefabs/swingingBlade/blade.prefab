@@ -9,6 +9,5 @@
     "collisionGroup" : "engine:sensor",
     "collidesWith" : ["engine:sensor", "engine:character"]
   },
-  "DamagePlayer" : {},
-  "Network" :{}
+  "DamagePlayer" : {}
 }

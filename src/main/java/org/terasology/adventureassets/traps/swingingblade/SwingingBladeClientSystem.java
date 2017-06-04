@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.adventureassets.traps;
+package org.terasology.adventureassets.traps.swingingblade;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,47 +30,34 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.characters.AliveCharacterComponent;
-import org.terasology.logic.characters.CharacterImpulseEvent;
-import org.terasology.logic.health.DoDamageEvent;
-import org.terasology.logic.health.EngineDamageTypes;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
-import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.physics.events.CollideEvent;
-import org.terasology.physics.events.ImpulseEvent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
 
-@RegisterSystem(RegisterMode.AUTHORITY)
-public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+@RegisterSystem(RegisterMode.CLIENT)
+public class SwingingBladeClientSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
 
-    private static final Logger logger = LoggerFactory.getLogger(SwingingBladeSystem.class);
+    private static final Logger logger = LoggerFactory.getLogger(SwingingBladeClientSystem.class);
 
     @In
     private EntityManager entityManager;
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_LOW)
-    public void onPlayerSpawnedEvent(OnPlayerSpawnedEvent event, EntityRef player) {
-        EntityRef toolbox = entityManager.create("StructureTemplates:toolbox");
-        CoreRegistry.get(InventoryManager.class).giveItem(player, EntityRef.NULL, toolbox);
-        Prefab prefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:bladeRoom", Prefab.class).get();
-        toolbox.send(new StructureSpawnerFromToolboxRequest(prefab));
-    }
-
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
-        Prefab bladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:blade", Prefab.class).get();
-        EntityBuilder entityBuilder = entityManager.newBuilder(bladePrefab);
-        entityBuilder.setOwner(entity);
-        EntityRef blade = entityBuilder.build();
-        Location.attachChild(entity, blade, new Vector3f(0, -6, 0), new Quat4f(Quat4f.IDENTITY));
+        logger.info("buillding the mesh");
+        Prefab swingingBladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
+        EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
+        swingingBladeEntityBuilder.setOwner(entity);
+        EntityRef swingingBlade = swingingBladeEntityBuilder.build();
+        Location.attachChild(entity, swingingBlade, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
+        logger.info("mesh entity: " + swingingBlade.toFullDescription());
     }
 
     @Override

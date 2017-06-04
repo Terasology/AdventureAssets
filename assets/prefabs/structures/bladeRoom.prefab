@@ -39,7 +39,7 @@
   "SpawnPrefabs": {
     "prefabsToSpawn": [
       {
-        "prefab": "AdventureAssets:swingingBlade",
+        "prefab": "AdventureAssets:swingingBladePlaceholder",
         "position": [0, 7, 5],
         "rotation": [0.0, 0.70710677, 0.0, 0.70710677]
       }

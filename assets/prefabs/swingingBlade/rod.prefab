@@ -1,21 +1,12 @@
 {
-  "Mesh": {
-    "mesh": "AdventureAssets:swingingBlade",
-    "material": "AdventureAssets:swingingBlade"
-  },
   "BoxShape" : {
     "extents" : [1, 7, 1]
   },
   "Location" : {},
-  "SwingingBlade" : {
-    "amplitude" : 0.523,
-    "timePeriod" : 4
-  },
   "RigidBody": {
     "kinematic": true,
     "mass" : 100,
     "collisionGroup" : "engine:sensor",
     "collidesWith" : ["engine:sensor", "engine:character"]
-  },
-  "Network" :{}
+  }
 }

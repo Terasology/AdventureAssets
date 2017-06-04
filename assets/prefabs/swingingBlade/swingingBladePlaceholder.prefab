@@ -1,0 +1,8 @@
+{
+  "Location" : {},
+  "SwingingBlade" : {
+    "amplitude" : 0.523,
+    "timePeriod" : 4
+  },
+  "Network" :{}
+}
