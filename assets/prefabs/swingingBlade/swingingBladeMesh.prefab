@@ -3,6 +3,5 @@
     "mesh": "AdventureAssets:swingingBlade",
     "material": "AdventureAssets:swingingBlade"
   },
-  "Location" : {},
-  "DamagePlayer" : {}
+  "Location" : {}
 }
