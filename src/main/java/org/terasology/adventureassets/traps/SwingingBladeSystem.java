@@ -29,18 +29,18 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.console.commandSystem.annotations.Command;
-import org.terasology.logic.console.commandSystem.annotations.CommandParam;
+import org.terasology.logic.characters.CharacterImpulseEvent;
+import org.terasology.logic.health.DoDamageEvent;
+import org.terasology.logic.health.EngineDamageTypes;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.nameTags.NameTagComponent;
-import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.physics.events.CollideEvent;
-import org.terasology.physics.events.EntityImpactEvent;
+import org.terasology.physics.events.ImpulseEvent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
@@ -62,23 +62,21 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
     }
 
     @ReceiveEvent
-    public void onCollide(CollideEvent event, EntityRef entity) {
+    public void onCollide(CollideEvent event, EntityRef entity, DamagePlayerComponent damagePlayerComponent) {
         logger.info("collision detected with " + event.getOtherEntity().getParentPrefab().getName());
-    }
-
-    @ReceiveEvent
-    public void onImpact(EntityImpactEvent event, EntityRef entity) {
-        logger.info("impact detected with " + event.getImpactEntity().getParentPrefab().getName());
+        logger.info("normal: " + event.getNormal());
+        event.getOtherEntity().send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-10)));
+        event.getOtherEntity().send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
     }
 
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
-                                        SwingingBladeComponent swingingBladeComponent) {
+                                       SwingingBladeComponent swingingBladeComponent) {
         Prefab bladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:blade", Prefab.class).get();
         EntityBuilder entityBuilder = entityManager.newBuilder(bladePrefab);
         entityBuilder.setOwner(entity);
         EntityRef blade = entityBuilder.build();
-        Location.attachChild(entity, blade, new Vector3f(0, -6,0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, blade, new Vector3f(0, -6, 0), new Quat4f(Quat4f.IDENTITY));
     }
 
     @Override

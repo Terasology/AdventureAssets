@@ -5,7 +5,9 @@
   "Location" : {},
   "RigidBody": {
     "kinematic": true,
-    "collisionGroup": "engine:world",
-    "collidesWith": ["engine:debris", "engine:sensor", "engine:character"]
-  }
+    "mass" : 100,
+    "collisionGroup" : "engine:sensor",
+    "collidesWith" : ["engine:sensor"]
+  },
+  "DamagePlayer" : {}
 }
