@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.adventureassets.traps;
+package org.terasology.adventureassets.damageplayer;
 
 import org.terasology.entitySystem.Component;
 
@@ -23,4 +23,5 @@ import org.terasology.entitySystem.Component;
 
 public class DamagePlayerComponent implements Component {
     public float damage = 10;
+    public float recoil = 5;
 }
