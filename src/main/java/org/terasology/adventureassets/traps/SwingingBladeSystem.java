@@ -29,6 +29,7 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.characters.AliveCharacterComponent;
 import org.terasology.logic.characters.CharacterImpulseEvent;
 import org.terasology.logic.health.DoDamageEvent;
 import org.terasology.logic.health.EngineDamageTypes;
@@ -63,10 +64,13 @@ public class SwingingBladeSystem extends BaseComponentSystem implements UpdateSu
 
     @ReceiveEvent
     public void onCollide(CollideEvent event, EntityRef entity, DamagePlayerComponent damagePlayerComponent) {
-        logger.info("collision detected with " + event.getOtherEntity().getParentPrefab().getName());
+        EntityRef player = event.getOtherEntity();
+        logger.info("collision detected with " + player.getParentPrefab().getName());
         logger.info("normal: " + event.getNormal());
-        event.getOtherEntity().send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-10)));
-        event.getOtherEntity().send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
+        if (player.hasComponent(AliveCharacterComponent.class)) {
+            player.send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-10)));
+            player.send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
+        }
     }
 
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
