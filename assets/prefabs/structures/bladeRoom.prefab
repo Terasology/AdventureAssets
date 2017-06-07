@@ -36,12 +36,21 @@
       { "blockType": "engine:air", "region": { "min": [2, 4, 7], "size": [3, 1, 1]}}
     ]
   },
-  "SpawnPrefabs": {
-    "prefabsToSpawn": [
+  "SpawnSwingingBlade": {
+    "bladeList": [
       {
-        "prefab": "AdventureAssets:swingingBladePlaceholder",
         "position": [0, 7, 5],
-        "rotation": [0.0, 0.70710677, 0.0, 0.70710677]
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 0
+      },
+      {
+        "position": [0, 7, 7],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 1.57
       }
     ]
   }

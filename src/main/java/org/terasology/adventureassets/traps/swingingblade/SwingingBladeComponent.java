@@ -22,9 +22,12 @@ import org.terasology.entitySystem.Component;
  */
 
 public class SwingingBladeComponent implements Component {
+    /* Time taken by the swinging blade to complete one two and fro motion (in seconds)*/
     public float timePeriod = 2f;
+
+    /* Maximum angle to which the swinging blade rotates (in radians)*/
     public float amplitude = 3.14f/6;
 
-    /* Should be a fraction of the time period */
+    /* Phase difference or offset (in radians) */
     public float offset = 0f;
 }

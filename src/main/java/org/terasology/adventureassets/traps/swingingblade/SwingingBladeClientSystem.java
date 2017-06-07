@@ -51,13 +51,11 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
-        logger.info("buillding the mesh");
         Prefab swingingBladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);
         EntityRef swingingBlade = swingingBladeEntityBuilder.build();
         Location.attachChild(entity, swingingBlade, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
-        logger.info("mesh entity: " + swingingBlade.toFullDescription());
     }
 
     @Override
