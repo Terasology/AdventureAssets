@@ -55,7 +55,7 @@ public class TrapPlaceholderScreen extends BaseInteractionScreen {
     @Override
     protected void initializeWithInteractionTarget(EntityRef interactionTarget) {
         selectedPrefab = null;
-        StructurePlaceholderComponent comp = interactionTarget.getComponent(StructurePlaceholderComponent.class);
+        TrapPlaceholderComponent comp = interactionTarget.getComponent(TrapPlaceholderComponent.class);
         selectedPrefab = comp.selectedPrefab;
 
 
