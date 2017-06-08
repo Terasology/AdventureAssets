@@ -36,7 +36,6 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
 
@@ -47,28 +46,34 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
 
     @In
     private EntityManager entityManager;
+    @In
+    private AssetManager assetManager;
+    @In
+    private InventoryManager inventoryManager;
+    @In
+    private Time time;
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_LOW)
     public void onPlayerSpawnedEvent(OnPlayerSpawnedEvent event, EntityRef player) {
         EntityRef toolbox = entityManager.create("StructureTemplates:toolbox");
-        CoreRegistry.get(InventoryManager.class).giveItem(player, EntityRef.NULL, toolbox);
-        Prefab prefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:bladeRoom", Prefab.class).get();
+        inventoryManager.giveItem(player, EntityRef.NULL, toolbox);
+        Prefab prefab = assetManager.getAsset("AdventureAssets:bladeRoom", Prefab.class).get();
         toolbox.send(new StructureSpawnerFromToolboxRequest(prefab));
         EntityRef trapConfigurationTool = entityManager.create("AdventureAssets:trapConfigurationTool");
-        CoreRegistry.get(InventoryManager.class).giveItem(player, EntityRef.NULL, trapConfigurationTool);
+        inventoryManager.giveItem(player, EntityRef.NULL, trapConfigurationTool);
     }
 
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
-        Prefab rodPrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:rod", Prefab.class).get();
+        Prefab rodPrefab = assetManager.getAsset("AdventureAssets:rod", Prefab.class).get();
         EntityBuilder rodEntityBuilder = entityManager.newBuilder(rodPrefab);
         rodEntityBuilder.setOwner(entity);
         rodEntityBuilder.setPersistent(false);
         EntityRef rod = rodEntityBuilder.build();
         Location.attachChild(entity, rod, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
 
-        Prefab bladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:blade", Prefab.class).get();
+        Prefab bladePrefab = assetManager.getAsset("AdventureAssets:blade", Prefab.class).get();
         EntityBuilder bladeEntityBuilder = entityManager.newBuilder(bladePrefab);
         bladeEntityBuilder.setOwner(entity);
         bladeEntityBuilder.setPersistent(false);
@@ -82,10 +87,10 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
             LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
             SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
             if (locationComponent != null && swingingBladeComponent.isSwinging) {
-                float t = CoreRegistry.get(Time.class).getGameTime();
-                float T = swingingBladeComponent.timePeriod;
+                float t = time.getGameTime();
+                float timePeriod = swingingBladeComponent.timePeriod;
                 float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
-                float w = (float) (2 * Math.PI / T);
+                float w = (float) (2 * Math.PI / timePeriod);
                 pitch = (float) (A * Math.cos(w * t + phi));
                 Quat4f rotation = locationComponent.getLocalRotation();
                 locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));

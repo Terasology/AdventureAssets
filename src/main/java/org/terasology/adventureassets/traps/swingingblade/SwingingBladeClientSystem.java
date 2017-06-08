@@ -23,22 +23,17 @@ import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class SwingingBladeClientSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -47,11 +42,15 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
 
     @In
     private EntityManager entityManager;
+    @In
+    private AssetManager assetManager;
+    @In
+    private Time time;
 
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
-        Prefab swingingBladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
+        Prefab swingingBladePrefab = assetManager.getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);
         swingingBladeEntityBuilder.setPersistent(false);
@@ -65,10 +64,10 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
             LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
             SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
             if (locationComponent != null && swingingBladeComponent.isSwinging) {
-                float t = CoreRegistry.get(Time.class).getGameTime();
-                float T = swingingBladeComponent.timePeriod;
+                float t = time.getGameTime();
+                float timePeriod = swingingBladeComponent.timePeriod;
                 float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
-                float w = (float) (2 * Math.PI / T);
+                float w = (float) (2 * Math.PI / timePeriod);
                 pitch = (float) (A * Math.cos(w * t + phi));
                 Quat4f rotation = locationComponent.getLocalRotation();
                 locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
