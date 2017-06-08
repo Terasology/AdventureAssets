@@ -54,6 +54,8 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         CoreRegistry.get(InventoryManager.class).giveItem(player, EntityRef.NULL, toolbox);
         Prefab prefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:bladeRoom", Prefab.class).get();
         toolbox.send(new StructureSpawnerFromToolboxRequest(prefab));
+        EntityRef trapConfigurationTool = entityManager.create("AdventureAssets:trapConfigurationTool");
+        CoreRegistry.get(InventoryManager.class).giveItem(player, EntityRef.NULL, trapConfigurationTool);
     }
 
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})

@@ -30,4 +30,7 @@ public class SwingingBladeComponent implements Component {
 
     /* Phase difference or offset (in radians) */
     public float offset = 0f;
+
+    /* To set the blade in motion, or stop it */
+    public boolean isSwinging = true;
 }
