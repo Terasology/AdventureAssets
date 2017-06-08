@@ -79,7 +79,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class)) {
             LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
             SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
-            if (locationComponent != null) {
+            if (locationComponent != null && swingingBladeComponent.isSwinging) {
                 float t = CoreRegistry.get(Time.class).getGameTime();
                 float T = swingingBladeComponent.timePeriod;
                 float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;

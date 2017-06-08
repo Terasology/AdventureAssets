@@ -42,18 +42,16 @@ import java.text.ParseException;
  */
 @RegisterSystem
 public class TrapConfigurationScreen extends CoreScreenLayer {
+    private static final Logger logger = LoggerFactory.getLogger(TrapConfigurationScreen.class);
     private UIText fullDescriptionLabel;
     private UIText entityIdField;
     private UIText prefabNameField;
     private ScrollableArea scrollArea;
     private UIButton cancelButton;
-
     @In
     private CameraTargetSystem cameraTargetSystem;
     @In
     private NUIManager nuiManager;
-
-    private static final Logger logger = LoggerFactory.getLogger(TrapConfigurationScreen.class);
 
     @Override
     public void initialise() {
@@ -139,9 +137,10 @@ public class TrapConfigurationScreen extends CoreScreenLayer {
         saveButton.setText("Save");
         saveButton.subscribe(button -> {
             try {
-                swingingBladeComponent.timePeriod=(Float.parseFloat(timePeriod.getText()));
-                swingingBladeComponent.amplitude=(Float.parseFloat(amplitude.getText()));
-                swingingBladeComponent.offset=(Float.parseFloat(offset.getText()));
+                swingingBladeComponent.timePeriod = (Float.parseFloat(timePeriod.getText()));
+                swingingBladeComponent.amplitude = (Float.parseFloat(amplitude.getText()));
+                swingingBladeComponent.offset = (Float.parseFloat(offset.getText()));
+                swingingBladeComponent.isSwinging = isSwinging.isChecked();
             } catch (NumberFormatException e) {
                 logger.error(e.getStackTrace().toString());
             }
