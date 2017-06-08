@@ -19,14 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.adventureassets.traps.RequestTrapPlaceholderPrefabSelection;
 import org.terasology.adventureassets.traps.TrapPlaceholderComponent;
+import org.terasology.adventureassets.traps.TrapsPlacementComponent;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -36,14 +35,12 @@ import org.terasology.math.Side;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.components.AddItemsToChestComponent;
 import org.terasology.structureTemplates.components.ScheduleStructurePlacementComponent;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
 import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;
-import org.terasology.structureTemplates.internal.components.StructurePlaceholderComponent;
 import org.terasology.structureTemplates.internal.events.BuildStructureTemplateStringEvent;
-import org.terasology.structureTemplates.internal.events.RequestStructurePlaceholderPrefabSelection;
+import org.terasology.structureTemplates.util.ListUtil;
 import org.terasology.structureTemplates.util.transform.BlockRegionTransform;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
@@ -58,17 +55,16 @@ import java.util.List;
 
 
 /**
- * Contains the logic to make {@link SpawnSwingingBladeComponent} work.
+ * Contains the logic to make spawning of Swinging Blades work.
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
 
+    private static final Logger logger = LoggerFactory.getLogger(SpawnSwingingBladeServerSystem.class);
     @In
     private EntityManager entityManager;
     @In
     private AssetManager assetManager;
-    @In
-    private PrefabManager prefabManager;
     @In
     private BlockManager blockManager;
     @In
@@ -76,23 +72,24 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
     @In
     private WorldProvider worldProvider;
 
-    private static final Logger logger = LoggerFactory.getLogger(SpawnSwingingBladeServerSystem.class);
-
     @ReceiveEvent
     public void onSpawnStructureWithSwingingBlade(StructureBlocksSpawnedEvent event, EntityRef entity,
-                                                  SpawnSwingingBladeComponent component) {
-        spawnSwingingBlades(event.getTransformation(), component);
+                                                  TrapsPlacementComponent trapsPlacementComponent) {
+        if (trapsPlacementComponent.swingingBladeList.size() > 0) {
+            spawnSwingingBlades(event.getTransformation(), trapsPlacementComponent.swingingBladeList);
+        }
     }
 
-    //TODO: Remove hardcoding for Swinging blade
     @ReceiveEvent
-    public void onTemplateSpawned(SpawnTemplateEvent event, EntityRef entity, SpawnSwingingBladeComponent spawnSwingingBladeComponent) {
-        spawnSwingingBlades(event.getTransformation(), spawnSwingingBladeComponent);
+    public void onTemplateSpawned(SpawnTemplateEvent event, EntityRef entity, TrapsPlacementComponent trapsPlacementComponent) {
+        if (trapsPlacementComponent.swingingBladeList.size() > 0) {
+            spawnSwingingBlades(event.getTransformation(), trapsPlacementComponent.swingingBladeList);
+        }
 
         BlockRegionTransform transformation = event.getTransformation();
-        for (SpawnSwingingBladeComponent.SwingingBlade swingingBlade : spawnSwingingBladeComponent.bladeList) {
+        for (SwingingBlade swingingBlade : trapsPlacementComponent.swingingBladeList) {
             Vector3i actualPosition = transformation.transformVector3i(swingingBlade.position);
-            Prefab selectedTrapType = prefabManager.getPrefab("AdventureAssets:SwingingBladePlaceholder");
+            Prefab selectedTrapType = swingingBlade.prefab;
 
             BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:TrapPlaceholder");
             HorizontalBlockFamily horizontalBlockFamily = (HorizontalBlockFamily) blockFamily;
@@ -108,15 +105,54 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
         }
     }
 
-    //TODO: Make changes to JSON
+    //TODO: Move to outer TrapPlacementSystem
     @ReceiveEvent
     public void onBuildTemplateStringWithBlockRegions(BuildStructureTemplateStringEvent event, EntityRef template,
-                                                      SpawnSwingingBladeComponent component) {
-        logger.info("works");
+                                                      TrapsPlacementComponent component) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("    \"TrapsPlacement\": {\n");
+        sb.append("        \"swingingBladeList\": [\n");
+        ListUtil.visitList(component.swingingBladeList,
+                (SwingingBlade swingingBlade, boolean last)-> {
+                    sb.append("            {\n");
+                    sb.append("                \"position\": [");
+                    sb.append(swingingBlade.position.x);
+                    sb.append(", ");
+                    sb.append(swingingBlade.position.y);
+                    sb.append(", ");
+                    sb.append(swingingBlade.position.z);
+                    sb.append("],\n");
+                    sb.append("                \"rotation\": [");
+                    sb.append(swingingBlade.rotation.x);
+                    sb.append(", ");
+                    sb.append(swingingBlade.rotation.y);
+                    sb.append(", ");
+                    sb.append(swingingBlade.rotation.z);
+                    sb.append(", ");
+                    sb.append(swingingBlade.rotation.w);
+                    sb.append("],\n");
+                    sb.append("                \"amplitude\": ");
+                    sb.append(swingingBlade.amplitude);
+                    sb.append(",\n");
+                    sb.append("                \"timePeriod\": ");
+                    sb.append(swingingBlade.timePeriod);
+                    sb.append(",\n");
+                    sb.append("                \"offset\": ");
+                    sb.append(swingingBlade.offset);
+                    sb.append("\n");
+                    if (last) {
+                        sb.append("            }\n");
+                    } else {
+                        sb.append("            },\n");
+                    }
+                });
+        sb.append("        ]\n");
+        sb.append("    }");
+        event.addJsonForComponent(sb.toString(), ScheduleStructurePlacementComponent.class);
     }
 
-    private void spawnSwingingBlades(BlockRegionTransform transformation, SpawnSwingingBladeComponent component) {
-        for (SpawnSwingingBladeComponent.SwingingBlade swingingBlade : component.bladeList) {
+    private void spawnSwingingBlades(BlockRegionTransform transformation, List<SwingingBlade> bladeList) {
+        for (SwingingBlade swingingBlade : bladeList) {
             Vector3i position = transformation.transformVector3i(swingingBlade.position);
             Quat4f rotation = transformation.transformRotation(swingingBlade.rotation);
 
@@ -133,36 +169,40 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
         }
     }
 
-    //TODO: Remove hardcoding for SwingingBlades
+
     @ReceiveEvent
-    public void onBuildTemplateWithScheduledTrapPlacement(BuildStructureTemplateEntityEvent event, EntityRef entity) {
+    public void onBuildTemplateWithTrapPlacement(BuildStructureTemplateEntityEvent event, EntityRef entity) {
         BlockRegionTransform transformToRelative = event.getTransformToRelative();
         BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:TrapPlaceholder");
 
-        List<SpawnSwingingBladeComponent.SwingingBlade> bladeList = new ArrayList<>();
-        for (Vector3i position: event.findAbsolutePositionsOf(blockFamily)) {
+        List<SwingingBlade> bladeList = new ArrayList<>();
+        for (Vector3i position : event.findAbsolutePositionsOf(blockFamily)) {
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(position);
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
             if (trapPlaceholderComponent.selectedPrefab == null) {
                 continue;
             }
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
-            SpawnSwingingBladeComponent.SwingingBlade swingingBlade = new SpawnSwingingBladeComponent.SwingingBlade();
+            SwingingBlade swingingBlade = new SwingingBlade();
             swingingBlade.position = transformToRelative.transformVector3i(blockComponent.getPosition());
             swingingBlade.position.subY(1); // placeholder is on top of marked block
             swingingBlade.rotation = transformToRelative.transformRotation(swingingBlade.rotation);
+            //TODO: Fetch properties from the actual swinging blade entity
             bladeList.add(swingingBlade);
         }
         if (bladeList.size() > 0) {
-            SpawnSwingingBladeComponent spawnSwingingBladeComponent = new SpawnSwingingBladeComponent();
-            spawnSwingingBladeComponent.bladeList = bladeList;
-            event.getTemplateEntity().addOrSaveComponent(spawnSwingingBladeComponent);
+            TrapsPlacementComponent trapsPlacementComponent = event.getTemplateEntity().getComponent(TrapsPlacementComponent.class);
+            if (trapsPlacementComponent == null) {
+                trapsPlacementComponent = new TrapsPlacementComponent();
+            }
+            trapsPlacementComponent.swingingBladeList = bladeList;
+            event.getTemplateEntity().addOrSaveComponent(trapsPlacementComponent);
         }
     }
 
     @ReceiveEvent
     public void onRequestTrapPlaceholderPrefabSelection(RequestTrapPlaceholderPrefabSelection event, EntityRef characterEntity,
-                                                             CharacterComponent characterComponent) {
+                                                        CharacterComponent characterComponent) {
         EntityRef interactionTarget = characterComponent.authorizedInteractionTarget;
         TrapPlaceholderComponent trapPlaceholderComponent = interactionTarget.getComponent(TrapPlaceholderComponent.class);
         if (trapPlaceholderComponent == null) {
