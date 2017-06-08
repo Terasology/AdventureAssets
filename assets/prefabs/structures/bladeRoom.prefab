@@ -3,37 +3,43 @@
   },
   "SpawnBlockRegions": {
     "regionsToFill": [
-      { "blockType": "Core:stone", "region": { "min": [-5, 0, 0], "size": [5, 1, 1]}},
-      { "blockType": "Core:stone", "region": { "min": [1, 0, 0], "size": [5, 1, 1]}},
-      { "blockType": "Core:stone", "region": { "min": [-5, 0, 1], "size": [1, 1, 8]}},
+      { "blockType": "Core:Chest.FRONT", "region": { "min": [0, 1, 19], "size": [1, 1, 1]}},
+      { "blockType": "Core:torch.BACK", "region": { "min": [-3, 8, 2], "size": [7, 1, 1]}},
       { "blockType": "Core:torch.BACK", "region": { "min": [-1, 4, 2], "size": [3, 1, 1]}},
-      { "blockType": "Core:torch.FRONT", "region": { "min": [-1, 4, 7], "size": [3, 1, 1]}},
-      { "blockType": "Core:torch.LEFT", "region": { "min": [4, 4, 4], "size": [1, 1, 2]}},
-      { "blockType": "Core:torch.RIGHT", "region": { "min": [-4, 4, 4], "size": [1, 1, 2]}},
+      { "blockType": "Core:torch.FRONT", "region": { "min": [-3, 8, 19], "size": [7, 1, 1]}},
+      { "blockType": "Core:torch.FRONT", "region": { "min": [-1, 1, 19], "size": [1, 1, 1]}},
+      { "blockType": "Core:torch.FRONT", "region": { "min": [-1, 2, 19], "size": [3, 2, 1]}},
+      { "blockType": "Core:torch.FRONT", "region": { "min": [1, 1, 19], "size": [1, 1, 1]}},
+      { "blockType": "Core:torch.LEFT", "region": { "min": [4, 8, 2], "size": [1, 1, 18]}},
+      { "blockType": "Core:torch.RIGHT", "region": { "min": [-4, 8, 2], "size": [1, 1, 18]}},
+      { "blockType": "core:hardStone", "region": { "min": [-5, 0, 1], "size": [11, 1, 20]}},
       { "blockType": "core:hardStone", "region": { "min": [-5, 1, 1], "size": [5, 2, 1]}},
       { "blockType": "core:hardStone", "region": { "min": [-5, 3, 1], "size": [11, 6, 1]}},
-      { "blockType": "core:hardStone", "region": { "min": [-4, 0, 1], "size": [10, 1, 8]}},
       { "blockType": "core:hardStone", "region": { "min": [1, 1, 1], "size": [5, 2, 1]}},
-      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 2], "size": [1, 7, 6]}},
-      { "blockType": "core:hardStone", "region": { "min": [-5, 8, 2], "size": [11, 1, 6]}},
-      { "blockType": "core:hardStone", "region": { "min": [5, 1, 2], "size": [1, 7, 6]}},
-      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 8], "size": [11, 8, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-5, 1, 0], "size": [11, 8, 1]}},
-      { "blockType": "engine:air", "region": { "min": [0, 0, 0], "size": [1, 1, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 2], "size": [1, 8, 18]}},
+      { "blockType": "core:hardStone", "region": { "min": [-5, 9, 1], "size": [11, 1, 20]}},
+      { "blockType": "core:hardStone", "region": { "min": [5, 1, 2], "size": [1, 8, 18]}},
+      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 20], "size": [11, 8, 1]}},
       { "blockType": "engine:air", "region": { "min": [0, 1, 1], "size": [1, 2, 1]}},
       { "blockType": "engine:air", "region": { "min": [-4, 1, 2], "size": [9, 3, 1]}},
       { "blockType": "engine:air", "region": { "min": [-4, 4, 2], "size": [3, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 5, 2], "size": [9, 3, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 5, 2], "size": [9, 2, 1]}},
       { "blockType": "engine:air", "region": { "min": [2, 4, 2], "size": [3, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 1, 3], "size": [9, 7, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 1, 4], "size": [9, 3, 2]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 5, 4], "size": [9, 3, 2]}},
-      { "blockType": "engine:air", "region": { "min": [-3, 4, 4], "size": [7, 1, 2]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 1, 6], "size": [9, 7, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 1, 7], "size": [9, 3, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 4, 7], "size": [3, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 5, 7], "size": [9, 3, 1]}},
-      { "blockType": "engine:air", "region": { "min": [2, 4, 7], "size": [3, 1, 1]}}
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 3], "size": [9, 6, 11]}},
+      { "blockType": "engine:air", "region": { "min": [-3, 7, 3], "size": [7, 1, 11]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 19], "size": [3, 3, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 4, 19], "size": [9, 3, 1]}},
+      { "blockType": "engine:air", "region": { "min": [2, 1, 19], "size": [3, 3, 1]}}
+    ]
+  },
+  "AddItemsToChest": {
+    "chestsToFill": [
+      {
+        "position": [0, 1, 19],
+        "items": [
+          {"slot": 0, "blockFamiliy": "core:companion", "amount": 99}
+        ]
+      }
     ]
   },
   "SpawnSwingingBlade": {
@@ -43,14 +49,49 @@
         "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
         "amplitude" : 0.523,
         "timePeriod" : 4,
-        "offset" : 0
+        "offset" : 3
       },
       {
         "position": [0, 7, 7],
         "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
         "amplitude" : 0.523,
         "timePeriod" : 4,
-        "offset" : 1.57
+        "offset" : 2.5
+      },
+      {
+        "position": [0, 7, 9],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 2
+      },
+      {
+        "position": [0, 7, 11],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 1.5
+      },
+      {
+        "position": [0, 7, 13],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 1
+      },
+      {
+        "position": [0, 7, 15],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 0.5
+      },
+      {
+        "position": [0, 7, 17],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 0
       }
     ]
   }

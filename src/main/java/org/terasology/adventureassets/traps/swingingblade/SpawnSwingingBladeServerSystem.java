@@ -24,16 +24,11 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.Side;
 import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.components.SpawnPrefabsComponent;
 import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;
 import org.terasology.world.WorldProvider;
-
-import static org.terasology.structureTemplates.util.transform.EntityRotationTransform.calculateRotation;
 
 
 /**
@@ -51,10 +46,10 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onSpawnStructureWithSwingingBlade(StructureBlocksSpawnedEvent event, EntityRef entity,
-                                                SpawnSwingingBladeComponent component) {
+                                                  SpawnSwingingBladeComponent component) {
         for (SpawnSwingingBladeComponent.SwingingBlade swingingBlade : component.bladeList) {
             Vector3i position = event.getTransformation().transformVector3i(swingingBlade.position);
-            Quat4f rotation = calculateRotation(event.getTransformation().transformSide(Side.FRONT), swingingBlade.rotation);
+            Quat4f rotation = event.getTransformation().transformRotation(swingingBlade.rotation);
 
             EntityBuilder entityBuilder = entityManager.newBuilder(swingingBlade.prefab);
             LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
