@@ -88,7 +88,6 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onTemplateSpawned(SpawnTemplateEvent event, EntityRef entity, SpawnSwingingBladeComponent spawnSwingingBladeComponent) {
         spawnSwingingBlades(event.getTransformation(), spawnSwingingBladeComponent);
-        logger.info("mark 2");
 
         BlockRegionTransform transformation = event.getTransformation();
         for (SpawnSwingingBladeComponent.SwingingBlade swingingBlade : spawnSwingingBladeComponent.bladeList) {
