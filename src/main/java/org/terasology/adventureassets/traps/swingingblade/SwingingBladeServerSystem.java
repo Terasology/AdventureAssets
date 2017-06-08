@@ -64,12 +64,14 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         Prefab rodPrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:rod", Prefab.class).get();
         EntityBuilder rodEntityBuilder = entityManager.newBuilder(rodPrefab);
         rodEntityBuilder.setOwner(entity);
+        rodEntityBuilder.setPersistent(false);
         EntityRef rod = rodEntityBuilder.build();
         Location.attachChild(entity, rod, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
 
         Prefab bladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:blade", Prefab.class).get();
         EntityBuilder bladeEntityBuilder = entityManager.newBuilder(bladePrefab);
         bladeEntityBuilder.setOwner(entity);
+        bladeEntityBuilder.setPersistent(false);
         EntityRef blade = bladeEntityBuilder.build();
         Location.attachChild(entity, blade, new Vector3f(0, -6, 0), new Quat4f(Quat4f.IDENTITY));
     }

@@ -54,6 +54,7 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
         Prefab swingingBladePrefab = CoreRegistry.get(AssetManager.class).getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);
+        swingingBladeEntityBuilder.setPersistent(false);
         EntityRef swingingBlade = swingingBladeEntityBuilder.build();
         Location.attachChild(entity, swingingBlade, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
     }
