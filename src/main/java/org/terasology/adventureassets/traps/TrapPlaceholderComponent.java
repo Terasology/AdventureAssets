@@ -39,11 +39,11 @@ public class TrapPlaceholderComponent implements Component {
         this.selectedPrefab = selectedPrefab;
     }
 
-    public void setTrapEntity(EntityRef trapEntity) {
-        this.trapEntity = trapEntity;
-    }
-
     public EntityRef getTrapEntity() {
         return trapEntity;
+    }
+
+    public void setTrapEntity(EntityRef trapEntity) {
+        this.trapEntity = trapEntity;
     }
 }

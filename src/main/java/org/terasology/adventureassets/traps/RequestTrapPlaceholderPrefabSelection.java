@@ -19,16 +19,13 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.network.ServerEvent;
-import org.terasology.structureTemplates.internal.components.StructurePlaceholderComponent;
 
 /**
- *
  * The event gets sent to a character entity at the server.
- *
+ * <p>
  * The server will then check if the character is interacting with a entity that has the {@link TrapPlaceholderComponent}.
- *
+ * <p>
  * If that is the case that component will be updated with the values of the event.
- *
  */
 @ServerEvent
 public class RequestTrapPlaceholderPrefabSelection implements Event {

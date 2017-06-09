@@ -25,11 +25,11 @@ import org.terasology.registry.CoreRegistry;
 
 @MappedContainer
 public class SwingingBlade {
-    public Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab("AdventureAssets:swingingBladePlaceholder");;
+    public Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab("AdventureAssets:swingingBladePlaceholder");
     public Vector3i position;
-    public Quat4f rotation = new Quat4f(0,0,0, 1);
+    public Quat4f rotation = new Quat4f(0, 0, 0, 1);
 
     public float timePeriod = 2f;
-    public float amplitude = 3.14f/6;
+    public float amplitude = 3.14f / 6;
     public float offset = 0f;
 }

@@ -18,41 +18,23 @@ package org.terasology.adventureassets.traps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.adventureassets.traps.swingingblade.SwingingBlade;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
 import org.terasology.assets.management.AssetManager;
-import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.health.DoDestroyEvent;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.Side;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.components.ScheduleStructurePlacementComponent;
-import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
-import org.terasology.structureTemplates.events.SpawnTemplateEvent;
-import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;
 import org.terasology.structureTemplates.internal.events.BuildStructureTemplateStringEvent;
 import org.terasology.structureTemplates.util.ListUtil;
-import org.terasology.structureTemplates.util.transform.BlockRegionTransform;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
-import org.terasology.world.block.family.HorizontalBlockFamily;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -80,7 +62,7 @@ public class TrapPlaceholderSystem extends BaseComponentSystem {
         sb.append("    \"TrapsPlacement\": {\n");
         sb.append("        \"swingingBladeList\": [\n");
         ListUtil.visitList(component.swingingBladeList,
-                (SwingingBlade swingingBlade, boolean last)-> {
+                (SwingingBlade swingingBlade, boolean last) -> {
                     sb.append("            {\n");
                     sb.append("                \"position\": [");
                     sb.append(swingingBlade.position.x);

@@ -18,14 +18,10 @@ package org.terasology.adventureassets.traps.inspectiontool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
-import org.terasology.logic.common.InspectionToolComponent;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.layouts.ColumnLayout;
@@ -35,8 +31,6 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UICheckbox;
 import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIText;
-
-import java.text.ParseException;
 
 /**
  */

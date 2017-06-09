@@ -17,11 +17,6 @@ package org.terasology.adventureassets.traps;
 
 import org.terasology.adventureassets.traps.swingingblade.SwingingBlade;
 import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.math.Side;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.reflection.MappedContainer;
-import org.terasology.structureTemplates.components.StructureTemplateTypeComponent;
 
 import java.util.List;
 
@@ -30,6 +25,8 @@ import java.util.List;
  * of the given trap type.
  */
 public class TrapsPlacementComponent implements Component {
-    /** List of swinging blade type traps to spawn */
+    /**
+     * List of swinging blade type traps to spawn
+     */
     public List<SwingingBlade> swingingBladeList;
 }

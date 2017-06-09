@@ -26,16 +26,24 @@ import java.util.List;
  */
 
 public class SwingingBladeComponent implements Component {
-    /** Time taken by the swinging blade to complete one two and fro motion (in seconds)*/
+    /**
+     * Time taken by the swinging blade to complete one two and fro motion (in seconds)
+     */
     public float timePeriod = 2f;
 
-    /** Maximum angle to which the swinging blade rotates (in radians)*/
-    public float amplitude = 3.14f/6;
+    /**
+     * Maximum angle to which the swinging blade rotates (in radians)
+     */
+    public float amplitude = 3.14f / 6;
 
-    /** Phase difference or offset (in radians) */
+    /**
+     * Phase difference or offset (in radians)
+     */
     public float offset = 0f;
 
-    /** To set the blade in motion, or stop it */
+    /**
+     * To set the blade in motion, or stop it
+     */
     public boolean isSwinging = true;
 
     public List<EntityRef> childrenEntities = Lists.newArrayList();

@@ -17,12 +17,10 @@ package org.terasology.adventureassets.traps;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.logic.common.DisplayNameComponent;
-import org.terasology.structureTemplates.components.ScheduleStructurePlacementComponent;
-import org.terasology.structureTemplates.components.StructureTemplateComponent;
 
 /**
  * Only used as marker component to allow the search for prefabs that describe trap template types.
- *
+ * <p>
  * Prefabs with the {@link TrapTemplateTypeComponent} should also have a {@link DisplayNameComponent} so
  * that they can be listed with proper name and description in editor UIs.
  */

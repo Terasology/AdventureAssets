@@ -29,7 +29,6 @@ import org.terasology.rendering.nui.itemRendering.StringTextRenderer;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UIDropdown;
 import org.terasology.rendering.nui.widgets.UIText;
-import org.terasology.structureTemplates.internal.components.StructurePlaceholderComponent;
 
 import java.util.ArrayList;
 import java.util.Comparator;
