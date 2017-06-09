@@ -1,0 +1,11 @@
+{
+  "persistent": true,
+  "Location" : {},
+  "SwingingBlade" : {},
+  "Network" :{},
+  "TrapTemplateType": {},
+  "DisplayName": {
+    "name": "Swinging Blade",
+    "description": "The parent/owner entity for spawning the various parts of the swinging blade. This entity undergoes the rotational transforms. It has one child for the client which has the mesh, and two children for the server which has the rod and blade as rigid bodies."
+  }
+}

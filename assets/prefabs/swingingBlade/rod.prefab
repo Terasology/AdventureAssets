@@ -1,0 +1,12 @@
+{
+  "BoxShape" : {
+    "extents" : [1, 7, 1]
+  },
+  "Location" : {},
+  "RigidBody": {
+    "kinematic": true,
+    "mass" : 100,
+    "collisionGroup" : "engine:sensor",
+    "collidesWith" : ["engine:sensor", "engine:character"]
+  }
+}

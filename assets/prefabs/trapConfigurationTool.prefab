@@ -1,0 +1,14 @@
+{
+    "parent": "engine:iconItem",
+    "DisplayName": {
+        "name": "Trap Configuration Tool"
+    },
+    "Item": {
+        "icon": "engine:items#redRecipe"
+    },
+    "TrapConfigurationTool": {},
+    "InteractionTarget": {},
+    "InteractionScreen": {
+        "screen": "AdventureAssets:trapConfigurationScreen"
+    }
+}

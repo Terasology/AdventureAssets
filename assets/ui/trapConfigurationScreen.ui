@@ -1,0 +1,101 @@
+{
+  "type": "TrapConfigurationScreen",
+  "contents": {
+    "type": "RelativeLayout",
+    "contents": [
+      {
+        "type": "RowLayout",
+        "contents": [
+          {
+            "type": "UILabel",
+            "text": "Prefab name: "
+          },
+          {
+            "type": "UIText",
+            "multiline": false,
+            "id": "prefabNameField",
+            "layoutInfo": {
+              "relativeWidth": 0.8
+            }
+          }
+        ],
+        "layoutInfo": {
+          "use-content-height": true,
+          "width": 500,
+          "position-horizontal-center": {},
+          "position-vertical-top": {},
+          "position-bottom": {
+            "widget": "entityRow",
+            "target": "TOP"
+          }
+        },
+        "id": "prefabRow"
+      },
+      {
+        "type": "RowLayout",
+        "contents": [
+          {
+            "type": "UILabel",
+            "text": "Entity Id:"
+          },
+          {
+            "type": "UIText",
+            "multiline": false,
+            "id": "entityIdField",
+            "layoutInfo": {
+              "relativeWidth": 0.8
+            }
+          }
+        ],
+        "layoutInfo": {
+          "use-content-height": true,
+          "width": 500,
+          "position-horizontal-center": {},
+          "position-vertical-top": {},
+          "position-bottom": {
+            "widget": "scrollArea",
+            "target": "TOP"
+          }
+        },
+        "id": "entityRow"
+      },
+      {
+        "type": "ScrollableArea",
+        "id": "scrollArea",
+        "content": {
+          "type": "UIText",
+          "readOnly": true,
+          "multiline": true,
+          "id": "fullDescriptionLabel"
+        },
+        "layoutInfo": {
+          "height": 200,
+          "width": 500,
+          "position-horizontal-center": {},
+          "position-vertical-center": {}
+        }
+      },
+      {
+        "type": "RowLayout",
+        "id": "saveRow",
+        "contents": [
+          {
+            "type": "engine:UIButton",
+            "id": "cancelButton",
+            "layoutInfo": {},
+            "text": "Cancel"
+          }
+        ],
+        "layoutInfo": {
+          "use-content-height": true,
+          "width": 480,
+          "position-horizontal-center": {},
+          "position-top": {
+            "widget": "scrollArea",
+            "target": "BOTTOM"
+          }
+        }
+      }
+    ]
+  }
+}
