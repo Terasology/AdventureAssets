@@ -76,36 +76,9 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onSpawnStructureWithSwingingBlade(StructureBlocksSpawnedEvent event, EntityRef entity,
                                                   TrapsPlacementComponent trapsPlacementComponent) {
-        if (trapsPlacementComponent.swingingBladeList.size() > 0) {
-            spawnSwingingBlades(event.getTransformation(), trapsPlacementComponent.swingingBladeList);
-        }
-    }
-
-    @ReceiveEvent
-    public void onTemplateSpawned(SpawnTemplateEvent event, EntityRef entity, TrapsPlacementComponent trapsPlacementComponent) {
+        // Spawn blades while spawning from spawner
         BlockRegionTransform transformation = event.getTransformation();
         for (SwingingBlade swingingBlade : trapsPlacementComponent.swingingBladeList) {
-            Vector3i actualPosition = transformation.transformVector3i(swingingBlade.position);
-            Prefab selectedTrapType = swingingBlade.prefab;
-
-            BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:TrapPlaceholder");
-            HorizontalBlockFamily horizontalBlockFamily = (HorizontalBlockFamily) blockFamily;
-            //TODO: Use rotation to remove FRONT hardcoding
-            Block block = horizontalBlockFamily.getBlockForSide(Side.FRONT);
-            Vector3i positionAbove = new Vector3i(actualPosition);
-            positionAbove.addY(1);
-            worldProvider.setBlock(positionAbove, block);
-            EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(positionAbove);
-            logger.info("Spawned trapPlaceholder id: " + blockEntity.getId() + " position: " + positionAbove);
-            TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
-            trapPlaceholderComponent.setSelectedPrefab(selectedTrapType);
-            blockEntity.saveComponent(trapPlaceholderComponent);
-            localPlayer.getCharacterEntity().send(new RequestTrapPlaceholderPrefabSelection(selectedTrapType, blockEntity));
-        }
-    }
-
-    private void spawnSwingingBlades(BlockRegionTransform transformation, List<SwingingBlade> bladeList) {
-        for (SwingingBlade swingingBlade : bladeList) {
             Vector3i position = transformation.transformVector3i(swingingBlade.position);
             Quat4f rotation = transformation.transformRotation(swingingBlade.rotation);
 
@@ -122,6 +95,38 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
         }
     }
 
+    @ReceiveEvent
+    public void onTemplateSpawned(SpawnTemplateEvent event, EntityRef entity, TrapsPlacementComponent trapsPlacementComponent) {
+        BlockRegionTransform transformation = event.getTransformation();
+
+        for (SwingingBlade swingingBlade : trapsPlacementComponent.swingingBladeList) {
+            Vector3i actualPosition = transformation.transformVector3i(swingingBlade.position);
+            Quat4f rotation = transformation.transformRotation(swingingBlade.rotation);
+
+            EntityBuilder entityBuilder = entityManager.newBuilder(swingingBlade.prefab);
+            LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
+            locationComponent.setWorldPosition(actualPosition.toVector3f());
+            locationComponent.setWorldRotation(rotation);
+            SwingingBladeComponent swingingBladeComponent = entityBuilder.getComponent(SwingingBladeComponent.class);
+            swingingBladeComponent.timePeriod = swingingBlade.timePeriod;
+            swingingBladeComponent.amplitude = swingingBlade.amplitude;
+            swingingBladeComponent.offset = swingingBlade.offset;
+
+            EntityRef trapEntity = entityBuilder.build();
+
+            BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:TrapPlaceholder");
+            HorizontalBlockFamily horizontalBlockFamily = (HorizontalBlockFamily) blockFamily;
+            Block block = horizontalBlockFamily.getBlockForSide(Side.FRONT);
+            Vector3i positionAbove = new Vector3i(actualPosition);
+            positionAbove.addY(1);
+            worldProvider.setBlock(positionAbove, block);
+            EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(positionAbove);
+            TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
+            trapPlaceholderComponent.setSelectedPrefab(swingingBlade.prefab);
+            trapPlaceholderComponent.setTrapEntity(trapEntity);
+            blockEntity.saveComponent(trapPlaceholderComponent);
+        }
+    }
 
     @ReceiveEvent
     public void onBuildTemplateWithTrapPlacement(BuildStructureTemplateEntityEvent event, EntityRef entity) {
@@ -129,20 +134,22 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
         BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:TrapPlaceholder");
 
         List<SwingingBlade> bladeList = new ArrayList<>();
-        //TODO: Possible bug in findAbsolutePositionsOf method. Does not return all blocks.
         for (Vector3i position : event.findAbsolutePositionsOf(blockFamily)) {
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(position);
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
-            if (trapPlaceholderComponent.getSelectedPrefab() == null) {
-                continue;
+            if (trapPlaceholderComponent.getSelectedPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladePlaceholder")) {
+                EntityRef trapEntity = trapPlaceholderComponent.getTrapEntity();
+                SwingingBladeComponent swingingBladeComponent = trapEntity.getComponent(SwingingBladeComponent.class);
+                SwingingBlade swingingBlade = new SwingingBlade();
+                swingingBlade.position = transformToRelative.transformVector3i(blockEntity.getComponent(BlockComponent.class).getPosition());
+                swingingBlade.position.subY(1); // placeholder is on top of marked block
+                swingingBlade.rotation = transformToRelative.transformRotation(trapEntity.getComponent(LocationComponent.class).getWorldRotation());
+                swingingBlade.amplitude = swingingBladeComponent.amplitude;
+                swingingBlade.timePeriod = swingingBladeComponent.timePeriod;
+                swingingBlade.offset = swingingBladeComponent.offset;
+
+                bladeList.add(swingingBlade);
             }
-            BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
-            SwingingBlade swingingBlade = new SwingingBlade();
-            swingingBlade.position = transformToRelative.transformVector3i(blockComponent.getPosition());
-            swingingBlade.position.subY(1); // placeholder is on top of marked block
-            swingingBlade.rotation = transformToRelative.transformRotation(swingingBlade.rotation);
-            //TODO: Fetch properties from the actual swinging blade entity
-            bladeList.add(swingingBlade);
         }
         if (bladeList.size() > 0) {
             TrapsPlacementComponent trapsPlacementComponent = event.getTemplateEntity().getComponent(TrapsPlacementComponent.class);
@@ -158,12 +165,10 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
     public void onRequestTrapPlaceholderPrefabSelection(RequestTrapPlaceholderPrefabSelection event, EntityRef characterEntity,
                                                         CharacterComponent characterComponent) {
         if (event.getPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladePlaceholder")) {
-            logger.info("actual id: " + event.getTrapPlaceholderBlockEntity().getId());
             EntityRef blockEntity = event.getTrapPlaceholderBlockEntity();
-            logger.info("pseudo id: " + blockEntity.getId());
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
             if (trapPlaceholderComponent.getTrapEntity() != null) {
-                trapPlaceholderComponent.getTrapEntity().destroy();
+                blockEntity.send(new DeleteTrapEvent(trapPlaceholderComponent.getSelectedPrefab(), trapPlaceholderComponent.getTrapEntity()));
             }
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
 

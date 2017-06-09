@@ -35,11 +35,53 @@
   "TrapsPlacement": {
     "swingingBladeList": [
       {
+        "position": [0, 7, 5],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 3
+      },
+      {
         "position": [0, 7, 7],
-        "rotation": [0.0, 0.0, 0.0, 1.0],
-        "amplitude": 0.5233334,
-        "timePeriod": 2.0,
-        "offset": 0.0
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 2.5
+      },
+      {
+        "position": [0, 7, 9],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 2
+      },
+      {
+        "position": [0, 7, 11],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 1.5
+      },
+      {
+        "position": [0, 7, 13],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 1
+      },
+      {
+        "position": [0, 7, 15],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 0.5
+      },
+      {
+        "position": [0, 7, 17],
+        "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
+        "amplitude" : 0.523,
+        "timePeriod" : 4,
+        "offset" : 0
       }
     ]
   },
