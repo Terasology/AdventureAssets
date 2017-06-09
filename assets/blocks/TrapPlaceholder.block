@@ -10,7 +10,7 @@
   "displayName": "Trap Placeholder",
   "rotation": "horizontal",
   "sounds": "none",
-  "shape" : "StructureTemplates:blockMarkerQuad",
+  "shape" : "engine:eighthBlock",
   "entity": {
     "prefab": "AdventureAssets:trapPlaceholder"
   },
