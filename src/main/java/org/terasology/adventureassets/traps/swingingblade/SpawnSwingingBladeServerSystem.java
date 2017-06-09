@@ -49,6 +49,7 @@ import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.family.HorizontalBlockFamily;
+import org.terasology.world.block.items.OnBlockItemPlaced;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +83,6 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onTemplateSpawned(SpawnTemplateEvent event, EntityRef entity, TrapsPlacementComponent trapsPlacementComponent) {
-        if (trapsPlacementComponent.swingingBladeList.size() > 0) {
-            spawnSwingingBlades(event.getTransformation(), trapsPlacementComponent.swingingBladeList);
-        }
-
         BlockRegionTransform transformation = event.getTransformation();
         for (SwingingBlade swingingBlade : trapsPlacementComponent.swingingBladeList) {
             Vector3i actualPosition = transformation.transformVector3i(swingingBlade.position);
@@ -99,10 +96,21 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
             positionAbove.addY(1);
             worldProvider.setBlock(positionAbove, block);
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(positionAbove);
+            logger.info("Spawned trapPlaceholder id: " + blockEntity.getId() + " position: " + positionAbove);
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
             trapPlaceholderComponent.selectedPrefab = selectedTrapType;
             blockEntity.saveComponent(trapPlaceholderComponent);
         }
+    }
+
+
+    @ReceiveEvent
+    public void onBlockItemPlaced(OnBlockItemPlaced event, EntityRef entity) {
+        EntityRef trapPlaceholder = event.getPlacedBlock();
+        if (!trapPlaceholder.hasComponent(TrapPlaceholderComponent.class)){
+            return;
+        }
+        logger.info("on block placed for id: " + trapPlaceholder.getId());
     }
 
     //TODO: Move to outer TrapPlacementSystem
@@ -176,6 +184,7 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
         BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:TrapPlaceholder");
 
         List<SwingingBlade> bladeList = new ArrayList<>();
+        //TODO: Possible bug in findAbsolutePositionsOf method. Does not return all blocks.
         for (Vector3i position : event.findAbsolutePositionsOf(blockFamily)) {
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(position);
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);

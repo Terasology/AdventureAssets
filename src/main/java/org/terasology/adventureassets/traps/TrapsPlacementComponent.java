@@ -30,6 +30,6 @@ import java.util.List;
  * of the given trap type.
  */
 public class TrapsPlacementComponent implements Component {
-    /** List of swinging blade type traps to spawn*/
+    /** List of swinging blade type traps to spawn */
     public List<SwingingBlade> swingingBladeList;
 }
