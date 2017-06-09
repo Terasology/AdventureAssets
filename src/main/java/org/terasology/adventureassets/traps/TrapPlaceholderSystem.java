@@ -56,7 +56,7 @@ public class TrapPlaceholderSystem extends BaseComponentSystem {
     private WorldProvider worldProvider;
 
     @ReceiveEvent
-    public void onBuildTemplateStringWithBlockRegions(BuildStructureTemplateStringEvent event, EntityRef template,
+    public void onBuildTemplateStringWithTraps(BuildStructureTemplateStringEvent event, EntityRef template,
                                                       TrapsPlacementComponent component) {
         StringBuilder sb = new StringBuilder();
         sb.append("    \"TrapsPlacement\": {\n");
