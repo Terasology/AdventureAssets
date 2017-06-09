@@ -44,6 +44,7 @@ public class TrapPlaceholderScreen extends BaseInteractionScreen {
     private UIButton closeButton;
 
     private Prefab selectedPrefab;
+    private EntityRef trapPlaceholderBlockEntity;
 
     @In
     private PrefabManager prefabManager;
@@ -56,9 +57,8 @@ public class TrapPlaceholderScreen extends BaseInteractionScreen {
     protected void initializeWithInteractionTarget(EntityRef interactionTarget) {
         selectedPrefab = null;
         TrapPlaceholderComponent comp = interactionTarget.getComponent(TrapPlaceholderComponent.class);
-        selectedPrefab = comp.selectedPrefab;
-
-
+        selectedPrefab = comp.getSelectedPrefab();
+        trapPlaceholderBlockEntity = interactionTarget;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class TrapPlaceholderScreen extends BaseInteractionScreen {
                 @Override
                 public void set(Prefab value) {
                     selectedPrefab = value;
-                    localPlayer.getCharacterEntity().send(new RequestTrapPlaceholderPrefabSelection(selectedPrefab));
+                    localPlayer.getCharacterEntity().send(new RequestTrapPlaceholderPrefabSelection(selectedPrefab, trapPlaceholderBlockEntity));
                 }
             });
         }

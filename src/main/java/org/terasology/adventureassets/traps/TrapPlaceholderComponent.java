@@ -16,6 +16,7 @@
 package org.terasology.adventureassets.traps;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.network.FieldReplicateType;
 import org.terasology.network.Replicate;
@@ -27,5 +28,22 @@ import org.terasology.world.block.ForceBlockActive;
 @ForceBlockActive // Force block active so that entity remains during interaction
 public class TrapPlaceholderComponent implements Component {
     @Replicate(FieldReplicateType.SERVER_TO_CLIENT)
-    public Prefab selectedPrefab;
+    private Prefab selectedPrefab;
+    private EntityRef trapEntity;
+
+    public Prefab getSelectedPrefab() {
+        return selectedPrefab;
+    }
+
+    public void setSelectedPrefab(Prefab selectedPrefab) {
+        this.selectedPrefab = selectedPrefab;
+    }
+
+    public void setTrapEntity(EntityRef trapEntity) {
+        this.trapEntity = trapEntity;
+    }
+
+    public EntityRef getTrapEntity() {
+        return trapEntity;
+    }
 }

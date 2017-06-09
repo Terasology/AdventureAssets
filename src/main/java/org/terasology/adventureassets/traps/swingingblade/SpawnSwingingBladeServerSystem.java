@@ -24,6 +24,7 @@ import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -31,6 +32,7 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.Side;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3i;
@@ -72,6 +74,8 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
     private BlockEntityRegistry blockEntityRegistry;
     @In
     private WorldProvider worldProvider;
+    @In
+    private LocalPlayer localPlayer;
 
     @ReceiveEvent
     public void onSpawnStructureWithSwingingBlade(StructureBlocksSpawnedEvent event, EntityRef entity,
@@ -98,65 +102,10 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(positionAbove);
             logger.info("Spawned trapPlaceholder id: " + blockEntity.getId() + " position: " + positionAbove);
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
-            trapPlaceholderComponent.selectedPrefab = selectedTrapType;
+            trapPlaceholderComponent.setSelectedPrefab(selectedTrapType);
             blockEntity.saveComponent(trapPlaceholderComponent);
+            localPlayer.getCharacterEntity().send(new RequestTrapPlaceholderPrefabSelection(selectedTrapType, blockEntity));
         }
-    }
-
-
-    @ReceiveEvent
-    public void onBlockItemPlaced(OnBlockItemPlaced event, EntityRef entity) {
-        EntityRef trapPlaceholder = event.getPlacedBlock();
-        if (!trapPlaceholder.hasComponent(TrapPlaceholderComponent.class)){
-            return;
-        }
-        logger.info("on block placed for id: " + trapPlaceholder.getId());
-    }
-
-    //TODO: Move to outer TrapPlacementSystem
-    @ReceiveEvent
-    public void onBuildTemplateStringWithBlockRegions(BuildStructureTemplateStringEvent event, EntityRef template,
-                                                      TrapsPlacementComponent component) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("    \"TrapsPlacement\": {\n");
-        sb.append("        \"swingingBladeList\": [\n");
-        ListUtil.visitList(component.swingingBladeList,
-                (SwingingBlade swingingBlade, boolean last)-> {
-                    sb.append("            {\n");
-                    sb.append("                \"position\": [");
-                    sb.append(swingingBlade.position.x);
-                    sb.append(", ");
-                    sb.append(swingingBlade.position.y);
-                    sb.append(", ");
-                    sb.append(swingingBlade.position.z);
-                    sb.append("],\n");
-                    sb.append("                \"rotation\": [");
-                    sb.append(swingingBlade.rotation.x);
-                    sb.append(", ");
-                    sb.append(swingingBlade.rotation.y);
-                    sb.append(", ");
-                    sb.append(swingingBlade.rotation.z);
-                    sb.append(", ");
-                    sb.append(swingingBlade.rotation.w);
-                    sb.append("],\n");
-                    sb.append("                \"amplitude\": ");
-                    sb.append(swingingBlade.amplitude);
-                    sb.append(",\n");
-                    sb.append("                \"timePeriod\": ");
-                    sb.append(swingingBlade.timePeriod);
-                    sb.append(",\n");
-                    sb.append("                \"offset\": ");
-                    sb.append(swingingBlade.offset);
-                    sb.append("\n");
-                    if (last) {
-                        sb.append("            }\n");
-                    } else {
-                        sb.append("            },\n");
-                    }
-                });
-        sb.append("        ]\n");
-        sb.append("    }");
-        event.addJsonForComponent(sb.toString(), ScheduleStructurePlacementComponent.class);
     }
 
     private void spawnSwingingBlades(BlockRegionTransform transformation, List<SwingingBlade> bladeList) {
@@ -188,7 +137,7 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
         for (Vector3i position : event.findAbsolutePositionsOf(blockFamily)) {
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(position);
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
-            if (trapPlaceholderComponent.selectedPrefab == null) {
+            if (trapPlaceholderComponent.getSelectedPrefab() == null) {
                 continue;
             }
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
@@ -212,14 +161,29 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onRequestTrapPlaceholderPrefabSelection(RequestTrapPlaceholderPrefabSelection event, EntityRef characterEntity,
                                                         CharacterComponent characterComponent) {
-        EntityRef interactionTarget = characterComponent.authorizedInteractionTarget;
-        TrapPlaceholderComponent trapPlaceholderComponent = interactionTarget.getComponent(TrapPlaceholderComponent.class);
-        if (trapPlaceholderComponent == null) {
-            logger.error("Ignored RequestTrapPlaceholderPrefabSelection event since there was no interaction with a trap placeholder");
-            return;
-        }
+        if (event.getPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladePlaceholder")) {
+            logger.info("actual id: " + event.getTrapPlaceholderBlockEntity().getId());
+            EntityRef blockEntity = event.getTrapPlaceholderBlockEntity();
+            logger.info("pseudo id: " + blockEntity.getId());
+            TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
+            if (trapPlaceholderComponent.getTrapEntity() != null) {
+                trapPlaceholderComponent.getTrapEntity().destroy();
+            }
+            BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
 
-        trapPlaceholderComponent.selectedPrefab = event.getPrefab();
-        interactionTarget.saveComponent(trapPlaceholderComponent);
+            SwingingBlade swingingBlade = new SwingingBlade();
+            swingingBlade.position = blockComponent.getPosition();
+            swingingBlade.position.subY(1); // placeholder is on top of marked block
+
+            EntityBuilder entityBuilder = entityManager.newBuilder(swingingBlade.prefab);
+            LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
+            locationComponent.setWorldPosition(swingingBlade.position.toVector3f());
+            locationComponent.setWorldRotation(swingingBlade.rotation);
+
+            EntityRef swingingBladeEntity = entityBuilder.build();
+
+            trapPlaceholderComponent.setTrapEntity(swingingBladeEntity);
+            blockEntity.saveComponent(trapPlaceholderComponent);
+        }
     }
 }

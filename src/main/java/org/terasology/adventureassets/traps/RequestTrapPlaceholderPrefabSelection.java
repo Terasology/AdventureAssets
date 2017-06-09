@@ -15,6 +15,7 @@
  */
 package org.terasology.adventureassets.traps;
 
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.network.ServerEvent;
@@ -32,9 +33,11 @@ import org.terasology.structureTemplates.internal.components.StructurePlaceholde
 @ServerEvent
 public class RequestTrapPlaceholderPrefabSelection implements Event {
     private Prefab prefab;
+    private EntityRef trapPlaceholderBlockEntity;
 
-    public RequestTrapPlaceholderPrefabSelection(Prefab prefab) {
+    public RequestTrapPlaceholderPrefabSelection(Prefab prefab, EntityRef trapPlaceholderBlockEntity) {
         this.prefab = prefab;
+        this.trapPlaceholderBlockEntity = trapPlaceholderBlockEntity;
     }
 
     public RequestTrapPlaceholderPrefabSelection() {
@@ -42,5 +45,9 @@ public class RequestTrapPlaceholderPrefabSelection implements Event {
 
     public Prefab getPrefab() {
         return prefab;
+    }
+
+    public EntityRef getTrapPlaceholderBlockEntity() {
+        return trapPlaceholderBlockEntity;
     }
 }
