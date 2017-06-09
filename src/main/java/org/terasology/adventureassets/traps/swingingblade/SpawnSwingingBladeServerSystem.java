@@ -172,8 +172,7 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
 
             SwingingBlade swingingBlade = new SwingingBlade();
-            swingingBlade.position = blockComponent.getPosition();
-            swingingBlade.position.subY(1); // placeholder is on top of marked block
+            swingingBlade.position = new Vector3i(blockComponent.getPosition()).subY(1); // placeholder is on top of marked block
 
             EntityBuilder entityBuilder = entityManager.newBuilder(swingingBlade.prefab);
             LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
