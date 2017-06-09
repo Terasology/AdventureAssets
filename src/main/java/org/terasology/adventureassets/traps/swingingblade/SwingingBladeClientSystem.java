@@ -54,8 +54,10 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);
         swingingBladeEntityBuilder.setPersistent(false);
-        EntityRef swingingBlade = swingingBladeEntityBuilder.build();
-        Location.attachChild(entity, swingingBlade, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
+        EntityRef swingingBladeMesh = swingingBladeEntityBuilder.build();
+        swingingBladeComponent.childrenEntities.add(swingingBladeMesh);
+        entity.saveComponent(swingingBladeComponent);
+        Location.attachChild(entity, swingingBladeMesh, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
     }
 
     @Override

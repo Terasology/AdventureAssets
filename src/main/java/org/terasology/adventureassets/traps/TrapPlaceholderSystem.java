@@ -135,7 +135,7 @@ public class TrapPlaceholderSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onDestroyed(DoDestroyEvent event, EntityRef entity, TrapPlaceholderComponent trapPlaceholderComponent) {
         if (trapPlaceholderComponent.getTrapEntity() != null) {
-            trapPlaceholderComponent.getTrapEntity().destroy();
+            entity.send(new DeleteTrapEvent(trapPlaceholderComponent.getSelectedPrefab(), trapPlaceholderComponent.getTrapEntity()));
         }
     }
 }

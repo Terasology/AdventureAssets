@@ -15,7 +15,11 @@
  */
 package org.terasology.adventureassets.traps.swingingblade;
 
+import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
+
+import java.util.List;
 
 /**
  * This component holds the data for a Swinging Blade.
@@ -33,4 +37,6 @@ public class SwingingBladeComponent implements Component {
 
     /** To set the blade in motion, or stop it */
     public boolean isSwinging = true;
+
+    public List<EntityRef> childrenEntities = Lists.newArrayList();
 }

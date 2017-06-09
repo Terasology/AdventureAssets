@@ -71,6 +71,8 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         rodEntityBuilder.setOwner(entity);
         rodEntityBuilder.setPersistent(false);
         EntityRef rod = rodEntityBuilder.build();
+        swingingBladeComponent.childrenEntities.add(rod);
+        entity.saveComponent(swingingBladeComponent);
         Location.attachChild(entity, rod, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
 
         Prefab bladePrefab = assetManager.getAsset("AdventureAssets:blade", Prefab.class).get();
@@ -78,6 +80,8 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         bladeEntityBuilder.setOwner(entity);
         bladeEntityBuilder.setPersistent(false);
         EntityRef blade = bladeEntityBuilder.build();
+        swingingBladeComponent.childrenEntities.add(blade);
+        entity.saveComponent(swingingBladeComponent);
         Location.attachChild(entity, blade, new Vector3f(0, -6, 0), new Quat4f(Quat4f.IDENTITY));
     }
 
