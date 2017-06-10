@@ -6,7 +6,7 @@
   },
   "InteractionTarget": {},
   "InteractionScreen": {
-    "screen": "AdventureAssets:TrapPlaceholderScreen"
+    "screen": "core:containerScreen"
   },
   "Network": {
   }
