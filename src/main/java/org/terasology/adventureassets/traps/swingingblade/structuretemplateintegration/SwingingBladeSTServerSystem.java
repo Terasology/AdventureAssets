@@ -27,9 +27,12 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.components.AddItemsToChestComponent;
+import org.terasology.structureTemplates.components.ScheduleStructurePlacementComponent;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
 import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;
+import org.terasology.structureTemplates.internal.events.BuildStructureTemplateStringEvent;
+import org.terasology.structureTemplates.util.ListUtil;
 import org.terasology.structureTemplates.util.transform.BlockRegionTransform;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
@@ -68,8 +71,12 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
             swingingBladeComponent.timePeriod = s.timePeriod;
             swingingBladeComponent.offset = s.offset;
             swingingBladeComponent.isSwinging = s.isSwinging;
-
             swingingBlade.addOrSaveComponent(swingingBladeComponent);
+
+            LocationComponent locationComponent = swingingBlade.getComponent(LocationComponent.class);
+            locationComponent.setWorldRotation(s.rotation);
+            swingingBlade.addOrSaveComponent(locationComponent);
+
         }
     }
 
@@ -104,5 +111,48 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
         }
     }
 
-    
+    @ReceiveEvent
+    public void onBuildTemplateStringWithBlockRegions(BuildStructureTemplateStringEvent event, EntityRef template,
+                                                      AddSwingingBladeComponent component) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("    \"AddSwingingBlade\": {\n");
+        sb.append("        \"swingingBladesToSpawn\": [\n");
+        ListUtil.visitList(component.swingingBladesToSpawn,
+                (AddSwingingBladeComponent.SwingingBladesToSpawn swingingBlade, boolean last) -> {
+                    sb.append("            {\n");
+                    sb.append("                \"position\": [");
+                    sb.append(swingingBlade.position.x);
+                    sb.append(", ");
+                    sb.append(swingingBlade.position.y);
+                    sb.append(", ");
+                    sb.append(swingingBlade.position.z);
+                    sb.append("],\n");
+                    sb.append("                \"rotation\": [");
+                    sb.append(swingingBlade.rotation.x);
+                    sb.append(", ");
+                    sb.append(swingingBlade.rotation.y);
+                    sb.append(", ");
+                    sb.append(swingingBlade.rotation.z);
+                    sb.append(", ");
+                    sb.append(swingingBlade.rotation.w);
+                    sb.append("],\n");
+                    sb.append("                \"amplitude\": ");
+                    sb.append(swingingBlade.amplitude);
+                    sb.append(",\n");
+                    sb.append("                \"timePeriod\": ");
+                    sb.append(swingingBlade.timePeriod);
+                    sb.append(",\n");
+                    sb.append("                \"offset\": ");
+                    sb.append(swingingBlade.offset);
+                    sb.append("\n");
+                    if (last) {
+                        sb.append("            }\n");
+                    } else {
+                        sb.append("            },\n");
+                    }
+                });
+        sb.append("        ]\n");
+        sb.append("    }");
+        event.addJsonForComponent(sb.toString(), ScheduleStructurePlacementComponent.class);
+    }
 }
