@@ -5,7 +5,7 @@
   },
   "InteractionTarget": {},
   "InteractionScreen": {
-    "screen": "core:containerScreen"
+    "screen": "AdventureAssets:SwingingBladeSettingsScreen"
   },
   "Network": {
   }
