@@ -23,6 +23,7 @@ import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.entitySystem.entity.lifecycleEvents.OnAddedComponent;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -34,6 +35,7 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
+import org.terasology.world.block.items.OnBlockItemPlaced;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class SwingingBladeClientSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -47,9 +49,20 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     @In
     private Time time;
 
+
+    @ReceiveEvent
+    public void onSwingingBladeBlockPlaced(OnBlockItemPlaced event, EntityRef entity) {
+        if (!event.getPlacedBlock().hasComponent(SwingingBladeComponent.class)) {
+            return;
+        }
+        logger.info("mark2");
+        
+    }
+
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
+        logger.info("nihal111");
         Prefab swingingBladePrefab = assetManager.getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);

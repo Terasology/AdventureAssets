@@ -137,7 +137,7 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
         for (Vector3i position : event.findAbsolutePositionsOf(blockFamily)) {
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(position);
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
-            if (trapPlaceholderComponent.getSelectedPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladePlaceholder")) {
+            if (trapPlaceholderComponent.getSelectedPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladeRoot")) {
                 EntityRef trapEntity = trapPlaceholderComponent.getTrapEntity();
                 SwingingBladeComponent swingingBladeComponent = trapEntity.getComponent(SwingingBladeComponent.class);
                 SwingingBlade swingingBlade = new SwingingBlade();
@@ -164,7 +164,7 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onRequestTrapPlaceholderPrefabSelection(RequestTrapPlaceholderPrefabSelection event, EntityRef characterEntity,
                                                         CharacterComponent characterComponent) {
-        if (event.getPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladePlaceholder")) {
+        if (event.getPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladeRoot")) {
             EntityRef blockEntity = event.getTrapPlaceholderBlockEntity();
             TrapPlaceholderComponent trapPlaceholderComponent = blockEntity.getComponent(TrapPlaceholderComponent.class);
             if (trapPlaceholderComponent.getTrapEntity() != null) {
@@ -189,7 +189,7 @@ public class SpawnSwingingBladeServerSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onTrapDelete(DeleteTrapEvent event, EntityRef entity) {
-        if (event.getPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladePlaceholder")) {
+        if (event.getPrefab().getName().equalsIgnoreCase("AdventureAssets:swingingBladeRoot")) {
             SwingingBladeComponent swingingBladeComponent = event.getTrapEntity().getComponent(SwingingBladeComponent.class);
             for (EntityRef e : swingingBladeComponent.childrenEntities) {
                 e.destroy();
