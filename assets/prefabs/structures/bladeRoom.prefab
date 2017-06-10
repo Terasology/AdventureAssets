@@ -94,5 +94,14 @@
         ]
       }
     ]
-  }
+  },
+  /* For debugging purposes it is an item: */
+  "parent" : "engine:iconItem",
+  "DisplayName" : {
+    "name" : "A room with swinging blades"
+  },
+  "Item" : {
+    "icon" : "engine:items#whiteRecipe"
+  },
+  "SpawnStructureAction": {}
 }

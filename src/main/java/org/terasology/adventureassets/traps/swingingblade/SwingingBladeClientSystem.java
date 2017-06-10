@@ -22,6 +22,7 @@ import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnAddedComponent;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -30,11 +31,18 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.health.BeforeDamagedEvent;
+import org.terasology.logic.health.BeforeDestroyEvent;
+import org.terasology.logic.health.DestroyEvent;
+import org.terasology.logic.health.DoDestroyEvent;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
+import org.terasology.world.BlockEntityRegistry;
+import org.terasology.world.block.BlockComponent;
+import org.terasology.world.block.entity.CreateBlockDropsEvent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 
 @RegisterSystem(RegisterMode.CLIENT)
@@ -49,20 +57,9 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     @In
     private Time time;
 
-
-    @ReceiveEvent
-    public void onSwingingBladeBlockPlaced(OnBlockItemPlaced event, EntityRef entity) {
-        if (!event.getPlacedBlock().hasComponent(SwingingBladeComponent.class)) {
-            return;
-        }
-        logger.info("mark2");
-        
-    }
-
-    @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
+    @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
-        logger.info("nihal111");
         Prefab swingingBladePrefab = assetManager.getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);

@@ -22,7 +22,9 @@ import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.entitySystem.entity.lifecycleEvents.OnAddedComponent;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -30,6 +32,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.health.BeforeDestroyEvent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
@@ -38,6 +41,9 @@ import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockComponent;
+import org.terasology.world.block.items.OnBlockItemPlaced;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class SwingingBladeServerSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -63,9 +69,11 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         inventoryManager.giveItem(player, EntityRef.NULL, trapConfigurationTool);
     }
 
-    @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
+    @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
+        logger.info("SwingingBladeComponent activated");
+
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:rod", Prefab.class).get();
         EntityBuilder rodEntityBuilder = entityManager.newBuilder(rodPrefab);
         rodEntityBuilder.setOwner(entity);
@@ -83,6 +91,15 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         swingingBladeComponent.childrenEntities.add(blade);
         entity.saveComponent(swingingBladeComponent);
         Location.attachChild(entity, blade, new Vector3f(0, -6, 0), new Quat4f(Quat4f.IDENTITY));
+    }
+
+    @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
+    public void onSwingingBladeDestroyed(BeforeRemoveComponent event, EntityRef entity,
+                                       SwingingBladeComponent swingingBladeComponent) {
+        logger.info("SwingingBlade destroyed");
+        for (EntityRef e: swingingBladeComponent.childrenEntities) {
+            e.destroy();
+        }
     }
 
     @Override

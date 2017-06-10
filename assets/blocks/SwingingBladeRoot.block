@@ -1,20 +1,18 @@
 {
-  "translucent": true,
-  "invisible": false,
-  "targetable": true,
-  "penetrable": true,
-  "replacementAllowed": false,
-  "shadowCasting": false,
+  "hardness": 12,
+  "mass": 50,
   "attachmentAllowed": false,
-  "hardness": 1,
-  "displayName": "Swinging Blade Root",
   "rotation": "horizontal",
-  "sounds": "none",
+  "tiles": {
+    "sides": "ChestSides",
+    "front": "ChestFront",
+    "topBottom": "ChestTopBottom"
+  },
   "entity": {
-    "prefab": "AdventureAssets:swingingBladeRoot"
+    "prefab": "AdventureAssets:SwingingBladeRoot"
   },
   "inventory": {
-    "stackable": true,
+    "stackable": false,
     "directPickup": true
   }
 }
