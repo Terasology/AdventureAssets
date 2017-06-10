@@ -91,9 +91,9 @@ public class SwingingBladeSettingsScreen extends BaseInteractionScreen {
         offset.setText("" + swingingBladeComponent.offset);
 
         Quat4f q = locationComponent.getWorldRotation();
-        pitch.setText("" + Math.atan2(2.0*(q.y*q.z + q.w*q.x), q.w*q.w - q.x*q.x - q.y*q.y + q.z*q.z));
-        yaw.setText("" + Math.asin(-2.0*(q.x*q.z - q.w*q.y)));
-        roll.setText("" + Math.atan2(2.0*(q.x*q.y + q.w*q.z), q.w*q.w + q.x*q.x - q.y*q.y - q.z*q.z));
+        pitch.setText("" + Math.toDegrees(Math.atan2(2.0*(q.y*q.z + q.w*q.x), q.w*q.w - q.x*q.x - q.y*q.y + q.z*q.z)));
+        yaw.setText("" + Math.toDegrees(Math.asin(-2.0*(q.x*q.z - q.w*q.y))));
+        roll.setText("" + Math.toDegrees(Math.atan2(2.0*(q.x*q.y + q.w*q.z), q.w*q.w + q.x*q.x - q.y*q.y - q.z*q.z)));
 
     }
 
@@ -103,10 +103,10 @@ public class SwingingBladeSettingsScreen extends BaseInteractionScreen {
             swingingBladeComponent.amplitude = Float.parseFloat(amplitude.getText());
             swingingBladeComponent.offset = Float.parseFloat(offset.getText());
             swingingBladeComponent.isSwinging = isSwinging.isChecked();
-            float yawValue = Float.parseFloat(yaw.getText());
-            float pitchValue = Float.parseFloat(pitch.getText());
-            float rollValue = Float.parseFloat(roll.getText());
-            locationComponent.setWorldRotation(new Quat4f(yawValue, pitchValue, rollValue));
+            double yawValue = Math.toRadians(Double.parseDouble(yaw.getText()));
+            double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
+            double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));
+            locationComponent.setWorldRotation(new Quat4f((float) yawValue,(float) pitchValue,(float) rollValue));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
