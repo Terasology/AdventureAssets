@@ -18,6 +18,7 @@ package org.terasology.adventureassets.traps.swingingblade;
 import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.world.block.ForceBlockActive;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import java.util.List;
  * This component holds the data for a Swinging Blade.
  */
 
+@ForceBlockActive
 public class SwingingBladeComponent implements Component {
     /**
      * Time taken by the swinging blade to complete one two and fro motion (in seconds)
