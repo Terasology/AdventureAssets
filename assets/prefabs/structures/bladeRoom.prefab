@@ -32,8 +32,8 @@
       { "blockType": "engine:air", "region": { "min": [2, 1, 19], "size": [3, 3, 1]}}
     ]
   },
-  "TrapsPlacement": {
-    "swingingBladeList": [
+  "AddSwingingBlade": {
+    "swingingBladesToSpawn": [
       {
         "position": [0, 7, 5],
         "rotation": [0.0, 0.70710677, 0.0, 0.70710677],
