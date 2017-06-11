@@ -174,7 +174,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
 
     @Override
     public void update(float delta) {
-        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class)) {
+        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class, BlockComponent.class)) {
             LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
             SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
             if (locationComponent != null && swingingBladeComponent.isSwinging) {
