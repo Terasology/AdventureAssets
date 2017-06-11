@@ -43,6 +43,7 @@ import org.terasology.registry.In;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.entity.CreateBlockDropsEvent;
+import org.terasology.world.block.items.BlockItemComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 
 @RegisterSystem(RegisterMode.CLIENT)
@@ -57,9 +58,12 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     @In
     private Time time;
 
-    @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
-    public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
-                                       SwingingBladeComponent swingingBladeComponent) {
+    /** Only happens from second time the block gets placed */
+    @ReceiveEvent(components = {BlockItemComponent.class})
+    public void onBlockItemPlaced(OnBlockItemPlaced event, EntityRef itemEntity,
+                                  SwingingBladeComponent swingingBladeComponent) {
+        logger.info("Swinging blade mesh added");
+        EntityRef entity = event.getPlacedBlock();
         Prefab swingingBladePrefab = assetManager.getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);
