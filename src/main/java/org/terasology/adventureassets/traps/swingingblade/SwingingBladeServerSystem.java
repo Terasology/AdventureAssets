@@ -18,6 +18,7 @@ package org.terasology.adventureassets.traps.swingingblade;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.assets.ResourceUrn;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
@@ -33,17 +34,22 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
 import org.terasology.structureTemplates.internal.components.StructureTemplateOriginComponent;
 import org.terasology.world.OnChangedBlock;
 import org.terasology.world.block.BlockComponent;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 import org.terasology.world.block.items.OnBlockToItem;
@@ -75,17 +81,12 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
                                          SwingingBladeComponent swingingBladeComponent) {
     }
 
-    /** Only happens from second time the block gets placed */
     @ReceiveEvent(components = {BlockItemComponent.class})
     public void onBlockItemPlaced(OnBlockItemPlaced event, EntityRef itemEntity,
                                   SwingingBladeComponent swingingBladeComponent) {
         EntityRef entity = event.getPlacedBlock();
-        logger.info("On Block Item placed");
-//        logger.info("item " + itemEntity.toFullDescription());
-//        logger.info("block " + entity.toFullDescription());
         entity.addOrSaveComponent(swingingBladeComponent);
 
-        logger.info("Swinging Blade created");
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:rod", Prefab.class).get();
         EntityBuilder rodEntityBuilder = entityManager.newBuilder(rodPrefab);
         rodEntityBuilder.setOwner(entity);
@@ -107,12 +108,6 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
 
     @ReceiveEvent(components = {})
     public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, SwingingBladeComponent swingingBladeComponent) {
-        logger.info("Block to item");
-//        logger.info("block " + blockEntity.toFullDescription());
-//        logger.info("item " + event.getItem().toFullDescription());
-
-        logger.info("Swinging Blade destroyed");
-        logger.info("Swinging Blade list" + swingingBladeComponent.childrenEntities);
         for (EntityRef e : swingingBladeComponent.childrenEntities) {
             e.destroy();
         }
@@ -120,28 +115,18 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         event.getItem().addOrSaveComponent(swingingBladeComponent);
     }
 
-    @ReceiveEvent(components = {SwingingBladeComponent.class})
-    public void test(BeforeRemoveComponent event, EntityRef entity,
-                     SwingingBladeComponent swingingBladeComponent) {
-        logger.info("before remove sb component");
-    }
-
-    @ReceiveEvent(components = {SwingingBladeComponent.class})
-    public void test(OnActivatedComponent event, EntityRef entity,
-                     SwingingBladeComponent swingingBladeComponent) {
-        logger.info("activated sbc");
-    }
-
-    @ReceiveEvent(components = {SwingingBladeComponent.class})
-    public void test(OnChangedBlock event, EntityRef entity,
-                     SwingingBladeComponent swingingBladeComponent) {
-        logger.info("changed sbc");
-    }
-
-    @ReceiveEvent(components = {SwingingBladeComponent.class})
-    public void test(OnAddedComponent event, EntityRef entity,
-                     SwingingBladeComponent swingingBladeComponent) {
-        logger.info("added sbc");
+    @ReceiveEvent
+    public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef player,
+                                   CharacterComponent characterComponent) {
+        EntityRef newItem = event.getNewItem();
+        if (newItem.hasComponent(BlockItemComponent.class)) {
+            BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily("AdventureAssets:SwingingBladeRoot");
+            if (blockFamily == newItem.getComponent(BlockItemComponent.class).blockFamily) {
+                if (!newItem.hasComponent(SwingingBladeComponent.class)) {
+                    newItem.addComponent(new SwingingBladeComponent());
+                }
+            }
+        }
     }
 
     @Override
