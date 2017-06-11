@@ -45,6 +45,7 @@ import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.entity.CreateBlockDropsEvent;
 import org.terasology.world.block.items.BlockItemComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
+import org.terasology.world.block.items.OnBlockToItem;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class SwingingBladeClientSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -58,12 +59,22 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     @In
     private Time time;
 
-    /** Only happens from second time the block gets placed */
-    @ReceiveEvent(components = {BlockItemComponent.class})
-    public void onBlockItemPlaced(OnBlockItemPlaced event, EntityRef itemEntity,
-                                  SwingingBladeComponent swingingBladeComponent) {
-        logger.info("Swinging blade mesh added");
-        EntityRef entity = event.getPlacedBlock();
+    /**
+     * This method creates the mesh entity when the {@link SwingingBladeComponent} is activated. The rod and blade
+     * entities are saved in the childrenEntities list inside the {@link SwingingBladeComponent}.
+     * A similar method in the {@link SwingingBladeServerSystem} adds the rod and blade entities to the
+     * childrenEntities list.<br/>
+     * Note this happens before the block is actually placed in the world i.e. before the OnBlockItemPlacedEvent handler-
+     * {@link SwingingBladeServerSystem#onBlockToItem(OnBlockToItem, EntityRef, SwingingBladeComponent)} gets called.
+     * So, the saved properties (amplitude, time-period, offset etc) are transferred after this, maintaining
+     * only the childrenEntities list created here.
+     * @param event
+     * @param entity
+     * @param swingingBladeComponent
+     */
+    @ReceiveEvent(components = {SwingingBladeComponent.class, BlockComponent.class})
+    public void onSwingingBladeActivated(OnActivatedComponent event, EntityRef entity,
+                                         SwingingBladeComponent swingingBladeComponent) {
         Prefab swingingBladePrefab = assetManager.getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);

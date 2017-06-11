@@ -81,12 +81,57 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
                                          SwingingBladeComponent swingingBladeComponent) {
     }
 
+    /**
+     * This method transfers the saved block properties from the item to the block. <br/>
+     * Note that this method is called after the OnActivatedComponent event handler
+     * {@link SwingingBladeServerSystem#onSwingingBladeActivated(OnActivatedComponent, EntityRef, SwingingBladeComponent)}
+     * filtering the {@link SwingingBladeComponent} gets executed.
+     * So the placedBlock entity already has the right childrenEntities and only needs the trap properties to be
+     * transferred.
+     * @param event
+     * @param itemEntity
+     * @param swingingBladeComponent
+     */
     @ReceiveEvent(components = {BlockItemComponent.class})
-    public void onBlockItemPlaced(OnBlockItemPlaced event, EntityRef itemEntity,
+    public void onItemToBlock(OnBlockItemPlaced event, EntityRef itemEntity,
                                   SwingingBladeComponent swingingBladeComponent) {
         EntityRef entity = event.getPlacedBlock();
+        SwingingBladeComponent component = entity.getComponent(SwingingBladeComponent.class);
+        swingingBladeComponent.childrenEntities = component.childrenEntities;
         entity.addOrSaveComponent(swingingBladeComponent);
+    }
 
+    /**
+     * This method transfers the stored properties in the block's {@link SwingingBladeComponent} to the new item created.
+     * It also destroys the children entities, i.e. the rod, blade and the mesh.
+     * @param event
+     * @param blockEntity
+     * @param swingingBladeComponent
+     */
+    @ReceiveEvent(components = {})
+    public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, SwingingBladeComponent swingingBladeComponent) {
+        for (EntityRef e : swingingBladeComponent.childrenEntities) {
+            e.destroy();
+        }
+        swingingBladeComponent.childrenEntities = Lists.newArrayList();
+        event.getItem().addOrSaveComponent(swingingBladeComponent);
+    }
+
+    /**
+     * This method creates the rod and blade entities when the {@link SwingingBladeComponent} is activated. The rod and blade
+     * entities are saved in the childrenEntities list inside the {@link SwingingBladeComponent}.
+     * A similar method in the {@link SwingingBladeClientSystem} adds the mesh entity to the childrenEntities list.<br/>
+     * Note this happens before the block is actually placed in the world i.e. before the OnBlockItemPlacedEvent handler-
+     * {@link SwingingBladeServerSystem#onBlockToItem(OnBlockToItem, EntityRef, SwingingBladeComponent)} gets called.
+     * So, the saved properties (amplitude, time-period, offset etc) are transferred after this, maintaining
+     * only the childrenEntities list created here.
+     * @param event
+     * @param entity
+     * @param swingingBladeComponent
+     */
+    @ReceiveEvent(components = {SwingingBladeComponent.class, BlockComponent.class})
+    public void onSwingingBladeActivated(OnActivatedComponent event, EntityRef entity,
+                     SwingingBladeComponent swingingBladeComponent) {
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:rod", Prefab.class).get();
         EntityBuilder rodEntityBuilder = entityManager.newBuilder(rodPrefab);
         rodEntityBuilder.setOwner(entity);
@@ -106,15 +151,13 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         Location.attachChild(entity, blade, new Vector3f(0, -7, 0), new Quat4f(Quat4f.IDENTITY));
     }
 
-    @ReceiveEvent(components = {})
-    public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, SwingingBladeComponent swingingBladeComponent) {
-        for (EntityRef e : swingingBladeComponent.childrenEntities) {
-            e.destroy();
-        }
-        swingingBladeComponent.childrenEntities = Lists.newArrayList();
-        event.getItem().addOrSaveComponent(swingingBladeComponent);
-    }
-
+    /**
+     * This method checks if a new SwingingBladeRoot block item is added to the inventory. It then adds the
+     * {@link SwingingBladeComponent} to it.
+     * @param event
+     * @param player
+     * @param characterComponent
+     */
     @ReceiveEvent
     public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef player,
                                    CharacterComponent characterComponent) {
@@ -123,7 +166,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
             BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily("AdventureAssets:SwingingBladeRoot");
             if (blockFamily == newItem.getComponent(BlockItemComponent.class).blockFamily) {
                 if (!newItem.hasComponent(SwingingBladeComponent.class)) {
-                    newItem.addComponent(new SwingingBladeComponent());
+//                    newItem.addComponent(new SwingingBladeComponent());
                 }
             }
         }
