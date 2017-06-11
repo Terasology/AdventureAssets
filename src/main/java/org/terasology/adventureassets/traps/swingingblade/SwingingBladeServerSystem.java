@@ -70,8 +70,6 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
     public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
-        logger.info("SwingingBladeComponent activated");
-
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:rod", Prefab.class).get();
         EntityBuilder rodEntityBuilder = entityManager.newBuilder(rodPrefab);
         rodEntityBuilder.setOwner(entity);
@@ -79,7 +77,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         EntityRef rod = rodEntityBuilder.build();
         swingingBladeComponent.childrenEntities.add(rod);
         entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, rod, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, rod, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
 
         Prefab bladePrefab = assetManager.getAsset("AdventureAssets:blade", Prefab.class).get();
         EntityBuilder bladeEntityBuilder = entityManager.newBuilder(bladePrefab);
@@ -88,13 +86,12 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         EntityRef blade = bladeEntityBuilder.build();
         swingingBladeComponent.childrenEntities.add(blade);
         entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, blade, new Vector3f(0, -6, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, blade, new Vector3f(0, -7, 0), new Quat4f(Quat4f.IDENTITY));
     }
 
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
     public void onSwingingBladeDestroyed(BeforeRemoveComponent event, EntityRef entity,
                                        SwingingBladeComponent swingingBladeComponent) {
-        logger.info("SwingingBlade destroyed");
         for (EntityRef e: swingingBladeComponent.childrenEntities) {
             e.destroy();
         }

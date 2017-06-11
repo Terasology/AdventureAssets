@@ -13,7 +13,7 @@
     "prefab": "AdventureAssets:SwingingBladeRoot"
   },
   "inventory": {
-    "stackable": false,
+    "stackable": true,
     "directPickup": true
   }
 }

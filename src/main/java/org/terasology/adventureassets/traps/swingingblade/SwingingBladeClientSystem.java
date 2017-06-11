@@ -67,7 +67,7 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
         EntityRef swingingBladeMesh = swingingBladeEntityBuilder.build();
         swingingBladeComponent.childrenEntities.add(swingingBladeMesh);
         entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, swingingBladeMesh, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, swingingBladeMesh, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
     }
 
     @Override
