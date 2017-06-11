@@ -22,18 +22,30 @@ import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.entitySystem.entity.lifecycleEvents.OnAddedComponent;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.health.BeforeDamagedEvent;
+import org.terasology.logic.health.BeforeDestroyEvent;
+import org.terasology.logic.health.DestroyEvent;
+import org.terasology.logic.health.DoDestroyEvent;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
+import org.terasology.world.BlockEntityRegistry;
+import org.terasology.world.block.BlockComponent;
+import org.terasology.world.block.entity.CreateBlockDropsEvent;
+import org.terasology.world.block.items.BlockItemComponent;
+import org.terasology.world.block.items.OnBlockItemPlaced;
+import org.terasology.world.block.items.OnBlockToItem;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class SwingingBladeClientSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -47,9 +59,22 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     @In
     private Time time;
 
-    @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class})
-    public void onSwingingBladeCreated(OnActivatedComponent event, EntityRef entity,
-                                       SwingingBladeComponent swingingBladeComponent) {
+    /**
+     * This method creates the mesh entity when the {@link SwingingBladeComponent} is activated. The rod and blade
+     * entities are saved in the childrenEntities list inside the {@link SwingingBladeComponent}.
+     * A similar method in the {@link SwingingBladeServerSystem} adds the rod and blade entities to the
+     * childrenEntities list.<br/>
+     * Note this happens before the block is actually placed in the world i.e. before the OnBlockItemPlacedEvent handler-
+     * {@link SwingingBladeServerSystem#onBlockToItem(OnBlockToItem, EntityRef, SwingingBladeComponent)} gets called.
+     * So, the saved properties (amplitude, time-period, offset etc) are transferred after this, maintaining
+     * only the childrenEntities list created here.
+     * @param event
+     * @param entity
+     * @param swingingBladeComponent
+     */
+    @ReceiveEvent(components = {SwingingBladeComponent.class, BlockComponent.class})
+    public void onSwingingBladeActivated(OnActivatedComponent event, EntityRef entity,
+                                         SwingingBladeComponent swingingBladeComponent) {
         Prefab swingingBladePrefab = assetManager.getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
         EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
         swingingBladeEntityBuilder.setOwner(entity);
@@ -57,12 +82,12 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
         EntityRef swingingBladeMesh = swingingBladeEntityBuilder.build();
         swingingBladeComponent.childrenEntities.add(swingingBladeMesh);
         entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, swingingBladeMesh, new Vector3f(Vector3f.zero()), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, swingingBladeMesh, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
     }
 
     @Override
     public void update(float delta) {
-        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class)) {
+        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class, BlockComponent.class)) {
             LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
             SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
             if (locationComponent != null && swingingBladeComponent.isSwinging) {

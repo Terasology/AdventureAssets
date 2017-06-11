@@ -1,0 +1,12 @@
+{
+  "SwingingBlade": {},
+  "PlaySoundAction": {
+    "sounds": "engine:click"
+  },
+  "InteractionTarget": {},
+  "InteractionScreen": {
+    "screen": "AdventureAssets:SwingingBladeSettingsScreen"
+  },
+  "Network": {
+  }
+}
