@@ -63,18 +63,25 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
         configureSwingingBlades(addSwingingBladeComponent, event.getTransformation());
     }
 
+    /**
+     * This method is used to retrieve the stored settings for each SwingingBlade once it is spawned.
+     * This method is called only after the OnActivatedComponent for the {@link SwingingBladeComponent} has executed.<br/>
+     * Note: only the properties of the Swinging Blade should be overwritten in the {@link SwingingBladeComponent},
+     * since the existing {@link SwingingBladeComponent} already has a list for childrenEntities (rod, blade and mesh).
+     * @param addSwingingBladeComponent
+     * @param transformation
+     */
     private void configureSwingingBlades(AddSwingingBladeComponent addSwingingBladeComponent, BlockRegionTransform transformation) {
         for (AddSwingingBladeComponent.SwingingBladesToSpawn s : addSwingingBladeComponent.swingingBladesToSpawn) {
             Vector3i absolutePosition = transformation.transformVector3i(s.position);
             Quat4f absoluteRotation = transformation.transformRotation(s.rotation);
             EntityRef swingingBlade = blockEntityRegistry.getBlockEntityAt(absolutePosition);
-            SwingingBladeComponent swingingBladeComponent = new SwingingBladeComponent();
+            SwingingBladeComponent swingingBladeComponent = swingingBlade.getComponent(SwingingBladeComponent.class);
             swingingBladeComponent.amplitude = s.amplitude;
             swingingBladeComponent.timePeriod = s.timePeriod;
             swingingBladeComponent.offset = s.offset;
             swingingBladeComponent.isSwinging = s.isSwinging;
-            swingingBlade.addOrSaveComponent(swingingBladeComponent);
-
+            swingingBlade.saveComponent(swingingBladeComponent);
             LocationComponent locationComponent = swingingBlade.getComponent(LocationComponent.class);
             locationComponent.setWorldRotation(absoluteRotation);
             swingingBlade.addOrSaveComponent(locationComponent);

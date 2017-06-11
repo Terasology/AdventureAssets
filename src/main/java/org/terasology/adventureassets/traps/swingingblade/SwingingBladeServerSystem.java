@@ -166,7 +166,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
             BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily("AdventureAssets:SwingingBladeRoot");
             if (blockFamily == newItem.getComponent(BlockItemComponent.class).blockFamily) {
                 if (!newItem.hasComponent(SwingingBladeComponent.class)) {
-//                    newItem.addComponent(new SwingingBladeComponent());
+                    newItem.addComponent(new SwingingBladeComponent());
                 }
             }
         }
