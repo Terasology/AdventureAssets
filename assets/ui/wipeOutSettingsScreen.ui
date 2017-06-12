@@ -1,0 +1,188 @@
+{
+  "type": "WipeOutSettingsScreen",
+  "skin": "engine:default",
+  "contents": {
+    "type": "RelativeLayout",
+    "contents": [
+      {
+        "type": "ScrollableArea",
+        "id": "scrollArea",
+        "content": {
+          "type": "ColumnLayout",
+          "columns": 1,
+          "verticalSpacing": 8,
+          "contents": [
+            {
+              "type": "UILabel",
+              "family": "subheading",
+              "text": "Wipe Out"
+            },
+            {
+              "type": "UILabel",
+              "text": "Change settings for the wipe out setup"
+            },
+            {
+              "type": "UISpace",
+              "size": [
+                1,
+                12
+              ]
+            },
+            {
+              "type": "ColumnLayout",
+              "columns": 2,
+              "verticalSpacing": 8,
+              "horizontalSpacing": 8,
+              "contents": [
+                {
+                  "type": "UILabel",
+                  "text": "isRotating"
+                },
+                {
+                  "type": "UICheckbox",
+                  "id": "isRotating"
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Time Period"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "timePeriod",
+                  "layoutInfo": {}
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Offset (A fraction of Time Period)"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "offset",
+                  "layoutInfo": {}
+                }
+              ]
+            },
+            {
+              "type": "UISpace",
+              "size": [
+                1,
+                12
+              ]
+            },
+            {
+              "type": "UILabel",
+              "family": "subheading",
+              "text": "Rotation (Mean Position)"
+            },
+            {
+              "type": "ColumnLayout",
+              "columns": 6,
+              "verticalSpacing": 8,
+              "horizontalSpacing": 8,
+              "family": "option-grid",
+              "contents": [
+                {
+                  "type": "UILabel",
+                  "text": "Yaw:"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "yaw"
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Pitch: "
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "pitch"
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Roll: "
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "roll"
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "layoutInfo": {
+          "width": 500,
+          "height": 400,
+          "position-horizontal-center": {},
+          "position-vertical-center": {}
+        }
+      },
+      {
+        "type": "engine:RowLayout",
+        "id": "actionsRow",
+        "contents": [
+          {
+            "type": "UIButton",
+            "text": "${engine:menu#dialog-cancel}",
+            "id": "cancelButton"
+          },
+          {
+            "type": "UIButton",
+            "text": "${engine:menu#dialog-ok}",
+            "id": "saveButton"
+          }
+        ],
+        "layoutInfo": {
+          "height": 32,
+          "width": 500,
+          "position-horizontal-center": {},
+          "position-top": {
+            "widget": "scrollArea",
+            "target": "BOTTOM"
+          }
+        }
+      }
+    ]
+  }
+}
