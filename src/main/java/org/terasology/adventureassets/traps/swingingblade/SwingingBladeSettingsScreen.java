@@ -91,10 +91,9 @@ public class SwingingBladeSettingsScreen extends BaseInteractionScreen {
         offset.setText("" + swingingBladeComponent.offset);
 
         Quat4f q = locationComponent.getWorldRotation();
-        pitch.setText("" + Math.toDegrees(Math.atan2(2.0*(q.y*q.z + q.w*q.x), q.w*q.w - q.x*q.x - q.y*q.y + q.z*q.z)));
-        yaw.setText("" + Math.toDegrees(Math.asin(-2.0*(q.x*q.z - q.w*q.y))));
-        roll.setText("" + Math.toDegrees(Math.atan2(2.0*(q.x*q.y + q.w*q.z), q.w*q.w + q.x*q.x - q.y*q.y - q.z*q.z)));
-
+        pitch.setText(String.format("%.2f", Math.toDegrees(q.getPitch())));
+        yaw.setText(String.format("%.2f", Math.toDegrees(q.getYaw())));
+        roll.setText(String.format("%.2f", Math.toDegrees(q.getRoll())));
     }
 
     private void onSaveButton(UIWidget button) {

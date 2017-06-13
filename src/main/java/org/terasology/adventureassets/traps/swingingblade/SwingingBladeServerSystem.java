@@ -151,27 +151,6 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         Location.attachChild(entity, blade, new Vector3f(0, -7, 0), new Quat4f(Quat4f.IDENTITY));
     }
 
-    /**
-     * This method checks if a new SwingingBladeRoot block item is added to the inventory. It then adds the
-     * {@link SwingingBladeComponent} to it.
-     * @param event
-     * @param player
-     * @param characterComponent
-     */
-    @ReceiveEvent
-    public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef player,
-                                   CharacterComponent characterComponent) {
-        EntityRef newItem = event.getNewItem();
-        if (newItem.hasComponent(BlockItemComponent.class)) {
-            BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily("AdventureAssets:SwingingBladeRoot");
-            if (blockFamily == newItem.getComponent(BlockItemComponent.class).blockFamily) {
-                if (!newItem.hasComponent(SwingingBladeComponent.class)) {
-                    newItem.addComponent(new SwingingBladeComponent());
-                }
-            }
-        }
-    }
-
     @Override
     public void update(float delta) {
         for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class, BlockComponent.class)) {

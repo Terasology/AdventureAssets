@@ -5,9 +5,9 @@
   "attachmentAllowed": false,
   "rotation": "horizontal",
   "tiles": {
-    "sides": "ChestSides",
-    "front": "ChestFront",
-    "topBottom": "ChestTopBottom"
+    "sides": "SwingingBladeSides",
+    "front": "SwingingBladeFront",
+    "topBottom": "SwingingBladeTopBottom"
   },
   "entity": {
     "prefab": "AdventureAssets:SwingingBladeRoot"
