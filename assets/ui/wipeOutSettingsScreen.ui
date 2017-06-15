@@ -44,6 +44,14 @@
                 },
                 {
                   "type": "UILabel",
+                  "text": "Clockwise"
+                },
+                {
+                  "type": "UICheckbox",
+                  "id": "clockwise"
+                },
+                {
+                  "type": "UILabel",
                   "text": "Time Period"
                 },
                 {

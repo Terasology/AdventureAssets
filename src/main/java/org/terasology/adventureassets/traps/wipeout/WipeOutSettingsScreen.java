@@ -37,6 +37,7 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(WipeOutSettingsScreen.class);
 
     private UICheckbox isRotating;
+    private UICheckbox clockwise;
     private UIText timePeriod;
     private UIText offset;
     private UIButton cancelButton;
@@ -55,6 +56,7 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
     @Override
     public void initialise() {
         isRotating = find("isRotating", UICheckbox.class);
+        clockwise = find("clockwise", UICheckbox.class);
         timePeriod = find("timePeriod", UIText.class);
         offset = find("offset", UIText.class);
         yaw = find("yaw", UIText.class);
@@ -78,6 +80,7 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
         locationComponent = interactionTarget.getComponent(LocationComponent.class);
 
         isRotating.setChecked(wipeOutComponent.isRotating);
+        clockwise.setChecked((wipeOutComponent.direction == -1));
         timePeriod.setText("" + wipeOutComponent.timePeriod);
         offset.setText("" + wipeOutComponent.offset);
 
@@ -93,6 +96,7 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
             wipeOutComponent.timePeriod = Float.parseFloat(timePeriod.getText());
             wipeOutComponent.offset = Float.parseFloat(offset.getText());
             wipeOutComponent.isRotating = isRotating.isChecked();
+            wipeOutComponent.direction = clockwise.isChecked() ? -1 : 1;
             double yawValue = Math.toRadians(Double.parseDouble(yaw.getText()));
             double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
             double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));

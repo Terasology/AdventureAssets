@@ -43,5 +43,10 @@ public class WipeOutComponent implements Component {
      */
     public boolean isRotating = true;
 
+    /**
+     * To set the wipe out motion direction
+     */
+    public int direction = 1;
+
     public List<EntityRef> childrenEntities = Lists.newArrayList();
 }

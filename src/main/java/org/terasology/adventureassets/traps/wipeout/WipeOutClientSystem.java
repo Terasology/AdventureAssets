@@ -75,7 +75,6 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
         wipeOutComponent.childrenEntities.add(wipeOutMesh);
         entity.saveComponent(wipeOutComponent);
         Location.attachChild(entity, wipeOutMesh, new Vector3f(0, 0, 1), new Quat4f(Quat4f.IDENTITY));
-        logger.info("mesh" + wipeOutMesh.toFullDescription());
     }
 
     @Override
