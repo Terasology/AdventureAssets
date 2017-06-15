@@ -124,7 +124,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
         EntityRef rod = rodEntityBuilder.build();
         wipeOutComponent.childrenEntities.add(rod);
         entity.saveComponent(wipeOutComponent);
-        Location.attachChild(entity, rod, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, rod, new Vector3f(0, 0, 3), new Quat4f(Quat4f.IDENTITY));
         logger.info("rod" + rod.toFullDescription());
 
         Prefab surfboardPrefab = assetManager.getAsset("AdventureAssets:wipeOutSurfboard", Prefab.class).get();
@@ -134,7 +134,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
         EntityRef surfboard = surfboardEntityBuilder.build();
         wipeOutComponent.childrenEntities.add(surfboard);
         entity.saveComponent(wipeOutComponent);
-        Location.attachChild(entity, surfboard, new Vector3f(0, -7, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, surfboard, new Vector3f(0, 0, 7), new Quat4f(Quat4f.IDENTITY));
         logger.info("surfboard" + surfboard.toFullDescription());
     }
 

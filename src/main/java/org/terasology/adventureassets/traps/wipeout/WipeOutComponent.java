@@ -31,7 +31,7 @@ public class WipeOutComponent implements Component {
     /**
      * Time taken by the wipe out to complete one circle (in seconds)
      */
-    public float timePeriod = 5f;
+    public float timePeriod = 15f;
 
     /**
      * Offset, a fraction of time-period(in seconds)
