@@ -82,9 +82,9 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
         offset.setText("" + wipeOutComponent.offset);
 
         Quat4f q = locationComponent.getWorldRotation();
-        pitch.setText("" + Math.toDegrees(q.getPitch()));
-        yaw.setText("" + Math.toDegrees(q.getYaw()));
-        roll.setText("" + Math.toDegrees(q.getRoll()));
+        pitch.setText(String.format("%.2f", Math.toDegrees(q.getPitch())));
+        yaw.setText(String.format("%.2f", Math.toDegrees(q.getYaw())));
+        roll.setText(String.format("%.2f", Math.toDegrees(q.getRoll())));
 
     }
 

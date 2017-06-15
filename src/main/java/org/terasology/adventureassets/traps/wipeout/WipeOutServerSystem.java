@@ -138,27 +138,6 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
         logger.info("surfboard" + surfboard.toFullDescription());
     }
 
-    /**
-     * This method checks if a new WipeOutRoot block item is added to the inventory. It then adds the
-     * {@link WipeOutComponent} to it.
-     * @param event
-     * @param player
-     * @param characterComponent
-     */
-    @ReceiveEvent
-    public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef player,
-                                   CharacterComponent characterComponent) {
-        EntityRef newItem = event.getNewItem();
-        if (newItem.hasComponent(BlockItemComponent.class)) {
-            BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily("AdventureAssets:WipeOutRoot");
-            if (blockFamily == newItem.getComponent(BlockItemComponent.class).blockFamily) {
-                if (!newItem.hasComponent(WipeOutComponent.class)) {
-                    newItem.addComponent(new WipeOutComponent());
-                }
-            }
-        }
-    }
-
     @Override
     public void update(float delta) {
         for (EntityRef wipeOut : entityManager.getEntitiesWith(WipeOutComponent.class, BlockComponent.class)) {
