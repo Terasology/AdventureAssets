@@ -84,6 +84,24 @@
       { "blockType": "engine:air", "region": { "min": [2, 1, 40], "size": [6, 3, 1]}}
     ]
   },
+  "AddWipeOut": {
+    "WipeOutsToSpawn": [
+      {
+        "position": [0, 1, 28],
+        "rotation": [0.0, 0.809017, 0.0, -0.5877852],
+        "direction": 1,
+        "timePeriod": 15.0,
+        "offset": 0.0
+      },
+      {
+        "position": [0, 1, 12],
+        "rotation": [0.0, 0.58778524, 0.0, 0.809017],
+        "direction": 1,
+        "timePeriod": 15.0,
+        "offset": 7.5
+      }
+    ]
+  },
   "AddItemsToChest": {
     "chestsToFill": [
       {

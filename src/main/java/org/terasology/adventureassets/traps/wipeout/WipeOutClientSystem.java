@@ -86,7 +86,7 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
                 float t = time.getGameTime();
                 float timePeriod = wipeOutComponent.timePeriod;
                 float offset = wipeOutComponent.offset;
-                float angle = (float) (((t + offset) % timePeriod)*(2 * Math.PI / timePeriod));
+                float angle = (float) (((t + offset) % timePeriod)*(2 * Math.PI / timePeriod))* wipeOutComponent.direction;
                 Quat4f rotation = locationComponent.getLocalRotation();
                 locationComponent.setLocalRotation(new Quat4f(angle, rotation.getPitch(), rotation.getRoll()));
                 wipeOut.saveComponent(locationComponent);

@@ -44,7 +44,7 @@ public class WipeOutComponent implements Component {
     public boolean isRotating = true;
 
     /**
-     * To set the wipe out motion direction
+     * To set the wipe out motion direction (1: anticlockwise, -1:clockwise)
      */
     public int direction = 1;
 
