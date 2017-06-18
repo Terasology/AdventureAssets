@@ -108,7 +108,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
      * @param blockEntity
      * @param swingingBladeComponent
      */
-    @ReceiveEvent(components = {})
+    @ReceiveEvent
     public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, SwingingBladeComponent swingingBladeComponent) {
         for (EntityRef e : swingingBladeComponent.childrenEntities) {
             e.destroy();

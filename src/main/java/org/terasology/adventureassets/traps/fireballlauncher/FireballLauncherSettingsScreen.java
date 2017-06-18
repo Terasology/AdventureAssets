@@ -1,0 +1,110 @@
+/*
+ * Copyright 2017 MovingBlocks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.terasology.adventureassets.traps.fireballlauncher;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.geom.Quat4f;
+import org.terasology.registry.In;
+import org.terasology.rendering.nui.BaseInteractionScreen;
+import org.terasology.rendering.nui.NUIManager;
+import org.terasology.rendering.nui.UIWidget;
+import org.terasology.rendering.nui.widgets.UIButton;
+import org.terasology.rendering.nui.widgets.UICheckbox;
+import org.terasology.rendering.nui.widgets.UIText;
+
+/**
+ */
+@RegisterSystem
+public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
+    private static final Logger logger = LoggerFactory.getLogger(FireballLauncherSettingsScreen.class);
+
+    private UIText timePeriod;
+    private UIText angle;
+    private UIText distance;
+    private UIText yaw;
+    private UIText pitch;
+    private UIText roll;
+    private UIButton cancelButton;
+    private UIButton saveButton;
+    private EntityRef fireballLauncherRoot;
+    private FireballLauncherComponent fireballLauncherComponent;
+    private LocationComponent locationComponent;
+
+    @In
+    private NUIManager nuiManager;
+
+    @Override
+    public void initialise() {
+        timePeriod = find("timePeriod", UIText.class);
+        distance = find("distance", UIText.class);
+        angle = find("angle", UIText.class);
+        yaw = find("yaw", UIText.class);
+        pitch = find("pitch", UIText.class);
+        roll = find("roll", UIText.class);
+        cancelButton = find("cancelButton", UIButton.class);
+        saveButton = find("saveButton", UIButton.class);
+        if (saveButton != null) {
+            saveButton.subscribe(this::onSaveButton);
+        }
+
+        if (cancelButton != null) {
+            cancelButton.subscribe(this::onCancelButton);
+        }
+    }
+
+    @Override
+    protected void initializeWithInteractionTarget(EntityRef interactionTarget) {
+        fireballLauncherRoot = interactionTarget;
+        fireballLauncherComponent = interactionTarget.getComponent(FireballLauncherComponent.class);
+        locationComponent = interactionTarget.getComponent(LocationComponent.class);
+
+        timePeriod.setText("" + fireballLauncherComponent.timePeriod);
+        distance.setText("" + fireballLauncherComponent.distance);
+        angle.setText("" + fireballLauncherComponent.angle);
+
+        Quat4f q = locationComponent.getWorldRotation();
+        pitch.setText(String.format("%.2f", Math.toDegrees(q.getPitch())));
+        yaw.setText(String.format("%.2f", Math.toDegrees(q.getYaw())));
+        roll.setText(String.format("%.2f", Math.toDegrees(q.getRoll())));
+    }
+
+    private void onSaveButton(UIWidget button) {
+        try {
+            fireballLauncherComponent.timePeriod = Float.parseFloat(timePeriod.getText());
+            fireballLauncherComponent.distance = Float.parseFloat(distance.getText());
+            fireballLauncherComponent.angle = Float.parseFloat(angle.getText());
+            double yawValue = Math.toRadians(Double.parseDouble(yaw.getText()));
+            double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
+            double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));
+            locationComponent.setWorldRotation(new Quat4f((float) yawValue,(float) pitchValue,(float) rollValue));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        fireballLauncherRoot.saveComponent(fireballLauncherComponent);
+        fireballLauncherRoot.saveComponent(locationComponent);
+        getManager().popScreen();
+    }
+
+    private void onCancelButton(UIWidget button) {
+        getManager().popScreen();
+    }
+
+}

@@ -1,0 +1,19 @@
+{
+  "displayName": "Fireball Launcher Root",
+  "hardness": 12,
+  "mass": 50,
+  "attachmentAllowed": false,
+  "rotation": "horizontal",
+  "tiles": {
+    "sides": "SwingingBladeSides",
+    "front": "SwingingBladeFront",
+    "topBottom": "SwingingBladeTopBottom"
+  },
+  "entity": {
+    "prefab": "AdventureAssets:FireballLauncherRoot"
+  },
+  "inventory": {
+    "stackable": false,
+    "directPickup": true
+  }
+}
