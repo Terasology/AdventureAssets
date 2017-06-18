@@ -51,15 +51,6 @@
                   "type": "engine:UIText",
                   "id": "distance",
                   "layoutInfo": {}
-                },
-                {
-                  "type": "UILabel",
-                  "text": "Angle"
-                },
-                {
-                  "type": "engine:UIText",
-                  "id": "angle",
-                  "layoutInfo": {}
                 }
               ]
             },
@@ -73,7 +64,7 @@
             {
               "type": "UILabel",
               "family": "subheading",
-              "text": "Rotation (Mean Position)"
+              "text": "Direction (Vector3f)"
             },
             {
               "type": "ColumnLayout",
@@ -84,27 +75,27 @@
               "contents": [
                 {
                   "type": "UILabel",
-                  "text": "Yaw:"
+                  "text": "X:"
                 },
                 {
                   "type": "engine:UIText",
-                  "id": "yaw"
+                  "id": "x"
                 },
                 {
                   "type": "UILabel",
-                  "text": "Pitch: "
+                  "text": "Y: "
                 },
                 {
                   "type": "engine:UIText",
-                  "id": "pitch"
+                  "id": "y"
                 },
                 {
                   "type": "UILabel",
-                  "text": "Roll: "
+                  "text": "Z: "
                 },
                 {
                   "type": "engine:UIText",
-                  "id": "roll"
+                  "id": "z"
                 },
                 {
                   "type": "UISpace",

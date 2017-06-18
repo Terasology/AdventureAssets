@@ -75,7 +75,7 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
                 EntityRef fireball = fireballEntityBuilder.build();
 
                 ProjectileActionComponent projectileActionComponent = fireball.getComponent(ProjectileActionComponent.class);
-                projectileActionComponent.direction = new Vector3f(0,0,1);
+                projectileActionComponent.direction = fireballLauncherComponent.direction;
                 projectileActionComponent.currentVelocity = new Vector3f(projectileActionComponent.direction).mul(projectileActionComponent.velocity);
                 Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition();
                 LocationComponent location = new LocationComponent(pos.add(projectileActionComponent.direction));

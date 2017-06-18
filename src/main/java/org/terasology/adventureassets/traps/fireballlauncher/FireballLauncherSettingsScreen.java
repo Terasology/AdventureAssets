@@ -22,6 +22,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
+import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.NUIManager;
@@ -37,16 +38,14 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(FireballLauncherSettingsScreen.class);
 
     private UIText timePeriod;
-    private UIText angle;
     private UIText distance;
-    private UIText yaw;
-    private UIText pitch;
-    private UIText roll;
+    private UIText x;
+    private UIText y;
+    private UIText z;
     private UIButton cancelButton;
     private UIButton saveButton;
     private EntityRef fireballLauncherRoot;
     private FireballLauncherComponent fireballLauncherComponent;
-    private LocationComponent locationComponent;
 
     @In
     private NUIManager nuiManager;
@@ -55,10 +54,9 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     public void initialise() {
         timePeriod = find("timePeriod", UIText.class);
         distance = find("distance", UIText.class);
-        angle = find("angle", UIText.class);
-        yaw = find("yaw", UIText.class);
-        pitch = find("pitch", UIText.class);
-        roll = find("roll", UIText.class);
+        x = find("x", UIText.class);
+        y = find("y", UIText.class);
+        z = find("z", UIText.class);
         cancelButton = find("cancelButton", UIButton.class);
         saveButton = find("saveButton", UIButton.class);
         if (saveButton != null) {
@@ -74,32 +72,29 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     protected void initializeWithInteractionTarget(EntityRef interactionTarget) {
         fireballLauncherRoot = interactionTarget;
         fireballLauncherComponent = interactionTarget.getComponent(FireballLauncherComponent.class);
-        locationComponent = interactionTarget.getComponent(LocationComponent.class);
 
         timePeriod.setText("" + fireballLauncherComponent.timePeriod);
         distance.setText("" + fireballLauncherComponent.distance);
-        angle.setText("" + fireballLauncherComponent.angle);
+        Vector3f direction = fireballLauncherComponent.direction;
 
-        Quat4f q = locationComponent.getWorldRotation();
-        pitch.setText(String.format("%.2f", Math.toDegrees(q.getPitch())));
-        yaw.setText(String.format("%.2f", Math.toDegrees(q.getYaw())));
-        roll.setText(String.format("%.2f", Math.toDegrees(q.getRoll())));
+        x.setText(String.format("%.2f", direction.getX()));
+        y.setText(String.format("%.2f", direction.getY()));
+        z.setText(String.format("%.2f", direction.getZ()));
     }
 
     private void onSaveButton(UIWidget button) {
         try {
             fireballLauncherComponent.timePeriod = Float.parseFloat(timePeriod.getText());
             fireballLauncherComponent.distance = Float.parseFloat(distance.getText());
-            fireballLauncherComponent.angle = Float.parseFloat(angle.getText());
-            double yawValue = Math.toRadians(Double.parseDouble(yaw.getText()));
-            double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
-            double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));
-            locationComponent.setWorldRotation(new Quat4f((float) yawValue,(float) pitchValue,(float) rollValue));
+            double xValue = Double.parseDouble(x.getText());
+            double yValue = Double.parseDouble(y.getText());
+            double zValue = Double.parseDouble(z.getText());
+            fireballLauncherComponent.direction = new Vector3f((float) xValue,(float) yValue,(float) zValue);
+            fireballLauncherComponent.direction.normalize();
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         fireballLauncherRoot.saveComponent(fireballLauncherComponent);
-        fireballLauncherRoot.saveComponent(locationComponent);
         getManager().popScreen();
     }
 
