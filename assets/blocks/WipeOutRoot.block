@@ -5,9 +5,9 @@
   "attachmentAllowed": false,
   "rotation": "horizontal",
   "tiles": {
-    "sides": "ChestSides",
-    "front": "ChestFront",
-    "topBottom": "ChestTopBottom"
+    "sides": "WipeOutSides",
+    "front": "WipeOutFront",
+    "topBottom": "WipeOutTopBottom"
   },
   "entity": {
     "prefab": "AdventureAssets:WipeOutRoot"
