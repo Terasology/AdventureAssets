@@ -45,6 +45,15 @@
                 },
                 {
                   "type": "UILabel",
+                  "text": "Offset for sync (in seconds)"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "offset",
+                  "layoutInfo": {}
+                },
+                {
+                  "type": "UILabel",
                   "text": "Maximum Distance"
                 },
                 {

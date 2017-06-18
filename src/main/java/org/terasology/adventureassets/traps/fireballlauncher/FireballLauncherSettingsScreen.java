@@ -17,18 +17,14 @@ package org.terasology.adventureassets.traps.fireballlauncher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.widgets.UIButton;
-import org.terasology.rendering.nui.widgets.UICheckbox;
 import org.terasology.rendering.nui.widgets.UIText;
 
 /**
@@ -38,6 +34,7 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(FireballLauncherSettingsScreen.class);
 
     private UIText timePeriod;
+    private UIText offset;
     private UIText maxDistance;
     private UIText x;
     private UIText y;
@@ -53,6 +50,7 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     @Override
     public void initialise() {
         timePeriod = find("timePeriod", UIText.class);
+        offset = find("offset", UIText.class);
         maxDistance = find("maxDistance", UIText.class);
         x = find("x", UIText.class);
         y = find("y", UIText.class);
@@ -74,6 +72,7 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
         fireballLauncherComponent = interactionTarget.getComponent(FireballLauncherComponent.class);
 
         timePeriod.setText("" + fireballLauncherComponent.timePeriod);
+        offset.setText("" + fireballLauncherComponent.offset);
         maxDistance.setText("" + fireballLauncherComponent.maxDistance);
         Vector3f direction = fireballLauncherComponent.direction;
 
@@ -85,11 +84,12 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     private void onSaveButton(UIWidget button) {
         try {
             fireballLauncherComponent.timePeriod = Float.parseFloat(timePeriod.getText());
+            fireballLauncherComponent.offset = Float.parseFloat(offset.getText());
             fireballLauncherComponent.maxDistance = Integer.parseInt(maxDistance.getText());
             double xValue = Double.parseDouble(x.getText());
             double yValue = Double.parseDouble(y.getText());
             double zValue = Double.parseDouble(z.getText());
-            fireballLauncherComponent.direction = new Vector3f((float) xValue,(float) yValue,(float) zValue);
+            fireballLauncherComponent.direction = new Vector3f((float) xValue, (float) yValue, (float) zValue);
             fireballLauncherComponent.direction.normalize();
         } catch (NumberFormatException e) {
             e.printStackTrace();

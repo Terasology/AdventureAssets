@@ -86,7 +86,7 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
         for (EntityRef fireballLauncher : entityManager.getEntitiesWith(FireballLauncherComponent.class, BlockComponent.class)) {
             FireballLauncherComponent fireballLauncherComponent = fireballLauncher.getComponent(FireballLauncherComponent.class);
             if (time.getGameTime() > fireballLauncherComponent.timePeriod + fireballLauncherComponent.lastShotTime) {
-
+                logger.info("" + time.getGameTime());
                 Prefab fireballPrefab = assetManager.getAsset("Projectile:fireball", Prefab.class).get();
                 EntityBuilder fireballEntityBuilder = entityManager.newBuilder(fireballPrefab);
                 EntityRef fireball = fireballEntityBuilder.build();
@@ -102,7 +102,8 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
                 fireball.addOrSaveComponent(location);
                 fireball.saveComponent(projectileActionComponent);
 
-                fireballLauncherComponent.lastShotTime = time.getGameTime();
+                fireballLauncherComponent.lastShotTime = (float) Math.floor(time.getGameTime()/fireballLauncherComponent.timePeriod)
+                        * fireballLauncherComponent.timePeriod + fireballLauncherComponent.offset;
                 fireballLauncher.saveComponent(fireballLauncherComponent);
             }
         }

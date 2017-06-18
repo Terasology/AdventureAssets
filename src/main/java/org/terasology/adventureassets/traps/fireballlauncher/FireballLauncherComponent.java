@@ -35,6 +35,12 @@ public class FireballLauncherComponent implements Component {
     public float timePeriod = 2f;
 
     /**
+     * Time offset for synchronization of multiple launchers
+     * Two launchers having the same time period can operate at offsets to fire at different instances
+     */
+    public float offset = 0f;
+
+    /**
      * Last shot time
      */
     public float lastShotTime = 0f;
