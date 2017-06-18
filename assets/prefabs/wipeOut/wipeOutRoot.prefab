@@ -1,0 +1,12 @@
+{
+  "WipeOut": {},
+  "PlaySoundAction": {
+    "sounds": "engine:click"
+  },
+  "InteractionTarget": {},
+  "InteractionScreen": {
+    "screen": "AdventureAssets:WipeOutSettingsScreen"
+  },
+  "Network": {
+  }
+}
