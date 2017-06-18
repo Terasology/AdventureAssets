@@ -38,7 +38,7 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(FireballLauncherSettingsScreen.class);
 
     private UIText timePeriod;
-    private UIText distance;
+    private UIText maxDistance;
     private UIText x;
     private UIText y;
     private UIText z;
@@ -53,7 +53,7 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     @Override
     public void initialise() {
         timePeriod = find("timePeriod", UIText.class);
-        distance = find("distance", UIText.class);
+        maxDistance = find("maxDistance", UIText.class);
         x = find("x", UIText.class);
         y = find("y", UIText.class);
         z = find("z", UIText.class);
@@ -74,7 +74,7 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
         fireballLauncherComponent = interactionTarget.getComponent(FireballLauncherComponent.class);
 
         timePeriod.setText("" + fireballLauncherComponent.timePeriod);
-        distance.setText("" + fireballLauncherComponent.distance);
+        maxDistance.setText("" + fireballLauncherComponent.maxDistance);
         Vector3f direction = fireballLauncherComponent.direction;
 
         x.setText(String.format("%.2f", direction.getX()));
@@ -85,7 +85,7 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     private void onSaveButton(UIWidget button) {
         try {
             fireballLauncherComponent.timePeriod = Float.parseFloat(timePeriod.getText());
-            fireballLauncherComponent.distance = Float.parseFloat(distance.getText());
+            fireballLauncherComponent.maxDistance = Integer.parseInt(maxDistance.getText());
             double xValue = Double.parseDouble(x.getText());
             double yValue = Double.parseDouble(y.getText());
             double zValue = Double.parseDouble(z.getText());

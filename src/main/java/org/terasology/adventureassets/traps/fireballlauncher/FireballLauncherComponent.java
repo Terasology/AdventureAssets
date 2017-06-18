@@ -47,5 +47,5 @@ public class FireballLauncherComponent implements Component {
     /**
      * Distance till which fireball lasts
      */
-    public float distance = 2f;
+    public int maxDistance = 24;
 }

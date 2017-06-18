@@ -45,11 +45,11 @@
                 },
                 {
                   "type": "UILabel",
-                  "text": "Distance"
+                  "text": "Maximum Distance"
                 },
                 {
                   "type": "engine:UIText",
-                  "id": "distance",
+                  "id": "maxDistance",
                   "layoutInfo": {}
                 }
               ]

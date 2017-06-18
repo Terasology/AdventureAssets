@@ -76,9 +76,10 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
 
                 ProjectileActionComponent projectileActionComponent = fireball.getComponent(ProjectileActionComponent.class);
                 projectileActionComponent.direction = fireballLauncherComponent.direction;
+                projectileActionComponent.maxDistance = fireballLauncherComponent.maxDistance;
                 projectileActionComponent.currentVelocity = new Vector3f(projectileActionComponent.direction).mul(projectileActionComponent.velocity);
                 Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition();
-                LocationComponent location = new LocationComponent(pos.add(projectileActionComponent.direction));
+                LocationComponent location = new LocationComponent(pos);
                 location.setWorldScale(projectileActionComponent.iconScale);
                 location.setWorldRotation(new Quat4f(Quat4f.IDENTITY));
                 fireball.addOrSaveComponent(location);
