@@ -5,9 +5,7 @@
   "attachmentAllowed": false,
   "rotation": "horizontal",
   "tiles": {
-    "sides": "SwingingBladeSides",
-    "front": "SwingingBladeFront",
-    "topBottom": "SwingingBladeTopBottom"
+    "all": "FireballLauncher"
   },
   "entity": {
     "prefab": "AdventureAssets:FireballLauncherRoot"
