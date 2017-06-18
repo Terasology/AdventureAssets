@@ -15,10 +15,8 @@
  */
 package org.terasology.adventureassets.traps.fireballlauncher;
 
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
@@ -52,6 +50,25 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
     @In
     private AssetManager assetManager;
 
+    /**
+     * Save the Fireball Launcher settings by saving the {@link FireballLauncherComponent}
+     *
+     * @param event
+     * @param blockEntity
+     * @param fireballLauncherComponent
+     */
+    @ReceiveEvent
+    public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, FireballLauncherComponent fireballLauncherComponent) {
+        event.getItem().addOrSaveComponent(fireballLauncherComponent);
+    }
+
+    /**
+     * Transfer the saved Fireball Launcher components from the item to block
+     *
+     * @param event
+     * @param itemEntity
+     * @param fireballLauncherComponent
+     */
     @ReceiveEvent(components = {BlockItemComponent.class})
     public void onItemToBlock(OnBlockItemPlaced event, EntityRef itemEntity,
                               FireballLauncherComponent fireballLauncherComponent) {
@@ -59,17 +76,17 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
         entity.addOrSaveComponent(fireballLauncherComponent);
     }
 
-    @ReceiveEvent
-    public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, FireballLauncherComponent fireballLauncherComponent) {
-        event.getItem().addOrSaveComponent(fireballLauncherComponent);
-    }
-
+    /**
+     * Find all Fireball Launchers and trigger the launch of a Fireball if it is the right time
+     *
+     * @param delta The time (in seconds) since the last engine update.
+     */
     @Override
     public void update(float delta) {
         for (EntityRef fireballLauncher : entityManager.getEntitiesWith(FireballLauncherComponent.class, BlockComponent.class)) {
             FireballLauncherComponent fireballLauncherComponent = fireballLauncher.getComponent(FireballLauncherComponent.class);
             if (time.getGameTime() > fireballLauncherComponent.timePeriod + fireballLauncherComponent.lastShotTime) {
-                logger.info("LAUNCH " + fireballLauncher.getId() + " " + fireballLauncherComponent.timePeriod);
+
                 Prefab fireballPrefab = assetManager.getAsset("Projectile:fireball", Prefab.class).get();
                 EntityBuilder fireballEntityBuilder = entityManager.newBuilder(fireballPrefab);
                 EntityRef fireball = fireballEntityBuilder.build();
