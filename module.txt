@@ -11,7 +11,10 @@
     },{
        "id" : "StructureTemplates",
        "minVersion" : "0.2.0"
-    }
+    },{
+        "id" : "Projectile",
+        "minVersion" : "1.0.0"
+     }
     ],
     "serverSideOnly" : false
 }

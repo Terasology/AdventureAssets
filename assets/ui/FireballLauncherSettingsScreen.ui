@@ -1,0 +1,189 @@
+{
+  "type": "FireballLauncherSettingsScreen",
+  "skin": "engine:default",
+  "contents": {
+    "type": "RelativeLayout",
+    "contents": [
+      {
+        "type": "ScrollableArea",
+        "id": "scrollArea",
+        "content": {
+          "type": "ColumnLayout",
+          "columns": 1,
+          "verticalSpacing": 8,
+          "contents": [
+            {
+              "type": "UILabel",
+              "family": "subheading",
+              "text": "Fireball Launcher"
+            },
+            {
+              "type": "UILabel",
+              "text": "Change settings for the fireball launcher"
+            },
+            {
+              "type": "UISpace",
+              "size": [
+                1,
+                12
+              ]
+            },
+            {
+              "type": "ColumnLayout",
+              "columns": 2,
+              "verticalSpacing": 8,
+              "horizontalSpacing": 8,
+              "contents": [
+                {
+                  "type": "UILabel",
+                  "text": "Time Period"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "timePeriod",
+                  "layoutInfo": {}
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Offset for sync (in seconds)"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "offset",
+                  "layoutInfo": {}
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Maximum Distance"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "maxDistance",
+                  "layoutInfo": {}
+                }
+              ]
+            },
+            {
+              "type": "UISpace",
+              "size": [
+                1,
+                12
+              ]
+            },
+            {
+              "type": "UILabel",
+              "family": "subheading",
+              "text": "Direction (Vector3f)"
+            },
+            {
+              "type": "ColumnLayout",
+              "columns": 6,
+              "verticalSpacing": 8,
+              "horizontalSpacing": 8,
+              "family": "option-grid",
+              "contents": [
+                {
+                  "type": "UILabel",
+                  "text": "X:"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "x"
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Y: "
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "y"
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Z: "
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "z"
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                },
+                {
+                  "type": "UISpace",
+                  "size": [
+                    1,
+                    1.0
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "layoutInfo": {
+          "width": 500,
+          "height": 400,
+          "position-horizontal-center": {},
+          "position-vertical-center": {}
+        }
+      },
+      {
+        "type": "engine:RowLayout",
+        "id": "actionsRow",
+        "contents": [
+          {
+            "type": "UIButton",
+            "text": "${engine:menu#dialog-cancel}",
+            "id": "cancelButton"
+          },
+          {
+            "type": "UIButton",
+            "text": "${engine:menu#dialog-ok}",
+            "id": "saveButton"
+          }
+        ],
+        "layoutInfo": {
+          "height": 32,
+          "width": 500,
+          "position-horizontal-center": {},
+          "position-top": {
+            "widget": "scrollArea",
+            "target": "BOTTOM"
+          }
+        }
+      }
+    ]
+  }
+}

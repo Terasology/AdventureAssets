@@ -1,0 +1,12 @@
+{
+  "FireballLauncher": {},
+  "PlaySoundAction": {
+    "sounds": "engine:click"
+  },
+  "InteractionTarget": {},
+  "InteractionScreen": {
+    "screen": "AdventureAssets:FireballLauncherSettingsScreen"
+  },
+  "Network": {
+  }
+}
