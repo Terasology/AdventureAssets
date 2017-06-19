@@ -31,6 +31,7 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.projectile.FireProjectileEvent;
 import org.terasology.projectile.ProjectileActionComponent;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
@@ -91,16 +92,8 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
                 EntityBuilder fireballEntityBuilder = entityManager.newBuilder(fireballPrefab);
                 EntityRef fireball = fireballEntityBuilder.build();
 
-                ProjectileActionComponent projectileActionComponent = fireball.getComponent(ProjectileActionComponent.class);
-                projectileActionComponent.direction = fireballLauncherComponent.direction;
-                projectileActionComponent.maxDistance = fireballLauncherComponent.maxDistance;
-                projectileActionComponent.currentVelocity = new Vector3f(projectileActionComponent.direction).mul(projectileActionComponent.velocity);
                 Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition();
-                LocationComponent location = new LocationComponent(pos);
-                location.setWorldScale(projectileActionComponent.iconScale);
-                location.setWorldRotation(new Quat4f(Quat4f.IDENTITY));
-                fireball.addOrSaveComponent(location);
-                fireball.saveComponent(projectileActionComponent);
+                fireball.send(new FireProjectileEvent(pos, fireballLauncherComponent.direction, fireballLauncherComponent.maxDistance));
 
                 fireballLauncherComponent.lastShotTime = (float) Math.floor(time.getGameTime()/fireballLauncherComponent.timePeriod)
                         * fireballLauncherComponent.timePeriod + fireballLauncherComponent.offset;
