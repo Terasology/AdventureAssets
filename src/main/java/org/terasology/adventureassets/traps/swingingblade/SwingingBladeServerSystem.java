@@ -68,14 +68,6 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
     @In
     private Time time;
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_LOW)
-    public void onPlayerSpawnedEvent(OnPlayerSpawnedEvent event, EntityRef player) {
-        EntityRef toolbox = entityManager.create("StructureTemplates:toolbox");
-        inventoryManager.giveItem(player, EntityRef.NULL, toolbox);
-        Prefab prefab = assetManager.getAsset("AdventureAssets:bladeRoom", Prefab.class).get();
-        toolbox.send(new StructureSpawnerFromToolboxRequest(prefab));
-    }
-
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
     public void onSwingingBladeDestroyed(BeforeRemoveComponent event, EntityRef entity,
                                          SwingingBladeComponent swingingBladeComponent) {
@@ -99,6 +91,9 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         SwingingBladeComponent component = entity.getComponent(SwingingBladeComponent.class);
         swingingBladeComponent.childrenEntities = component.childrenEntities;
         entity.addOrSaveComponent(swingingBladeComponent);
+        LocationComponent locationComponent = entity.getComponent(LocationComponent.class);
+        locationComponent.setWorldRotation(swingingBladeComponent.rotation);
+        entity.addOrSaveComponent(locationComponent);
     }
 
     /**
@@ -114,6 +109,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
             e.destroy();
         }
         swingingBladeComponent.childrenEntities = Lists.newArrayList();
+        swingingBladeComponent.rotation = blockEntity.getComponent(LocationComponent.class).getWorldRotation();
         event.getItem().addOrSaveComponent(swingingBladeComponent);
     }
 
