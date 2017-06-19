@@ -18,7 +18,6 @@ package org.terasology.adventureassets.traps.swingingblade;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.assets.ResourceUrn;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
@@ -26,36 +25,27 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.entitySystem.entity.lifecycleEvents.OnAddedComponent;
-import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
-import org.terasology.structureTemplates.internal.components.StructureTemplateOriginComponent;
-import org.terasology.world.OnChangedBlock;
+import org.terasology.registry.Share;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 import org.terasology.world.block.items.OnBlockToItem;
 
+@Share(SwingingBladeRotator.class)
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class SwingingBladeServerSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+public class SwingingBladeServerSystem extends BaseComponentSystem implements UpdateSubscriberSystem, SwingingBladeRotator {
 
     private static final Logger logger = LoggerFactory.getLogger(SwingingBladeServerSystem.class);
 
@@ -67,6 +57,8 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
     private InventoryManager inventoryManager;
     @In
     private Time time;
+    @In
+    private SwingingBladeRotator swingingBladeRotator;
 
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
     public void onSwingingBladeDestroyed(BeforeRemoveComponent event, EntityRef entity,
@@ -80,13 +72,14 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
      * filtering the {@link SwingingBladeComponent} gets executed.
      * So the placedBlock entity already has the right childrenEntities and only needs the trap properties to be
      * transferred.
+     *
      * @param event
      * @param itemEntity
      * @param swingingBladeComponent
      */
     @ReceiveEvent(components = {BlockItemComponent.class})
     public void onItemToBlock(OnBlockItemPlaced event, EntityRef itemEntity,
-                                  SwingingBladeComponent swingingBladeComponent) {
+                              SwingingBladeComponent swingingBladeComponent) {
         EntityRef entity = event.getPlacedBlock();
         SwingingBladeComponent component = entity.getComponent(SwingingBladeComponent.class);
         swingingBladeComponent.childrenEntities = component.childrenEntities;
@@ -99,6 +92,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
     /**
      * This method transfers the stored properties in the block's {@link SwingingBladeComponent} to the new item created.
      * It also destroys the children entities, i.e. the rod, blade and the mesh.
+     *
      * @param event
      * @param blockEntity
      * @param swingingBladeComponent
@@ -121,13 +115,14 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
      * {@link SwingingBladeServerSystem#onBlockToItem(OnBlockToItem, EntityRef, SwingingBladeComponent)} gets called.
      * So, the saved properties (amplitude, time-period, offset etc) are transferred after this, maintaining
      * only the childrenEntities list created here.
+     *
      * @param event
      * @param entity
      * @param swingingBladeComponent
      */
     @ReceiveEvent(components = {SwingingBladeComponent.class, BlockComponent.class})
     public void onSwingingBladeActivated(OnActivatedComponent event, EntityRef entity,
-                     SwingingBladeComponent swingingBladeComponent) {
+                                         SwingingBladeComponent swingingBladeComponent) {
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:rod", Prefab.class).get();
         EntityBuilder rodEntityBuilder = entityManager.newBuilder(rodPrefab);
         rodEntityBuilder.setOwner(entity);
@@ -149,6 +144,10 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
 
     @Override
     public void update(float delta) {
+        swingingBladeRotator.updateSwingingBladeRotation();
+    }
+
+    public void updateSwingingBladeRotation() {
         for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class, BlockComponent.class)) {
             LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
             SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);

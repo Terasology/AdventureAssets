@@ -36,13 +36,15 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
+import org.terasology.registry.Share;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.BlockItemComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 import org.terasology.world.block.items.OnBlockToItem;
 
+@Share(WipeOutRotator.class)
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSubscriberSystem, WipeOutRotator {
 
     private static final Logger logger = LoggerFactory.getLogger(WipeOutServerSystem.class);
 
@@ -54,6 +56,8 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
     private InventoryManager inventoryManager;
     @In
     private Time time;
+    @In
+    private WipeOutRotator wipeOutRotator;
 
     /**
      * This method transfers the saved block properties from the item to the block. <br/>
@@ -134,6 +138,11 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
 
     @Override
     public void update(float delta) {
+        wipeOutRotator.updateWipeOutRotation();
+    }
+
+    @Override
+    public void updateWipeOutRotation() {
         for (EntityRef wipeOut : entityManager.getEntitiesWith(WipeOutComponent.class, BlockComponent.class)) {
             LocationComponent locationComponent = wipeOut.getComponent(LocationComponent.class);
             WipeOutComponent wipeOutComponent = wipeOut.getComponent(WipeOutComponent.class);
