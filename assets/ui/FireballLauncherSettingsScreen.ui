@@ -36,6 +36,14 @@
               "contents": [
                 {
                   "type": "UILabel",
+                  "text": "isFiring"
+                },
+                {
+                  "type": "UICheckbox",
+                  "id": "isFiring"
+                },
+                {
+                  "type": "UILabel",
                   "text": "Time Period"
                 },
                 {
@@ -59,6 +67,24 @@
                 {
                   "type": "engine:UIText",
                   "id": "maxDistance",
+                  "layoutInfo": {}
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Damage Amount"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "damageAmount",
+                  "layoutInfo": {}
+                },
+                {
+                  "type": "UILabel",
+                  "text": "Health (Maximum collective damage)"
+                },
+                {
+                  "type": "engine:UIText",
+                  "id": "health",
                   "layoutInfo": {}
                 }
               ]

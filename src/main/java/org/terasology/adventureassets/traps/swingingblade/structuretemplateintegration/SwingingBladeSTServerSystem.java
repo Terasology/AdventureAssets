@@ -90,7 +90,7 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent
-    public void onBuildTemplateWithScheduledStructurePlacment(BuildStructureTemplateEntityEvent event, EntityRef entity) {
+    public void onBuildTemplateWithScheduledStructurePlacement(BuildStructureTemplateEntityEvent event, EntityRef entity) {
         BlockRegionTransform transformToRelative = event.getTransformToRelative();
         BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:SwingingBladeRoot");
 
@@ -162,6 +162,6 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
                 });
         sb.append("        ]\n");
         sb.append("    }");
-        event.addJsonForComponent(sb.toString(), ScheduleStructurePlacementComponent.class);
+        event.addJsonForComponent(sb.toString(), AddSwingingBladeComponent.class);
     }
 }

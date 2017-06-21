@@ -28,6 +28,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.health.HealthComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
@@ -86,14 +87,23 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
     public void update(float delta) {
         for (EntityRef fireballLauncher : entityManager.getEntitiesWith(FireballLauncherComponent.class, BlockComponent.class)) {
             FireballLauncherComponent fireballLauncherComponent = fireballLauncher.getComponent(FireballLauncherComponent.class);
-            if (time.getGameTime() > fireballLauncherComponent.timePeriod + fireballLauncherComponent.lastShotTime) {
-                logger.info("" + time.getGameTime());
+            if (fireballLauncherComponent.isFiring && time.getGameTime() > fireballLauncherComponent.timePeriod + fireballLauncherComponent.lastShotTime) {
                 Prefab fireballPrefab = assetManager.getAsset("Projectile:fireball", Prefab.class).get();
                 EntityBuilder fireballEntityBuilder = entityManager.newBuilder(fireballPrefab);
                 EntityRef fireball = fireballEntityBuilder.build();
 
+                ProjectileActionComponent projectileActionComponent = fireball.getComponent(ProjectileActionComponent.class);
+                projectileActionComponent.maxDistance = fireballLauncherComponent.maxDistance;
+                projectileActionComponent.damageAmount = fireballLauncherComponent.damageAmount;
+                fireball.saveComponent(projectileActionComponent);
+
+                HealthComponent healthComponent = fireball.getComponent(HealthComponent.class);
+                healthComponent.maxHealth = fireballLauncherComponent.health;
+                healthComponent.currentHealth = fireballLauncherComponent.health;
+                fireball.saveComponent(healthComponent);
+
                 Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition();
-                fireball.send(new FireProjectileEvent(pos, fireballLauncherComponent.direction, fireballLauncherComponent.maxDistance));
+                fireball.send(new FireProjectileEvent(pos, fireballLauncherComponent.direction));
 
                 fireballLauncherComponent.lastShotTime = (float) Math.floor(time.getGameTime()/fireballLauncherComponent.timePeriod)
                         * fireballLauncherComponent.timePeriod + fireballLauncherComponent.offset;
