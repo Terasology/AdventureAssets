@@ -39,7 +39,6 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     private UIText offset;
     private UIText maxDistance;
     private UIText damageAmount;
-    private UIText health;
     private UIText x;
     private UIText y;
     private UIText z;
@@ -58,7 +57,6 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
         offset = find("offset", UIText.class);
         maxDistance = find("maxDistance", UIText.class);
         damageAmount = find("damageAmount", UIText.class);
-        health = find("health", UIText.class);
         x = find("x", UIText.class);
         y = find("y", UIText.class);
         z = find("z", UIText.class);
@@ -83,7 +81,6 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
         offset.setText("" + fireballLauncherComponent.offset);
         maxDistance.setText("" + fireballLauncherComponent.maxDistance);
         damageAmount.setText(""  + fireballLauncherComponent.damageAmount);
-        health.setText(""  + fireballLauncherComponent.health);
         Vector3f direction = fireballLauncherComponent.direction;
 
         x.setText(String.format("%.2f", direction.getX()));

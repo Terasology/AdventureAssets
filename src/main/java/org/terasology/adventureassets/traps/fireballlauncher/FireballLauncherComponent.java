@@ -62,12 +62,7 @@ public class FireballLauncherComponent implements Component {
     public int maxDistance = 24;
 
     /**
-     * Damage inflicted per collision
+     * Total collective damage that can be inflicted
      */
     public int damageAmount = 20;
-
-    /**
-     * The fireball can inflict maximum collective damage equal to it's health
-     */
-    public int health = 50;
 }

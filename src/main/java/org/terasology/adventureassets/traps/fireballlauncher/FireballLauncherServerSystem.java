@@ -94,12 +94,11 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
 
                 ProjectileActionComponent projectileActionComponent = fireball.getComponent(ProjectileActionComponent.class);
                 projectileActionComponent.maxDistance = fireballLauncherComponent.maxDistance;
-                projectileActionComponent.damageAmount = fireballLauncherComponent.damageAmount;
                 fireball.saveComponent(projectileActionComponent);
 
                 HealthComponent healthComponent = fireball.getComponent(HealthComponent.class);
-                healthComponent.maxHealth = fireballLauncherComponent.health;
-                healthComponent.currentHealth = fireballLauncherComponent.health;
+                healthComponent.maxHealth = fireballLauncherComponent.damageAmount;
+                healthComponent.currentHealth = fireballLauncherComponent.damageAmount;
                 fireball.saveComponent(healthComponent);
 
                 Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition();

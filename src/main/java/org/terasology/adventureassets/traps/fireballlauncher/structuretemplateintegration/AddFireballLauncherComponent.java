@@ -43,6 +43,5 @@ public class AddFireballLauncherComponent implements Component {
         public Vector3f direction;
         public int maxDistance;
         public int damageAmount;
-        public int health;
     }
 }

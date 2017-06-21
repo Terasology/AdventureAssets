@@ -81,7 +81,6 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
             fireballLauncherComponent.direction = f.direction;
             fireballLauncherComponent.maxDistance = f.maxDistance;
             fireballLauncherComponent.damageAmount = f.damageAmount;
-            fireballLauncherComponent.health = f.health;
             fireballLauncher.saveComponent(fireballLauncherComponent);
             LocationComponent locationComponent = fireballLauncher.getComponent(LocationComponent.class);
             locationComponent.setWorldRotation(absoluteRotation);
@@ -112,7 +111,6 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
             fireballLauncherToSpawn.direction = fireballLauncherComponent.direction;
             fireballLauncherToSpawn.damageAmount = fireballLauncherComponent.damageAmount;
             fireballLauncherToSpawn.maxDistance = fireballLauncherComponent.maxDistance;
-            fireballLauncherToSpawn.health = fireballLauncherComponent.health;
 
             fireballLaunchersToSpawn.add(fireballLauncherToSpawn);
         }
@@ -166,9 +164,6 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
                     sb.append("\n");
                     sb.append("                \"damageAmount\": ");
                     sb.append(fireballLauncher.damageAmount);
-                    sb.append("\n");
-                    sb.append("                \"health\": ");
-                    sb.append(fireballLauncher.health);
                     sb.append("\n");
                     if (last) {
                         sb.append("            }\n");
