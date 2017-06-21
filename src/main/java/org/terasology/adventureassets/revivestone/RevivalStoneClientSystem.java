@@ -15,6 +15,8 @@
  */
 package org.terasology.adventureassets.revivestone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -25,27 +27,29 @@ import org.terasology.logic.characters.CharacterTeleportEvent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.health.BeforeDestroyEvent;
 import org.terasology.logic.health.HealthComponent;
-import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.notifications.NotificationMessageEvent;
 import org.terasology.logic.players.PlayerCharacterComponent;
 import org.terasology.math.geom.Vector3f;
 
 @RegisterSystem(RegisterMode.CLIENT)
-public class ReviveStoneClientSystem extends BaseComponentSystem {
+public class RevivalStoneClientSystem extends BaseComponentSystem {
+
+    private static final Logger logger = LoggerFactory.getLogger(RevivalStoneClientSystem.class);
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {PlayerCharacterComponent.class})
-    public void onDeath(BeforeDestroyEvent event, EntityRef player, LocationComponent locationComponent, RevivePlayerComponent revivePlayerComponent) {
+    public void onPlayerDeath(BeforeDestroyEvent event, EntityRef player, LocationComponent locationComponent, RevivePlayerComponent revivePlayerComponent) {
         if (revivePlayerComponent.location != null) {
             HealthComponent healthComponent = player.getComponent(HealthComponent.class);
             healthComponent.currentHealth = healthComponent.maxHealth;
             player.saveComponent(healthComponent);
             player.send(new CharacterTeleportEvent(revivePlayerComponent.location));
+            event.consume();
         }
     }
 
     @ReceiveEvent
-    public void onBluePortalActivate(ActivateEvent event, EntityRef entity, RevivalStoneComponent revivalStoneComponent) {
+    public void onRevivalStoneInteract(ActivateEvent event, EntityRef entity, RevivalStoneComponent revivalStoneComponent) {
         EntityRef player = event.getInstigator();
         EntityRef client = player.getOwner();
         if (revivalStoneComponent.activated) {
@@ -56,7 +60,9 @@ public class ReviveStoneClientSystem extends BaseComponentSystem {
             revivalStoneComponent.activated = true;
             client.send(new NotificationMessageEvent("Activated Revival Stone", client));
             Vector3f location = entity.getComponent(LocationComponent.class).getWorldPosition();
-            player.addOrSaveComponent(new RevivePlayerComponent(location.add(1,0,1)));
+            RevivePlayerComponent revivePlayerComponent = new RevivePlayerComponent();
+            revivePlayerComponent.location = location.add(1, 1, 1);
+            player.addOrSaveComponent(revivePlayerComponent);
         }
         entity.saveComponent(revivalStoneComponent);
     }

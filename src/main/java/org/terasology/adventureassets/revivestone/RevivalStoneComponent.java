@@ -16,12 +16,11 @@
 package org.terasology.adventureassets.revivestone;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3f;
 
 /**
  * This component is attached to every revival stone
  */
 
 public class RevivalStoneComponent implements Component {
-    public boolean activated;
+    public boolean activated = false;
 }

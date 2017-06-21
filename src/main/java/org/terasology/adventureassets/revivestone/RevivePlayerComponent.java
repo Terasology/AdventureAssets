@@ -24,8 +24,4 @@ import org.terasology.math.geom.Vector3f;
 
 public class RevivePlayerComponent implements Component {
     public Vector3f location;
-
-    public RevivePlayerComponent(Vector3f location) {
-        this.location = location;
-    }
 }
