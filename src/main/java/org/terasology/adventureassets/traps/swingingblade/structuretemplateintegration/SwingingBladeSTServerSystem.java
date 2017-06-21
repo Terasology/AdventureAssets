@@ -27,7 +27,6 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.components.AddItemsToChestComponent;
 import org.terasology.structureTemplates.components.ScheduleStructurePlacementComponent;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
@@ -54,7 +53,7 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onSpawnStructure(StructureBlocksSpawnedEvent event, EntityRef entity,
-                                                  AddSwingingBladeComponent addSwingingBladeComponent) {
+                                 AddSwingingBladeComponent addSwingingBladeComponent) {
         configureSwingingBlades(addSwingingBladeComponent, event.getTransformation());
     }
 
@@ -68,6 +67,7 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
      * This method is called only after the OnActivatedComponent for the {@link SwingingBladeComponent} has executed.<br/>
      * Note: only the properties of the Swinging Blade should be overwritten in the {@link SwingingBladeComponent},
      * since the existing {@link SwingingBladeComponent} already has a list for childrenEntities (rod, blade and mesh).
+     *
      * @param addSwingingBladeComponent
      * @param transformation
      */
@@ -97,7 +97,7 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
 
         List<AddSwingingBladeComponent.SwingingBladesToSpawn> swingingBladesToSpawn = new ArrayList<>();
 
-        for (Vector3i position: event.findAbsolutePositionsOf(blockFamily)) {
+        for (Vector3i position : event.findAbsolutePositionsOf(blockFamily)) {
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(position);
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
             SwingingBladeComponent swingingBladeComponent = blockEntity.getComponent(SwingingBladeComponent.class);

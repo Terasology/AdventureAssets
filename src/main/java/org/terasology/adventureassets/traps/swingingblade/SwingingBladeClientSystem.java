@@ -22,29 +22,18 @@ import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.entitySystem.entity.lifecycleEvents.OnAddedComponent;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.health.BeforeDamagedEvent;
-import org.terasology.logic.health.BeforeDestroyEvent;
-import org.terasology.logic.health.DestroyEvent;
-import org.terasology.logic.health.DoDestroyEvent;
 import org.terasology.logic.location.Location;
-import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
-import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.entity.CreateBlockDropsEvent;
-import org.terasology.world.block.items.BlockItemComponent;
-import org.terasology.world.block.items.OnBlockItemPlaced;
 import org.terasology.world.block.items.OnBlockToItem;
 
 @RegisterSystem(RegisterMode.CLIENT)
@@ -58,6 +47,8 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     private AssetManager assetManager;
     @In
     private Time time;
+    @In
+    private SwingingBladeRotator swingingBladeRotator;
 
     /**
      * This method creates the mesh entity when the {@link SwingingBladeComponent} is activated. The rod and blade
@@ -68,6 +59,7 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
      * {@link SwingingBladeServerSystem#onBlockToItem(OnBlockToItem, EntityRef, SwingingBladeComponent)} gets called.
      * So, the saved properties (amplitude, time-period, offset etc) are transferred after this, maintaining
      * only the childrenEntities list created here.
+     *
      * @param event
      * @param entity
      * @param swingingBladeComponent
@@ -87,19 +79,6 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
 
     @Override
     public void update(float delta) {
-        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class, BlockComponent.class)) {
-            LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
-            SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
-            if (locationComponent != null && swingingBladeComponent.isSwinging) {
-                float t = time.getGameTime();
-                float timePeriod = swingingBladeComponent.timePeriod;
-                float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
-                float w = (float) (2 * Math.PI / timePeriod);
-                pitch = (float) (A * Math.cos(w * t + phi));
-                Quat4f rotation = locationComponent.getLocalRotation();
-                locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
-                blade.saveComponent(locationComponent);
-            }
-        }
+        swingingBladeRotator.updateSwingingBladeRotation();
     }
 }

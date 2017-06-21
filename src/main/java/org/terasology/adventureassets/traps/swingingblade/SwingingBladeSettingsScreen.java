@@ -19,22 +19,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.input.cameraTarget.CameraTargetSystem;
-import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
-import org.terasology.protobuf.EntityData;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.BaseInteractionScreen;
-import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.UIWidget;
-import org.terasology.rendering.nui.layouts.ColumnLayout;
-import org.terasology.rendering.nui.layouts.RowLayout;
-import org.terasology.rendering.nui.layouts.ScrollableArea;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UICheckbox;
-import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIText;
 
 /**
@@ -105,7 +97,7 @@ public class SwingingBladeSettingsScreen extends BaseInteractionScreen {
             double yawValue = Math.toRadians(Double.parseDouble(yaw.getText()));
             double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
             double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));
-            locationComponent.setWorldRotation(new Quat4f((float) yawValue,(float) pitchValue,(float) rollValue));
+            locationComponent.setWorldRotation(new Quat4f((float) yawValue, (float) pitchValue, (float) rollValue));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

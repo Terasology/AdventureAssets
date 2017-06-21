@@ -18,6 +18,7 @@ package org.terasology.adventureassets.traps.wipeout;
 import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.math.geom.Quat4f;
 import org.terasology.world.block.ForceBlockActive;
 
 import java.util.List;
@@ -47,6 +48,11 @@ public class WipeOutComponent implements Component {
      * To set the wipe out motion direction (1: anticlockwise, -1:clockwise)
      */
     public int direction = 1;
+
+    /**
+     * Saved rotation extracted when block turns to item
+     */
+    public Quat4f rotation = new Quat4f(Quat4f.IDENTITY);
 
     public List<EntityRef> childrenEntities = Lists.newArrayList();
 }
