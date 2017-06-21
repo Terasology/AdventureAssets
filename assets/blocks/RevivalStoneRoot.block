@@ -1,0 +1,17 @@
+{
+  "displayName": "Revival Stone Root",
+  "hardness": 12,
+  "mass": 50,
+  "attachmentAllowed": false,
+  "rotation": "horizontal",
+  "tiles": {
+    "all": "FireballLauncher"
+  },
+  "entity": {
+    "prefab": "AdventureAssets:RevivalStoneRoot"
+  },
+  "inventory": {
+    "stackable": false,
+    "directPickup": true
+  }
+}
