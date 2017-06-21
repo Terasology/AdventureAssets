@@ -36,6 +36,7 @@ public class AddFireballLauncherComponent implements Component {
     @MappedContainer
     public static class FireballLauncherToSpawn {
         public Vector3i position;
+        public Quat4f rotation = new Quat4f(0, 0, 0, 1);
         public boolean isFiring;
         public float timePeriod;
         public float offset;

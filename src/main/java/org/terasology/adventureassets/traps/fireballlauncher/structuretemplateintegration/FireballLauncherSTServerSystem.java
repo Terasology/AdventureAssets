@@ -25,6 +25,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.Side;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
@@ -71,6 +72,7 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
     private void configureFireballLaunchers(AddFireballLauncherComponent addFireballLauncherComponent, BlockRegionTransform transformation) {
         for (AddFireballLauncherComponent.FireballLauncherToSpawn f : addFireballLauncherComponent.fireballLaunchersToSpawn) {
             Vector3i absolutePosition = transformation.transformVector3i(f.position);
+            Quat4f absoluteRotation = transformation.transformRotation(f.rotation);
             EntityRef fireballLauncher = blockEntityRegistry.getBlockEntityAt(absolutePosition);
             FireballLauncherComponent fireballLauncherComponent = fireballLauncher.getComponent(FireballLauncherComponent.class);
             fireballLauncherComponent.isFiring = f.isFiring;
@@ -81,6 +83,9 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
             fireballLauncherComponent.damageAmount = f.damageAmount;
             fireballLauncherComponent.health = f.health;
             fireballLauncher.saveComponent(fireballLauncherComponent);
+            LocationComponent locationComponent = fireballLauncher.getComponent(LocationComponent.class);
+            locationComponent.setWorldRotation(absoluteRotation);
+            fireballLauncher.addOrSaveComponent(locationComponent);
 
         }
     }
@@ -100,6 +105,7 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
             AddFireballLauncherComponent.FireballLauncherToSpawn fireballLauncherToSpawn = new AddFireballLauncherComponent.FireballLauncherToSpawn();
             Vector3i absolutePosition = new Vector3i(blockComponent.getPosition());
             fireballLauncherToSpawn.position = transformToRelative.transformVector3i(absolutePosition);
+            fireballLauncherToSpawn.rotation = transformToRelative.transformRotation(blockEntity.getComponent(LocationComponent.class).getWorldRotation());
             fireballLauncherToSpawn.isFiring = fireballLauncherComponent.isFiring;
             fireballLauncherToSpawn.timePeriod = fireballLauncherComponent.timePeriod;
             fireballLauncherToSpawn.offset = fireballLauncherComponent.offset;
@@ -134,6 +140,15 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
                     sb.append(", ");
                     sb.append(fireballLauncher.position.z);
                     sb.append("],\n");
+                    sb.append("                \"rotation\": [");
+                    sb.append(fireballLauncher.rotation.x);
+                    sb.append(", ");
+                    sb.append(fireballLauncher.rotation.y);
+                    sb.append(", ");
+                    sb.append(fireballLauncher.rotation.z);
+                    sb.append(", ");
+                    sb.append(fireballLauncher.rotation.w);
+                    sb.append("],\n");
                     sb.append("                \"isFiring\": ");
                     sb.append(fireballLauncher.isFiring);
                     sb.append(",\n");
@@ -163,6 +178,6 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
                 });
         sb.append("        ]\n");
         sb.append("    }");
-        event.addJsonForComponent(sb.toString(), ScheduleStructurePlacementComponent.class);
+        event.addJsonForComponent(sb.toString(), AddFireballLauncherComponent.class);
     }
 }
