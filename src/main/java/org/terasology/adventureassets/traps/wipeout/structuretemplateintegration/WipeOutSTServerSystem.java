@@ -156,6 +156,9 @@ public class WipeOutSTServerSystem extends BaseComponentSystem {
                     sb.append("                \"offset\": ");
                     sb.append(wipeOut.offset);
                     sb.append("\n");
+                    sb.append("                \"isRotating\": ");
+                    sb.append(wipeOut.isRotating);
+                    sb.append("\n");
                     if (last) {
                         sb.append("            }\n");
                     } else {
