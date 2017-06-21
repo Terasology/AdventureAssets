@@ -17,7 +17,6 @@ package org.terasology.adventureassets.traps.wipeout.structuretemplateintegratio
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.adventureassets.traps.fireballlauncher.structuretemplateintegration.AddFireballLauncherComponent;
 import org.terasology.adventureassets.traps.wipeout.WipeOutComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -28,7 +27,6 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.components.ScheduleStructurePlacementComponent;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
 import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;

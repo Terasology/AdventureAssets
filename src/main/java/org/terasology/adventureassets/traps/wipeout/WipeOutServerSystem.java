@@ -18,36 +18,25 @@ package org.terasology.adventureassets.traps.wipeout;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeClientSystem;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 import org.terasology.world.block.items.OnBlockToItem;
@@ -73,22 +62,27 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
      * filtering the {@link WipeOutComponent} gets executed.
      * So the placedBlock entity already has the right childrenEntities and only needs the trap properties to be
      * transferred.
+     *
      * @param event
      * @param itemEntity
      * @param wipeOutComponent
      */
     @ReceiveEvent(components = {BlockItemComponent.class})
     public void onItemToBlock(OnBlockItemPlaced event, EntityRef itemEntity,
-                                  WipeOutComponent wipeOutComponent) {
+                              WipeOutComponent wipeOutComponent) {
         EntityRef entity = event.getPlacedBlock();
         WipeOutComponent component = entity.getComponent(WipeOutComponent.class);
         wipeOutComponent.childrenEntities = component.childrenEntities;
         entity.addOrSaveComponent(wipeOutComponent);
+        LocationComponent locationComponent = entity.getComponent(LocationComponent.class);
+        locationComponent.setWorldRotation(wipeOutComponent.rotation);
+        entity.addOrSaveComponent(locationComponent);
     }
 
     /**
      * This method transfers the stored properties in the block's {@link WipeOutComponent} to the new item created.
      * It also destroys the children entities, i.e. the rod, surfboard and the mesh.
+     *
      * @param event
      * @param blockEntity
      * @param wipeOutComponent
@@ -99,6 +93,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
             e.destroy();
         }
         wipeOutComponent.childrenEntities = Lists.newArrayList();
+        wipeOutComponent.rotation = blockEntity.getComponent(LocationComponent.class).getWorldRotation();
         event.getItem().addOrSaveComponent(wipeOutComponent);
     }
 
@@ -110,13 +105,14 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
      * {@link WipeOutServerSystem#onBlockToItem(OnBlockToItem, EntityRef, WipeOutComponent)} gets called.
      * So, the saved properties (offset, time-period etc) are transferred after this, maintaining
      * only the childrenEntities list created here.
+     *
      * @param event
      * @param entity
      * @param wipeOutComponent
      */
     @ReceiveEvent(components = {WipeOutComponent.class, BlockComponent.class})
     public void onWipeOutActivated(OnActivatedComponent event, EntityRef entity,
-                     WipeOutComponent wipeOutComponent) {
+                                   WipeOutComponent wipeOutComponent) {
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:wipeOutRod", Prefab.class).get();
         EntityBuilder rodEntityBuilder = entityManager.newBuilder(rodPrefab);
         rodEntityBuilder.setOwner(entity);
@@ -145,7 +141,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
                 float t = time.getGameTime();
                 float timePeriod = wipeOutComponent.timePeriod;
                 float offset = wipeOutComponent.offset;
-                float angle = (float) (((t + offset) % timePeriod)*(2 * Math.PI / timePeriod))* wipeOutComponent.direction;
+                float angle = (float) (((t + offset) % timePeriod) * (2 * Math.PI / timePeriod)) * wipeOutComponent.direction;
                 Quat4f rotation = locationComponent.getLocalRotation();
                 locationComponent.setLocalRotation(new Quat4f(angle, rotation.getPitch(), rotation.getRoll()));
                 wipeOut.saveComponent(locationComponent);

@@ -30,7 +30,6 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.health.HealthComponent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.projectile.FireProjectileEvent;
 import org.terasology.projectile.ProjectileActionComponent;
@@ -104,7 +103,7 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
                 Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition();
                 fireball.send(new FireProjectileEvent(pos, fireballLauncherComponent.direction));
 
-                fireballLauncherComponent.lastShotTime = (float) Math.floor(time.getGameTime()/fireballLauncherComponent.timePeriod)
+                fireballLauncherComponent.lastShotTime = (float) Math.floor(time.getGameTime() / fireballLauncherComponent.timePeriod)
                         * fireballLauncherComponent.timePeriod + fireballLauncherComponent.offset;
                 fireballLauncher.saveComponent(fireballLauncherComponent);
             }

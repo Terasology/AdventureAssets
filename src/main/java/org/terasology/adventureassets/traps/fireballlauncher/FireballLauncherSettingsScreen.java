@@ -80,7 +80,7 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
         timePeriod.setText("" + fireballLauncherComponent.timePeriod);
         offset.setText("" + fireballLauncherComponent.offset);
         maxDistance.setText("" + fireballLauncherComponent.maxDistance);
-        damageAmount.setText(""  + fireballLauncherComponent.damageAmount);
+        damageAmount.setText("" + fireballLauncherComponent.damageAmount);
         Vector3f direction = fireballLauncherComponent.direction;
 
         x.setText(String.format("%.2f", direction.getX()));

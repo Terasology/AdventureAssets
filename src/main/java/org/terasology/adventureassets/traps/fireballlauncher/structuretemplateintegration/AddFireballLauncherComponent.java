@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * This component is intended to be used in structure templates.
- *
+ * <p>
  * It adds items (incl. block items) to one ore more chests when the entity receives a
  * {@link SpawnStructureEvent}.
  */
@@ -36,7 +36,6 @@ public class AddFireballLauncherComponent implements Component {
     @MappedContainer
     public static class FireballLauncherToSpawn {
         public Vector3i position;
-        public Quat4f rotation = new Quat4f(0, 0, 0, 1);
         public boolean isFiring;
         public float timePeriod;
         public float offset;

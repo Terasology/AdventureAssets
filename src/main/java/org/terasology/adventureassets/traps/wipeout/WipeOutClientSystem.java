@@ -17,8 +17,6 @@ package org.terasology.adventureassets.traps.wipeout;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeServerSystem;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
@@ -60,13 +58,14 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
      * {@link WipeOutServerSystem#onBlockToItem(OnBlockToItem, EntityRef, WipeOutComponent)} gets called.
      * So, the saved properties (amplitude, time-period, offset etc) are transferred after this, maintaining
      * only the childrenEntities list created here.
+     *
      * @param event
      * @param entity
      * @param wipeOutComponent
      */
     @ReceiveEvent(components = {WipeOutComponent.class, BlockComponent.class})
     public void onWipeOutActivated(OnActivatedComponent event, EntityRef entity,
-                                         WipeOutComponent wipeOutComponent) {
+                                   WipeOutComponent wipeOutComponent) {
         Prefab wipeOutPrefab = assetManager.getAsset("AdventureAssets:wipeOutMesh", Prefab.class).get();
         EntityBuilder wipeOutEntityBuilder = entityManager.newBuilder(wipeOutPrefab);
         wipeOutEntityBuilder.setOwner(entity);
@@ -86,7 +85,7 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
                 float t = time.getGameTime();
                 float timePeriod = wipeOutComponent.timePeriod;
                 float offset = wipeOutComponent.offset;
-                float angle = (float) (((t + offset) % timePeriod)*(2 * Math.PI / timePeriod))* wipeOutComponent.direction;
+                float angle = (float) (((t + offset) % timePeriod) * (2 * Math.PI / timePeriod)) * wipeOutComponent.direction;
                 Quat4f rotation = locationComponent.getLocalRotation();
                 locationComponent.setLocalRotation(new Quat4f(angle, rotation.getPitch(), rotation.getRoll()));
                 wipeOut.saveComponent(locationComponent);

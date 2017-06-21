@@ -16,18 +16,16 @@
 package org.terasology.adventureassets.traps.swingingblade.structuretemplateintegration;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.structureTemplates.events.SpawnStructureEvent;
-import org.terasology.world.block.family.BlockFamily;
 
 import java.util.List;
 
 /**
  * This component is intended to be used in structure templates.
- *
+ * <p>
  * It adds items (incl. block items) to one ore more chests when the entity receives a
  * {@link SpawnStructureEvent}.
  */
