@@ -21,7 +21,7 @@ import org.terasology.math.geom.Quat4f;
 
 class WipeOutUtilities {
 
-    static void WipeOutRotator(EntityRef wipeOut, float gameTime) {
+    static void rotateWipeOut(EntityRef wipeOut, float gameTime) {
         LocationComponent locationComponent = wipeOut.getComponent(LocationComponent.class);
         WipeOutComponent wipeOutComponent = wipeOut.getComponent(WipeOutComponent.class);
         if (locationComponent != null && wipeOutComponent.isRotating) {
