@@ -15,39 +15,24 @@
  */
 package org.terasology.adventureassets.traps.swingingblade;
 
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
-import org.terasology.protobuf.EntityData;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
-import org.terasology.world.block.BlockComponent;
 
 class SwingingBladeUtilities {
 
-    private static EntityManager entityManager;
-    private static Time time;
-
-    static void SwingingBladeRotator() {
-        entityManager = CoreRegistry.get(EntityManager.class);
-        time = CoreRegistry.get(Time.class);
-
-        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class, BlockComponent.class)) {
-            LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
-            SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
-            if (locationComponent != null && swingingBladeComponent.isSwinging) {
-                float t = time.getGameTime();
-                float timePeriod = swingingBladeComponent.timePeriod;
-                float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
-                float w = (float) (2 * Math.PI / timePeriod);
-                pitch = (float) (A * Math.cos(w * t + phi));
-                Quat4f rotation = locationComponent.getLocalRotation();
-                locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
-                blade.saveComponent(locationComponent);
-            }
+    static void rotateSwingingBlade(EntityRef blade, float gameTime) {
+        LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
+        SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
+        if (locationComponent != null && swingingBladeComponent.isSwinging) {
+            float t = gameTime;
+            float timePeriod = swingingBladeComponent.timePeriod;
+            float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
+            float w = (float) (2 * Math.PI / timePeriod);
+            pitch = (float) (A * Math.cos(w * t + phi));
+            Quat4f rotation = locationComponent.getLocalRotation();
+            locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
+            blade.saveComponent(locationComponent);
         }
     }
 }

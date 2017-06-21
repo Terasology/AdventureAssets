@@ -134,6 +134,8 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
 
     @Override
     public void update(float delta) {
-        WipeOutUtilities.WipeOutRotator();
+        for (EntityRef wipeOut : entityManager.getEntitiesWith(WipeOutComponent.class, BlockComponent.class)) {
+            WipeOutUtilities.WipeOutRotator(wipeOut, time.getGameTime());
+        }
     }
 }

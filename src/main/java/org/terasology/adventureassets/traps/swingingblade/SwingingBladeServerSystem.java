@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
+import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -55,6 +56,8 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
     private AssetManager assetManager;
     @In
     private InventoryManager inventoryManager;
+    @In
+    private Time time;
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_LOW)
     public void onPlayerSpawnedEvent(OnPlayerSpawnedEvent event, EntityRef player) {
@@ -148,6 +151,8 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
 
     @Override
     public void update(float delta) {
-        SwingingBladeUtilities.SwingingBladeRotator();
+        for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class, BlockComponent.class)) {
+            SwingingBladeUtilities.rotateSwingingBlade(blade, time.getGameTime());
+        }
     }
 }
