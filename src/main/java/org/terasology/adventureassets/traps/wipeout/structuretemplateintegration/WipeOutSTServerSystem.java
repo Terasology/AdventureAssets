@@ -17,6 +17,7 @@ package org.terasology.adventureassets.traps.wipeout.structuretemplateintegratio
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.adventureassets.traps.fireballlauncher.structuretemplateintegration.AddFireballLauncherComponent;
 import org.terasology.adventureassets.traps.wipeout.WipeOutComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -91,7 +92,7 @@ public class WipeOutSTServerSystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent
-    public void onBuildTemplateWithScheduledStructurePlacment(BuildStructureTemplateEntityEvent event, EntityRef entity) {
+    public void onBuildTemplateWithScheduledStructurePlacement(BuildStructureTemplateEntityEvent event, EntityRef entity) {
         BlockRegionTransform transformToRelative = event.getTransformToRelative();
         BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:WipeOutRoot");
 
@@ -163,6 +164,6 @@ public class WipeOutSTServerSystem extends BaseComponentSystem {
                 });
         sb.append("        ]\n");
         sb.append("    }");
-        event.addJsonForComponent(sb.toString(), ScheduleStructurePlacementComponent.class);
+        event.addJsonForComponent(sb.toString(), AddWipeOutComponent.class);
     }
 }
