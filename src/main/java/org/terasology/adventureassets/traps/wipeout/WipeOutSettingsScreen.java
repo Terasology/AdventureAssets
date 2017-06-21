@@ -17,7 +17,6 @@ package org.terasology.adventureassets.traps.wipeout;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
@@ -100,7 +99,7 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
             double yawValue = Math.toRadians(Double.parseDouble(yaw.getText()));
             double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
             double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));
-            locationComponent.setWorldRotation(new Quat4f((float) yawValue,(float) pitchValue,(float) rollValue));
+            locationComponent.setWorldRotation(new Quat4f((float) yawValue, (float) pitchValue, (float) rollValue));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

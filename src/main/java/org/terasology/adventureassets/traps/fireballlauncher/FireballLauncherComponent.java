@@ -15,13 +15,9 @@
  */
 package org.terasology.adventureassets.traps.fireballlauncher;
 
-import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.world.block.ForceBlockActive;
-
-import java.util.List;
 
 /**
  * This component holds the data for a Fireball Launcher

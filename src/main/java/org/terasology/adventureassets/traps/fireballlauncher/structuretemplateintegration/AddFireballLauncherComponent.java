@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * This component is intended to be used in structure templates.
- *
+ * <p>
  * It adds items (incl. block items) to one ore more chests when the entity receives a
  * {@link SpawnStructureEvent}.
  */

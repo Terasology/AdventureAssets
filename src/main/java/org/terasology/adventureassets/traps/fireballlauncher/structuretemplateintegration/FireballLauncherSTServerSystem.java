@@ -18,18 +18,15 @@ package org.terasology.adventureassets.traps.fireballlauncher.structuretemplatei
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.adventureassets.traps.fireballlauncher.FireballLauncherComponent;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.Side;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.components.ScheduleStructurePlacementComponent;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
 import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;
@@ -55,7 +52,7 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onSpawnStructure(StructureBlocksSpawnedEvent event, EntityRef entity,
-                                                  AddFireballLauncherComponent addFireballLauncherComponent) {
+                                 AddFireballLauncherComponent addFireballLauncherComponent) {
         configureFireballLaunchers(addFireballLauncherComponent, event.getTransformation());
     }
 
@@ -66,6 +63,7 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
 
     /**
      * This method is used to retrieve the stored settings for each Fireball Launcher once it is spawned.
+     *
      * @param addFireballLauncherComponent
      * @param transformation
      */
@@ -97,7 +95,7 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
 
         List<AddFireballLauncherComponent.FireballLauncherToSpawn> fireballLaunchersToSpawn = new ArrayList<>();
 
-        for (Vector3i position: event.findAbsolutePositionsOf(blockFamily)) {
+        for (Vector3i position : event.findAbsolutePositionsOf(blockFamily)) {
             EntityRef blockEntity = blockEntityRegistry.getBlockEntityAt(position);
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
             FireballLauncherComponent fireballLauncherComponent = blockEntity.getComponent(FireballLauncherComponent.class);
