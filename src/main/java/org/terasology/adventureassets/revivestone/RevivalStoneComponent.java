@@ -16,11 +16,16 @@
 package org.terasology.adventureassets.revivestone;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.network.Replicate;
+import org.terasology.world.block.ForceBlockActive;
 
 /**
  * This component is attached to every revival stone
  */
 
+@ForceBlockActive
 public class RevivalStoneComponent implements Component {
+
+    @Replicate
     public boolean activated = false;
 }

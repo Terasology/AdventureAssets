@@ -26,6 +26,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterTeleportEvent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.health.BeforeDestroyEvent;
+import org.terasology.logic.health.DoHealEvent;
 import org.terasology.logic.health.HealthComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.notifications.NotificationMessageEvent;
@@ -41,9 +42,8 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
     public void onPlayerDeath(BeforeDestroyEvent event, EntityRef player, LocationComponent locationComponent, RevivePlayerComponent revivePlayerComponent) {
         if (revivePlayerComponent.location != null) {
             HealthComponent healthComponent = player.getComponent(HealthComponent.class);
-            healthComponent.currentHealth = healthComponent.maxHealth;
-            player.saveComponent(healthComponent);
             player.send(new CharacterTeleportEvent(revivePlayerComponent.location));
+            player.send(new DoHealEvent(healthComponent.maxHealth));
             event.consume();
         }
     }
