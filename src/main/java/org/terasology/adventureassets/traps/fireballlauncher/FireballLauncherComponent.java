@@ -29,6 +29,12 @@ import java.util.List;
 
 @ForceBlockActive
 public class FireballLauncherComponent implements Component {
+
+    /**
+     * Sets the fireball launcher as active or inactive
+     */
+    public boolean isFiring = true;
+
     /**
      * Time between two strikes
      */
@@ -54,4 +60,14 @@ public class FireballLauncherComponent implements Component {
      * Distance till which fireball lasts
      */
     public int maxDistance = 24;
+
+    /**
+     * Damage inflicted per collision
+     */
+    public int damageAmount = 20;
+
+    /**
+     * The fireball can inflict maximum collective damage equal to it's health
+     */
+    public int health = 50;
 }

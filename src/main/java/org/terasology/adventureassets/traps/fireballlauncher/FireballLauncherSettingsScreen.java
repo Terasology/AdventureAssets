@@ -25,6 +25,7 @@ import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.widgets.UIButton;
+import org.terasology.rendering.nui.widgets.UICheckbox;
 import org.terasology.rendering.nui.widgets.UIText;
 
 /**
@@ -33,9 +34,12 @@ import org.terasology.rendering.nui.widgets.UIText;
 public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(FireballLauncherSettingsScreen.class);
 
+    private UICheckbox isFiring;
     private UIText timePeriod;
     private UIText offset;
     private UIText maxDistance;
+    private UIText damageAmount;
+    private UIText health;
     private UIText x;
     private UIText y;
     private UIText z;
@@ -49,9 +53,12 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
 
     @Override
     public void initialise() {
+        isFiring = find("isFiring", UICheckbox.class);
         timePeriod = find("timePeriod", UIText.class);
         offset = find("offset", UIText.class);
         maxDistance = find("maxDistance", UIText.class);
+        damageAmount = find("damageAmount", UIText.class);
+        health = find("health", UIText.class);
         x = find("x", UIText.class);
         y = find("y", UIText.class);
         z = find("z", UIText.class);
@@ -71,9 +78,12 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
         fireballLauncherRoot = interactionTarget;
         fireballLauncherComponent = interactionTarget.getComponent(FireballLauncherComponent.class);
 
+        isFiring.setChecked(fireballLauncherComponent.isFiring);
         timePeriod.setText("" + fireballLauncherComponent.timePeriod);
         offset.setText("" + fireballLauncherComponent.offset);
         maxDistance.setText("" + fireballLauncherComponent.maxDistance);
+        damageAmount.setText(""  + fireballLauncherComponent.damageAmount);
+        health.setText(""  + fireballLauncherComponent.health);
         Vector3f direction = fireballLauncherComponent.direction;
 
         x.setText(String.format("%.2f", direction.getX()));
@@ -83,9 +93,11 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
 
     private void onSaveButton(UIWidget button) {
         try {
+            fireballLauncherComponent.isFiring = isFiring.isChecked();
             fireballLauncherComponent.timePeriod = Float.parseFloat(timePeriod.getText());
             fireballLauncherComponent.offset = Float.parseFloat(offset.getText());
             fireballLauncherComponent.maxDistance = Integer.parseInt(maxDistance.getText());
+            fireballLauncherComponent.damageAmount = Integer.parseInt(damageAmount.getText());
             double xValue = Double.parseDouble(x.getText());
             double yValue = Double.parseDouble(y.getText());
             double zValue = Double.parseDouble(z.getText());
