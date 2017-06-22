@@ -18,6 +18,7 @@ package org.terasology.adventureassets.revivestone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -26,15 +27,20 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.notifications.NotificationMessageEvent;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.event.RespawnRequestEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.network.ClientComponent;
+import org.terasology.registry.In;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class RevivalStoneClientSystem extends BaseComponentSystem {
 
     private static final Logger logger = LoggerFactory.getLogger(RevivalStoneClientSystem.class);
+
+    @In
+    private LocalPlayer localPlayer;
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {ClientComponent.class})
     public void setSpawnLocationOnRespawnRequest(RespawnRequestEvent event, EntityRef entity) {
@@ -57,13 +63,31 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
             client.send(new NotificationMessageEvent("Deactivated Revival Stone", client));
             player.removeComponent(RevivePlayerComponent.class);
         } else {
+            if (player.hasComponent(RevivePlayerComponent.class)) {
+                EntityRef prevRevivalStone = player.getComponent(RevivePlayerComponent.class).revivalStoneEntity;
+                RevivalStoneComponent prevRevivalStoneComponent = prevRevivalStone.getComponent(RevivalStoneComponent.class);
+                prevRevivalStoneComponent.activated = false;
+                prevRevivalStone.saveComponent(prevRevivalStoneComponent);
+                player.removeComponent(RevivePlayerComponent.class);
+                client.send(new NotificationMessageEvent("Deactivated the previous Revival Stone", client));
+            }
             revivalStoneComponent.activated = true;
             client.send(new NotificationMessageEvent("Activated Revival Stone", client));
             Vector3f location = entity.getComponent(LocationComponent.class).getWorldPosition();
             RevivePlayerComponent revivePlayerComponent = new RevivePlayerComponent();
             revivePlayerComponent.location = location.add(1, 0, 1);
-            player.addOrSaveComponent(revivePlayerComponent);
+            revivePlayerComponent.revivalStoneEntity = entity;
+            player.addComponent(revivePlayerComponent);
         }
         entity.saveComponent(revivalStoneComponent);
+    }
+
+    @ReceiveEvent
+    public void onRemove(BeforeRemoveComponent event, EntityRef entityRef, RevivalStoneComponent revivalStoneComponent) {
+        if (revivalStoneComponent.activated) {
+            localPlayer.getCharacterEntity().removeComponent(RevivePlayerComponent.class);
+            EntityRef client = localPlayer.getClientEntity();
+            client.send(new NotificationMessageEvent("Deactivated Revival Stone due to destruction", client));
+        }
     }
 }
