@@ -23,28 +23,28 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.characters.CharacterTeleportEvent;
 import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.health.BeforeDestroyEvent;
-import org.terasology.logic.health.DoHealEvent;
-import org.terasology.logic.health.HealthComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.notifications.NotificationMessageEvent;
-import org.terasology.logic.players.PlayerCharacterComponent;
+import org.terasology.logic.players.event.RespawnRequestEvent;
+import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.network.ClientComponent;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class RevivalStoneClientSystem extends BaseComponentSystem {
 
     private static final Logger logger = LoggerFactory.getLogger(RevivalStoneClientSystem.class);
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {PlayerCharacterComponent.class})
-    public void onPlayerDeath(BeforeDestroyEvent event, EntityRef player, LocationComponent locationComponent, RevivePlayerComponent revivePlayerComponent) {
-        if (revivePlayerComponent.location != null) {
-            HealthComponent healthComponent = player.getComponent(HealthComponent.class);
-            player.send(new CharacterTeleportEvent(revivePlayerComponent.location));
-            player.send(new DoHealEvent(healthComponent.maxHealth));
-            event.consume();
+    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {ClientComponent.class})
+    public void setSpawnLocationOnRespawnRequest(RespawnRequestEvent event, EntityRef entity) {
+        EntityRef character = entity.getComponent(ClientComponent.class).character;
+        if (character.hasComponent(RevivePlayerComponent.class)) {
+            Vector3f spawnPosition = character.getComponent(RevivePlayerComponent.class).location;
+            LocationComponent loc = entity.getComponent(LocationComponent.class);
+            loc.setWorldPosition(spawnPosition);
+            loc.setLocalRotation(new Quat4f());
+            entity.saveComponent(loc);
         }
     }
 
@@ -61,7 +61,7 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
             client.send(new NotificationMessageEvent("Activated Revival Stone", client));
             Vector3f location = entity.getComponent(LocationComponent.class).getWorldPosition();
             RevivePlayerComponent revivePlayerComponent = new RevivePlayerComponent();
-            revivePlayerComponent.location = location.add(1, 1, 1);
+            revivePlayerComponent.location = location.add(1, 0, 1);
             player.addOrSaveComponent(revivePlayerComponent);
         }
         entity.saveComponent(revivalStoneComponent);
