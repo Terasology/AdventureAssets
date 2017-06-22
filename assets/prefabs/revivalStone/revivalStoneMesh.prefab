@@ -1,0 +1,7 @@
+{
+  "Mesh": {
+    "mesh": "AdventureAssets:angel",
+    "material": "AdventureAssets:angelInactive"
+  },
+  "Location" : {}
+}

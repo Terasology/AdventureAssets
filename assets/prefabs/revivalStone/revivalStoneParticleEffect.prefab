@@ -1,0 +1,53 @@
+{
+    "location" : {},
+    "particleDataSprite": {
+        "texture": "AdventureAssets:blueParticle"
+    },
+    "positionRangeGenerator": {
+        "minPosition": [-0.5, 0, -0.5],
+        "maxPosition": [0.5, 0, 0.5]
+    },
+    "energyRangeGenerator": {
+        "minEnergy": 0.5,
+        "maxEnergy": 1.5
+    },
+    "scaleRangeGenerator": {
+        "minScale": [0.060, 0.060, 0.060],
+        "maxScale": [0.060, 0.060, 0.060]
+    },
+    "velocityRangeGenerator": {
+        "minVelocity": [-0.5, 1, -0.5],
+        "maxVelocity": [0.5, 2, 0.5]
+    },
+    "velocityAffector": {},
+    "particleEmitter": {
+        "lifeTime": 2,
+        "spawnRateMax": 250,
+        "spawnRateMin": 250,
+        "particleSpawnsLeft": 500,
+        "maxParticles": 500,
+        "particleCollision": false,
+        "destroyEntityWhenDead": true
+    },
+    "engine:Light": {
+        "lightColorAmbient": [
+            0.45,
+            0.5,
+            1.0
+        ],
+        "lightAttenuationRange": 16.0,
+        "lightSpecularPower": 1.0,
+        "lightSpecularIntensity": 0.1,
+        "lightColorDiffuse": [
+            0.45,
+            0.5,
+            1.0
+        ],
+        "simulateFading": false,
+        "lightAmbientIntensity": 1.0,
+        "lightType": "POINT",
+        "lightRenderingDistance": 0.0,
+        "lightAttenuationFalloff": 1.25,
+        "lightDiffuseIntensity": 1.0
+    }
+}

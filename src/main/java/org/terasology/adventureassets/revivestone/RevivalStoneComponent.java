@@ -15,9 +15,13 @@
  */
 package org.terasology.adventureassets.revivestone;
 
+import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.network.Replicate;
 import org.terasology.world.block.ForceBlockActive;
+
+import java.util.List;
 
 /**
  * This component is attached to every revival stone
@@ -28,4 +32,6 @@ public class RevivalStoneComponent implements Component {
 
     @Replicate
     public boolean activated = false;
+
+    public EntityRef meshEntity;
 }
