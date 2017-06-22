@@ -59,14 +59,6 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
     @In
     private Time time;
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_LOW)
-    public void onPlayerSpawnedEvent(OnPlayerSpawnedEvent event, EntityRef player) {
-        EntityRef toolbox = entityManager.create("StructureTemplates:toolbox");
-        inventoryManager.giveItem(player, EntityRef.NULL, toolbox);
-        Prefab prefab = assetManager.getAsset("AdventureAssets:bladeRoom", Prefab.class).get();
-        toolbox.send(new StructureSpawnerFromToolboxRequest(prefab));
-    }
-
     @ReceiveEvent(components = {SwingingBladeComponent.class, LocationComponent.class, BlockComponent.class})
     public void onSwingingBladeDestroyed(BeforeRemoveComponent event, EntityRef entity,
                                          SwingingBladeComponent swingingBladeComponent) {
