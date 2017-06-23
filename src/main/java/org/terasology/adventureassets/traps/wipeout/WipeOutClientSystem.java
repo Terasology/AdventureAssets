@@ -30,7 +30,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.Location;
-import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
@@ -79,17 +78,7 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
     @Override
     public void update(float delta) {
         for (EntityRef wipeOut : entityManager.getEntitiesWith(WipeOutComponent.class, BlockComponent.class)) {
-            LocationComponent locationComponent = wipeOut.getComponent(LocationComponent.class);
-            WipeOutComponent wipeOutComponent = wipeOut.getComponent(WipeOutComponent.class);
-            if (locationComponent != null && wipeOutComponent.isRotating) {
-                float t = time.getGameTime();
-                float timePeriod = wipeOutComponent.timePeriod;
-                float offset = wipeOutComponent.offset;
-                float angle = (float) (((t + offset) % timePeriod) * (2 * Math.PI / timePeriod)) * wipeOutComponent.direction;
-                Quat4f rotation = locationComponent.getLocalRotation();
-                locationComponent.setLocalRotation(new Quat4f(angle, rotation.getPitch(), rotation.getRoll()));
-                wipeOut.saveComponent(locationComponent);
-            }
+            WipeOutUtilities.rotateWipeOut(wipeOut, time.getGameTime());
         }
     }
 }

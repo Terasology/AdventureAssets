@@ -30,7 +30,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.Location;
-import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
@@ -79,18 +78,7 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     @Override
     public void update(float delta) {
         for (EntityRef blade : entityManager.getEntitiesWith(SwingingBladeComponent.class, BlockComponent.class)) {
-            LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
-            SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
-            if (locationComponent != null && swingingBladeComponent.isSwinging) {
-                float t = time.getGameTime();
-                float timePeriod = swingingBladeComponent.timePeriod;
-                float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
-                float w = (float) (2 * Math.PI / timePeriod);
-                pitch = (float) (A * Math.cos(w * t + phi));
-                Quat4f rotation = locationComponent.getLocalRotation();
-                locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
-                blade.saveComponent(locationComponent);
-            }
+            SwingingBladeUtilities.rotateSwingingBlade(blade, time.getGameTime());
         }
     }
 }

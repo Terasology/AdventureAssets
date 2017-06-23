@@ -135,17 +135,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
     @Override
     public void update(float delta) {
         for (EntityRef wipeOut : entityManager.getEntitiesWith(WipeOutComponent.class, BlockComponent.class)) {
-            LocationComponent locationComponent = wipeOut.getComponent(LocationComponent.class);
-            WipeOutComponent wipeOutComponent = wipeOut.getComponent(WipeOutComponent.class);
-            if (locationComponent != null && wipeOutComponent.isRotating) {
-                float t = time.getGameTime();
-                float timePeriod = wipeOutComponent.timePeriod;
-                float offset = wipeOutComponent.offset;
-                float angle = (float) (((t + offset) % timePeriod) * (2 * Math.PI / timePeriod)) * wipeOutComponent.direction;
-                Quat4f rotation = locationComponent.getLocalRotation();
-                locationComponent.setLocalRotation(new Quat4f(angle, rotation.getPitch(), rotation.getRoll()));
-                wipeOut.saveComponent(locationComponent);
-            }
+            WipeOutUtilities.rotateWipeOut(wipeOut, time.getGameTime());
         }
     }
 }
