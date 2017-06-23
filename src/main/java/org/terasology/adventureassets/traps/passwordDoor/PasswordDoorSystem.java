@@ -55,6 +55,8 @@ public class PasswordDoorSystem extends BaseComponentSystem {
         logger.info("Password Door placed");
         EntityRef placedDoor = event.getPlacedDoor();
         placedDoor.addComponent(doorItem.getComponent(PasswordDoorComponent.class));
+        SetPasswordDoorScreen passwordDoorScreen = nuiManager.pushScreen("AdventureAssets:setPasswordDoorScreen", SetPasswordDoorScreen.class);
+        passwordDoorScreen.setDoorEntity(event.getPlacedDoor());
     }
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH,

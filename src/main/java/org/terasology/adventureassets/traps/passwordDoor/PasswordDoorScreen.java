@@ -56,8 +56,6 @@ public class PasswordDoorScreen extends CoreScreenLayer {
     private String passwordString;
 
     @In
-    private NUIManager nuiManager;
-    @In
     private WorldProvider worldProvider;
     @In
     private BlockEntityRegistry blockEntityRegistry;
