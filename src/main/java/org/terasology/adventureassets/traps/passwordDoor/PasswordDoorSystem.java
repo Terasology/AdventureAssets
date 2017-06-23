@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.audio.events.PlaySoundEvent;
 import org.terasology.core.logic.door.DoorComponent;
-import org.terasology.core.logic.door.DoorPlacedEvent;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -49,14 +49,10 @@ public class PasswordDoorSystem extends BaseComponentSystem {
     @In
     private NUIManager nuiManager;
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH,
-            components = {DoorComponent.class, PasswordDoorComponent.class})
-    public void onDoorPlaced(DoorPlacedEvent event, EntityRef doorItem) {
-        logger.info("Password Door placed");
-        EntityRef placedDoor = event.getPlacedDoor();
-        placedDoor.addComponent(doorItem.getComponent(PasswordDoorComponent.class));
+    @ReceiveEvent(components = {PasswordDoorComponent.class, BlockRegionComponent.class})
+    public void onComponentActivated(OnActivatedComponent event, EntityRef entity) {
         SetPasswordDoorScreen passwordDoorScreen = nuiManager.pushScreen("AdventureAssets:setPasswordDoorScreen", SetPasswordDoorScreen.class);
-        passwordDoorScreen.setDoorEntity(event.getPlacedDoor());
+        passwordDoorScreen.setDoorEntity(entity);
     }
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH,
@@ -67,7 +63,6 @@ public class PasswordDoorSystem extends BaseComponentSystem {
         if (door.isOpen) {
             closeDoor(entity, door);
         } else {
-            logger.info("trying to open");
             PasswordDoorScreen passwordDoorScreen = nuiManager.pushScreen("AdventureAssets:passwordDoorScreen", PasswordDoorScreen.class);
             passwordDoorScreen.setDoorEntity(entity);
         }

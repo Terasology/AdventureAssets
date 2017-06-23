@@ -5,7 +5,7 @@
       "text-shadowed": false,
       "text-color": "FF0000FF",
       "text-align-horizontal": "left",
-      "fixed-height": 1
+      "fixed-height": 20
     }
   }
 }
