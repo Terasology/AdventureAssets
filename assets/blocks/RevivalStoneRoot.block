@@ -2,10 +2,11 @@
   "displayName": "Revival Stone Root",
   "hardness": 12,
   "mass": 50,
+  "shape" : "engine:eighthBlock",
   "attachmentAllowed": false,
   "rotation": "horizontal",
   "tiles": {
-    "all": "FireballLauncher"
+    "all": "pedestal"
   },
   "entity": {
     "prefab": "AdventureAssets:RevivalStoneRoot"
