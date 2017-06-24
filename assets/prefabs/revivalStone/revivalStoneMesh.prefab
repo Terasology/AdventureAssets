@@ -3,5 +3,15 @@
     "mesh": "AdventureAssets:angel",
     "material": "AdventureAssets:angelInactive"
   },
-  "Location" : {}
+  "Location": {},
+  "BoxShape": {
+    "extents" : [0.7, 3, 0.7]
+  },
+  "RigidBody": {
+    "kinematic": true,
+    "collisionGroup": "engine:world",
+    "collidesWith": [
+      "engine:world"
+    ]
+  }
 }

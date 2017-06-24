@@ -69,7 +69,7 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
         EntityRef angelMesh = angelMeshEntityBuilder.build();
         revivalStoneComponent.meshEntity = angelMesh;
         entity.saveComponent(revivalStoneComponent);
-        Location.attachChild(entity, angelMesh, new Vector3f(0, 0, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, angelMesh, new Vector3f(0, 1f, 0), new Quat4f(Quat4f.IDENTITY));
     }
 
     @ReceiveEvent
