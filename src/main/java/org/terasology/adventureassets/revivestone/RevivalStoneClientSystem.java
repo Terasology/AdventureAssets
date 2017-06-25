@@ -90,13 +90,14 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {RevivalStoneMeshComponent.class})
     public void onActivate(ActivateEvent event, EntityRef entity) {
-        event.consume();
         entity.getOwner().send(event);
+        event.consume();
     }
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {RevivalStoneMeshComponent.class})
     public void onAttackEntity(AttackEvent event, EntityRef targetEntity) {
         targetEntity.getOwner().send(event);
+        event.consume();
     }
 
     @ReceiveEvent
