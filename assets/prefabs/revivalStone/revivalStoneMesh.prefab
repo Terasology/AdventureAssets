@@ -1,4 +1,5 @@
 {
+  "RevivalStoneMesh": {},
   "Mesh": {
     "mesh": "AdventureAssets:angel",
     "material": "AdventureAssets:angelInactive"
@@ -11,7 +12,13 @@
     "kinematic": true,
     "collisionGroup": "engine:world",
     "collidesWith": [
-      "engine:world"
+      "engine:world",
+      "engine:sensor",
+      "engine:character"
     ]
-  }
+  },
+  "PlaySoundAction": {
+    "sounds": "engine:click"
+  },
+  "InteractionTarget": {}
 }
