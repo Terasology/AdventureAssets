@@ -1,0 +1,11 @@
+{
+  "inherit": "default",
+  "elements": {
+    "UILabel": {
+      "text-shadowed": false,
+      "text-color": "FF0000FF",
+      "text-align-horizontal": "left",
+      "fixed-height": 20
+    }
+  }
+}
