@@ -67,17 +67,18 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
         angelMeshEntityBuilder.setOwner(entity);
         angelMeshEntityBuilder.setPersistent(false);
         EntityRef angelMesh = angelMeshEntityBuilder.build();
-        revivalStoneRootComponent.meshEntity = angelMesh;
-        entity.saveComponent(revivalStoneRootComponent);
         Location.attachChild(entity, angelMesh, new Vector3f(0, 1f, 0), new Quat4f(Quat4f.IDENTITY));
+        revivalStoneRootComponent.meshEntity = angelMesh;
 
-        EntityRef player = localPlayer.getCharacterEntity();
-        if (player.hasComponent(RevivePlayerComponent.class)) {
-            RevivePlayerComponent revivePlayerComponent = player.getComponent(RevivePlayerComponent.class);
-            if (entity.equals(revivePlayerComponent.revivalStoneEntity)) {
-                activateRevivalStone(entity, player, revivalStoneRootComponent);
-            }
-        }
+        Prefab angelOrbPrefab = assetManager.getAsset("AdventureAssets:revivalStoneOrb", Prefab.class).get();
+        EntityBuilder angelOrbEntityBuilder = entityManager.newBuilder(angelOrbPrefab);
+        angelMeshEntityBuilder.setOwner(entity);
+        angelMeshEntityBuilder.setPersistent(false);
+        EntityRef angelOrb = angelOrbEntityBuilder.build();
+        Location.attachChild(entity, angelOrb, new Vector3f(1f, 1.7f, 0), new Quat4f(Quat4f.IDENTITY));
+        revivalStoneRootComponent.orbEntity = angelOrb;
+
+        entity.saveComponent(revivalStoneRootComponent);
     }
 
     @ReceiveEvent(components = {RevivePlayerComponent.class, PlayerCharacterComponent.class})
@@ -91,6 +92,7 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, RevivalStoneRootComponent revivalStoneRootComponent) {
         revivalStoneRootComponent.meshEntity.destroy();
+        revivalStoneRootComponent.orbEntity.destroy();
     }
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {ClientComponent.class})

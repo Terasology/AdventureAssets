@@ -34,4 +34,5 @@ public class RevivalStoneRootComponent implements Component {
     public boolean activated = false;
 
     public EntityRef meshEntity;
+    public EntityRef orbEntity;
 }
