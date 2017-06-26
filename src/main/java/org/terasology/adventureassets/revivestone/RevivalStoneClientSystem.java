@@ -36,6 +36,7 @@ import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.notifications.NotificationMessageEvent;
 import org.terasology.logic.players.LocalPlayer;
+import org.terasology.logic.players.PlayerCharacterComponent;
 import org.terasology.logic.players.event.RespawnRequestEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
@@ -69,6 +70,22 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
         revivalStoneRootComponent.meshEntity = angelMesh;
         entity.saveComponent(revivalStoneRootComponent);
         Location.attachChild(entity, angelMesh, new Vector3f(0, 1f, 0), new Quat4f(Quat4f.IDENTITY));
+
+        EntityRef player = localPlayer.getCharacterEntity();
+        if (player.hasComponent(RevivePlayerComponent.class)) {
+            RevivePlayerComponent revivePlayerComponent = player.getComponent(RevivePlayerComponent.class);
+            if (entity.equals(revivePlayerComponent.revivalStoneEntity)) {
+                activateRevivalStone(entity, player, revivalStoneRootComponent);
+            }
+        }
+    }
+
+    @ReceiveEvent(components = {RevivePlayerComponent.class, PlayerCharacterComponent.class})
+    public void onPlayerSpawn(OnActivatedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
+        EntityRef meshEntity = revivePlayerComponent.revivalStoneEntity.getComponent(RevivalStoneRootComponent.class).meshEntity;
+        if (!meshEntity.hasComponent(LightComponent.class)) {
+            changeMeshToActive(meshEntity);
+        }
     }
 
     @ReceiveEvent
@@ -104,37 +121,45 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
     public void onRevivalStoneInteract(ActivateEvent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
         EntityRef player = event.getInstigator();
         EntityRef client = player.getOwner();
-        Vector3f location = entity.getComponent(LocationComponent.class).getWorldPosition();
 
         if (revivalStoneRootComponent.activated) {
-            revivalStoneRootComponent.activated = false;
+            deactivateRevivalStone(entity, player, revivalStoneRootComponent);
             client.send(new NotificationMessageEvent("Deactivated Revival Stone", client));
-            spawnParticlesOnDeactivate(location);
-            changeMeshToInactive(revivalStoneRootComponent.meshEntity);
-            player.removeComponent(RevivePlayerComponent.class);
         } else {
             if (player.hasComponent(RevivePlayerComponent.class)) {
                 EntityRef prevRevivalStone = player.getComponent(RevivePlayerComponent.class).revivalStoneEntity;
                 RevivalStoneRootComponent prevRevivalStoneRootComponent = prevRevivalStone.getComponent(RevivalStoneRootComponent.class);
-                prevRevivalStoneRootComponent.activated = false;
-                spawnParticlesOnDeactivate(prevRevivalStone.getComponent(LocationComponent.class).getWorldPosition());
-                changeMeshToInactive(prevRevivalStoneRootComponent.meshEntity);
-                prevRevivalStone.saveComponent(prevRevivalStoneRootComponent);
-                player.removeComponent(RevivePlayerComponent.class);
+                deactivateRevivalStone(prevRevivalStone, player, prevRevivalStoneRootComponent);
                 client.send(new NotificationMessageEvent("Deactivated the previous Revival Stone", client));
             }
-            revivalStoneRootComponent.activated = true;
+            activateRevivalStone(entity, player, revivalStoneRootComponent);
             client.send(new NotificationMessageEvent("Activated Revival Stone", client));
-
-            spawnParticlesOnActivate(location);
-            changeMeshToActive(revivalStoneRootComponent.meshEntity);
-
-            RevivePlayerComponent revivePlayerComponent = new RevivePlayerComponent();
-            revivePlayerComponent.location = location.add(1, 0, 1);
-            revivePlayerComponent.revivalStoneEntity = entity;
-            player.addComponent(revivePlayerComponent);
         }
-        entity.saveComponent(revivalStoneRootComponent);
+    }
+
+    private void activateRevivalStone(EntityRef revivalStone, EntityRef player, RevivalStoneRootComponent revivalStoneRootComponent) {
+        Vector3f location = revivalStone.getComponent(LocationComponent.class).getWorldPosition();
+        revivalStoneRootComponent.activated = true;
+
+        spawnParticlesOnActivate(location);
+        changeMeshToActive(revivalStoneRootComponent.meshEntity);
+
+        RevivePlayerComponent revivePlayerComponent = new RevivePlayerComponent();
+        revivePlayerComponent.location = location.add(1, 0, 1);
+        revivePlayerComponent.revivalStoneEntity = revivalStone;
+        revivalStone.saveComponent(revivalStoneRootComponent);
+        player.addComponent(revivePlayerComponent);
+    }
+
+    private void deactivateRevivalStone(EntityRef revivalStone, EntityRef player, RevivalStoneRootComponent revivalStoneRootComponent) {
+        Vector3f location = revivalStone.getComponent(LocationComponent.class).getWorldPosition();
+        revivalStoneRootComponent.activated = false;
+
+        spawnParticlesOnDeactivate(location);
+        changeMeshToInactive(revivalStoneRootComponent.meshEntity);
+
+        revivalStone.saveComponent(revivalStoneRootComponent);
+        player.removeComponent(RevivePlayerComponent.class);
     }
 
     private void changeMeshToInactive(EntityRef meshEntity) {
