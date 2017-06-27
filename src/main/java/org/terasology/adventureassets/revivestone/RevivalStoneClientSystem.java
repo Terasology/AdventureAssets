@@ -72,12 +72,11 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
 
         Prefab angelOrbPrefab = assetManager.getAsset("AdventureAssets:revivalStoneOrb", Prefab.class).get();
         EntityBuilder angelOrbEntityBuilder = entityManager.newBuilder(angelOrbPrefab);
-        angelMeshEntityBuilder.setOwner(entity);
-        angelMeshEntityBuilder.setPersistent(false);
+        angelOrbEntityBuilder.setOwner(entity);
+        angelOrbEntityBuilder.setPersistent(false);
         EntityRef angelOrb = angelOrbEntityBuilder.build();
         Location.attachChild(entity, angelOrb, new Vector3f(1f, 1.7f, 0), new Quat4f(Quat4f.IDENTITY));
         revivalStoneRootComponent.orbEntity = angelOrb;
-
         entity.saveComponent(revivalStoneRootComponent);
     }
 
@@ -145,6 +144,7 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
 
         spawnParticlesOnActivate(location);
         changeMeshToActive(revivalStoneRootComponent.meshEntity);
+        lightenOrbEntity(revivalStoneRootComponent.orbEntity);
 
         RevivePlayerComponent revivePlayerComponent = new RevivePlayerComponent();
         revivePlayerComponent.location = location.add(1, 0, 1);
@@ -159,9 +159,18 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
 
         spawnParticlesOnDeactivate(location);
         changeMeshToInactive(revivalStoneRootComponent.meshEntity);
+        darkenOrbEntity(revivalStoneRootComponent.orbEntity);
 
         revivalStone.saveComponent(revivalStoneRootComponent);
         player.removeComponent(RevivePlayerComponent.class);
+    }
+
+    private void lightenOrbEntity(EntityRef orbEntity) {
+        orbEntity.addComponent(new LightComponent());
+    }
+
+    private void darkenOrbEntity(EntityRef orbEntity) {
+        orbEntity.removeComponent(LightComponent.class);
     }
 
     private void changeMeshToInactive(EntityRef meshEntity) {
