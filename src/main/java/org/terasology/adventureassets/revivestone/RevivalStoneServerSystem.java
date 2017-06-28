@@ -94,6 +94,11 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
         revivalStoneRootComponent.colliderEntity.destroy();
     }
 
+    @ReceiveEvent
+    public void onRevivePlayerRemove(BeforeRemoveComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
+        logger.info("server onRevivePlayerRemove");
+    }
+
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {RevivalStoneColliderComponent.class})
     public void onActivate(ActivateEvent event, EntityRef entity) {
         logger.info("server onActivate");

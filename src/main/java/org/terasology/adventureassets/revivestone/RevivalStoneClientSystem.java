@@ -23,7 +23,7 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.entitySystem.event.EventPriority;
+import org.terasology.entitySystem.entity.lifecycleEvents.OnChangedComponent;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -35,10 +35,8 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.notifications.NotificationMessageEvent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.PlayerCharacterComponent;
-import org.terasology.logic.players.event.RespawnRequestEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
 import org.terasology.rendering.logic.LightComponent;
 import org.terasology.rendering.logic.MeshComponent;
@@ -49,7 +47,7 @@ import org.terasology.world.block.BlockComponent;
 public class RevivalStoneClientSystem extends BaseComponentSystem {
 
     private static final Logger logger = LoggerFactory.getLogger(RevivalStoneClientSystem.class);
-
+    EntityRef activatedRevivalStone;
     @In
     private LocalPlayer localPlayer;
     @In
@@ -102,11 +100,11 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
 
         EntityRef player = localPlayer.getCharacterEntity();
         if (player.hasComponent(RevivePlayerComponent.class)) {
-            EntityRef activatedRevivalStone = player.getComponent(RevivePlayerComponent.class).revivalStoneEntity;
             if (activatedRevivalStone.equals(entityRef)) {
-                player.removeComponent(RevivePlayerComponent.class);
                 EntityRef client = localPlayer.getClientEntity();
                 client.send(new NotificationMessageEvent("Deactivated Revival Stone due to destruction", client));
+                activatedRevivalStone = null;
+                player.removeComponent(RevivePlayerComponent.class);
             }
         }
     }
@@ -124,7 +122,8 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
     public void onRevivePlayerActivate(OnActivatedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
         logger.info("client onRevivePlayerActivate");
         EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
-        activateRevivalStone(revivalStone, entity);
+        activateRevivalStone(revivalStone);
+        activatedRevivalStone = revivalStone;
     }
 
     /**
@@ -139,10 +138,23 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
     public void onRevivePlayerRemove(BeforeRemoveComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
         logger.info("client onRevivePlayerRemove");
         EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
-        deactivateRevivalStone(revivalStone, entity);
+        // No need to do deactivation if the revival stone has already been destroyed
+        if (activatedRevivalStone != null) {
+            deactivateRevivalStone(revivalStone);
+            activatedRevivalStone = null;
+        }
     }
 
-    private void activateRevivalStone(EntityRef revivalStone, EntityRef player) {
+    @ReceiveEvent
+    public void setRevivePlayerChange(OnChangedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
+        logger.info("client onRevivePlayerChange");
+        deactivateRevivalStone(activatedRevivalStone);
+        EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
+        activateRevivalStone(revivalStone);
+        activatedRevivalStone = revivalStone;
+    }
+
+    private void activateRevivalStone(EntityRef revivalStone) {
         RevivalStoneRootComponent revivalStoneRootComponent = revivalStone.getComponent(RevivalStoneRootComponent.class);
         Vector3f location = revivalStone.getComponent(LocationComponent.class).getWorldPosition();
 
@@ -151,7 +163,7 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
         lightenOrbEntity(revivalStoneRootComponent.orbEntity);
     }
 
-    private void deactivateRevivalStone(EntityRef revivalStone, EntityRef player) {
+    private void deactivateRevivalStone(EntityRef revivalStone) {
         RevivalStoneRootComponent revivalStoneRootComponent = revivalStone.getComponent(RevivalStoneRootComponent.class);
         Vector3f location = revivalStone.getComponent(LocationComponent.class).getWorldPosition();
 

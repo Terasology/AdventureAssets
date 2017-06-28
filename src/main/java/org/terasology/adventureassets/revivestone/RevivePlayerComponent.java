@@ -18,6 +18,7 @@ package org.terasology.adventureassets.revivestone;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.network.FieldReplicateType;
 import org.terasology.network.Replicate;
 
 /**
@@ -25,6 +26,7 @@ import org.terasology.network.Replicate;
  */
 
 public class RevivePlayerComponent implements Component {
+    @Replicate
     public Vector3f location;
     @Replicate
     public EntityRef revivalStoneEntity;
