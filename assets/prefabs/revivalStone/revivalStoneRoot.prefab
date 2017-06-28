@@ -1,4 +1,5 @@
 {
+  "persistent": true,
   "RevivalStoneRoot": {},
   "PlaySoundAction": {
     "sounds": "engine:click"

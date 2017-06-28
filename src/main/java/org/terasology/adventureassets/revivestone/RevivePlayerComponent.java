@@ -18,6 +18,7 @@ package org.terasology.adventureassets.revivestone;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.network.Replicate;
 
 /**
  * This component makes a player respawn near the revival stone
@@ -25,5 +26,6 @@ import org.terasology.math.geom.Vector3f;
 
 public class RevivePlayerComponent implements Component {
     public Vector3f location;
+    @Replicate
     public EntityRef revivalStoneEntity;
 }

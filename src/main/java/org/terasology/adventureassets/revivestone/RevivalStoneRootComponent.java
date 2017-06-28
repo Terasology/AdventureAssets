@@ -30,9 +30,7 @@ import java.util.List;
 @ForceBlockActive
 public class RevivalStoneRootComponent implements Component {
 
-    @Replicate
-    public boolean activated = false;
-
     public EntityRef meshEntity;
     public EntityRef orbEntity;
+    public EntityRef colliderEntity;
 }
