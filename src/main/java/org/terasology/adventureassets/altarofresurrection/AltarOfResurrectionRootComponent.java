@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.adventureassets.revivestone;
+package org.terasology.adventureassets.altarofresurrection;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.network.FieldReplicateType;
-import org.terasology.network.Replicate;
+import org.terasology.world.block.ForceBlockActive;
 
 /**
- * This component makes a player respawn near the revival stone. It is attached to the clientInfo entity which always
- * remains active. This is done so that this component can be removed upon the destruction of the concerned revival stone
- * entity even when the player entity is inactive.
+ * This component is attached to every altar of resurrection root entity.
  */
 
-public class RevivePlayerComponent implements Component {
-    @Replicate
-    public Vector3f location;
-    @Replicate
-    public EntityRef revivalStoneEntity;
+@ForceBlockActive
+public class AltarOfResurrectionRootComponent implements Component {
+
+    public EntityRef meshEntity;
+    public EntityRef orbEntity;
+    public EntityRef colliderEntity;
 }

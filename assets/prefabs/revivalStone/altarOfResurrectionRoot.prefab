@@ -1,6 +1,6 @@
 {
   "persistent": true,
-  "RevivalStoneRoot": {},
+  "AltarOfResurrectionRoot": {},
   "PlaySoundAction": {
     "sounds": "engine:click"
   },

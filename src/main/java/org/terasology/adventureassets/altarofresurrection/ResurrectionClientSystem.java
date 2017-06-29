@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.adventureassets.revivestone;
+package org.terasology.adventureassets.altarofresurrection;
 
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
@@ -40,9 +40,9 @@ import org.terasology.utilities.Assets;
 import org.terasology.world.block.BlockComponent;
 
 @RegisterSystem(RegisterMode.CLIENT)
-public class RevivalStoneClientSystem extends BaseComponentSystem {
+public class ResurrectionClientSystem extends BaseComponentSystem {
 
-    EntityRef activatedRevivalStone = null;
+    EntityRef activatedAltarOfResurrection = null;
     @In
     private LocalPlayer localPlayer;
     @In
@@ -51,63 +51,63 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
     private EntityManager entityManager;
 
     /**
-     * This method creates the mesh and the orb entity for the model visual and lighting once the Revival Stone is
-     * placed in the world, upon activation of the {@link RevivalStoneRootComponent}.
-     * It also activates the revival stone entity in case the local player has the same revival stone activated, once
+     * This method creates the mesh and the orb entity for the model visual and lighting once the altar of resurrection is
+     * placed in the world, upon activation of the {@link AltarOfResurrectionRootComponent}.
+     * It also activates the altar of resurrection entity in case the local player has the same altar of resurrection activated, once
      * the entity gets loaded.
      *
      * @param event
      * @param entity
-     * @param revivalStoneRootComponent
+     * @param altarOfResurrectionRootComponent
      */
-    @ReceiveEvent(components = {RevivalStoneRootComponent.class, BlockComponent.class})
-    public void onRevivalStoneCreated(OnActivatedComponent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
-        Prefab angelMeshPrefab = assetManager.getAsset("AdventureAssets:revivalStoneMesh", Prefab.class).get();
+    @ReceiveEvent(components = {AltarOfResurrectionRootComponent.class, BlockComponent.class})
+    public void onAltarOfResurrectionCreated(OnActivatedComponent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+        Prefab angelMeshPrefab = assetManager.getAsset("AdventureAssets:altarOfResurrectionMesh", Prefab.class).get();
         EntityBuilder angelMeshEntityBuilder = entityManager.newBuilder(angelMeshPrefab);
         angelMeshEntityBuilder.setOwner(entity);
         angelMeshEntityBuilder.setPersistent(false);
         EntityRef angelMesh = angelMeshEntityBuilder.build();
         Location.attachChild(entity, angelMesh, new Vector3f(0, 1f, 0), new Quat4f(Quat4f.IDENTITY));
-        revivalStoneRootComponent.meshEntity = angelMesh;
+        altarOfResurrectionRootComponent.meshEntity = angelMesh;
 
-        Prefab angelOrbPrefab = assetManager.getAsset("AdventureAssets:revivalStoneOrb", Prefab.class).get();
+        Prefab angelOrbPrefab = assetManager.getAsset("AdventureAssets:altarOfResurrectionOrb", Prefab.class).get();
         EntityBuilder angelOrbEntityBuilder = entityManager.newBuilder(angelOrbPrefab);
         angelOrbEntityBuilder.setOwner(entity);
         angelOrbEntityBuilder.setPersistent(false);
         EntityRef angelOrb = angelOrbEntityBuilder.build();
         Location.attachChild(entity, angelOrb, new Vector3f(1f, 1.7f, 0), new Quat4f(Quat4f.IDENTITY));
-        revivalStoneRootComponent.orbEntity = angelOrb;
-        entity.saveComponent(revivalStoneRootComponent);
+        altarOfResurrectionRootComponent.orbEntity = angelOrb;
+        entity.saveComponent(altarOfResurrectionRootComponent);
 
-        // If a revival stone entity becomes active later, it is still activated
+        // If an altar of resurrection entity becomes active later, it is still activated
         EntityRef clientInfo = localPlayer.getClientInfoEntity();
         if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
             RevivePlayerComponent revivePlayerComponent = clientInfo.getComponent(RevivePlayerComponent.class);
-            if (entity.equals(revivePlayerComponent.revivalStoneEntity)) {
-                activateRevivalStone(entity);
-                activatedRevivalStone = entity;
+            if (entity.equals(revivePlayerComponent.altarOfResurrectionEntity)) {
+                activateAltarOfResurrection(entity);
+                activatedAltarOfResurrection = entity;
             }
         }
     }
 
     /**
-     * This method deals with the destruction of the revival stone. The orb and the mesh entities on the client side
+     * This method deals with the destruction of the altar of resurrection. The orb and the mesh entities on the client side
      * are destroyed.
      *
      * @param event
      * @param entityRef
-     * @param revivalStoneRootComponent
+     * @param altarOfResurrectionRootComponent
      */
     @ReceiveEvent
-    public void onRemove(BeforeRemoveComponent event, EntityRef entityRef, RevivalStoneRootComponent revivalStoneRootComponent) {
-        revivalStoneRootComponent.meshEntity.destroy();
-        revivalStoneRootComponent.orbEntity.destroy();
+    public void onRemove(BeforeRemoveComponent event, EntityRef entityRef, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+        altarOfResurrectionRootComponent.meshEntity.destroy();
+        altarOfResurrectionRootComponent.orbEntity.destroy();
     }
 
     /**
      * This method listens for the activation of the {@link RevivePlayerComponent} which is attached to the client info
-     * entity when the {@link ActivateEvent} is handled in the {@link RevivalStoneServerSystem}. This method triggers the
-     * activation of the revival stone which includes texture change and particle effects.
+     * entity when the {@link ActivateEvent} is handled in the {@link ResurrectionServerSystem}. This method triggers the
+     * activation of the altar of resurrection which includes texture change and particle effects.
      *
      * @param event
      * @param entity
@@ -115,16 +115,16 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent(components = {RevivePlayerComponent.class})
     public void onRevivePlayerActivate(OnActivatedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
-        if (revivalStone.exists()) {
-            activateRevivalStone(revivalStone);
-            activatedRevivalStone = revivalStone;
+        EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
+        if (altarOfResurrection.exists()) {
+            activateAltarOfResurrection(altarOfResurrection);
+            activatedAltarOfResurrection = altarOfResurrection;
         }
     }
 
     /**
      * This method listens for the deactivation of the {@link RevivePlayerComponent}. This happens to an already
-     * activated revival stone upon deactivation/destruction of a revival stone.
+     * activated altar of resurrection upon deactivation/destruction of an altar of resurrection.
      *
      * @param event
      * @param entity
@@ -132,14 +132,14 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onRevivePlayerRemove(BeforeRemoveComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
-        deactivateRevivalStone(revivalStone);
-        activatedRevivalStone = null;
+        EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
+        deactivateAltarOfResurrection(altarOfResurrection);
+        activatedAltarOfResurrection = null;
     }
 
     /**
      * This method listens for the change in the {@link RevivePlayerComponent}. This happens to an already
-     * activated revival stone upon activation of a new revival stone.
+     * activated altar of resurrection upon activation of a new altar of resurrection.
      *
      * @param event
      * @param entity
@@ -147,28 +147,28 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void setRevivePlayerChange(OnChangedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        deactivateRevivalStone(activatedRevivalStone);
-        EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
-        activateRevivalStone(revivalStone);
-        activatedRevivalStone = revivalStone;
+        deactivateAltarOfResurrection(activatedAltarOfResurrection);
+        EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
+        activateAltarOfResurrection(altarOfResurrection);
+        activatedAltarOfResurrection = altarOfResurrection;
     }
 
-    private void activateRevivalStone(EntityRef revivalStone) {
-        RevivalStoneRootComponent revivalStoneRootComponent = revivalStone.getComponent(RevivalStoneRootComponent.class);
-        Vector3f location = revivalStone.getComponent(LocationComponent.class).getWorldPosition();
+    private void activateAltarOfResurrection(EntityRef altarOfResurrection) {
+        AltarOfResurrectionRootComponent altarOfResurrectionRootComponent = altarOfResurrection.getComponent(AltarOfResurrectionRootComponent.class);
+        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition();
 
         spawnParticlesOnActivate(location);
-        changeMeshToActive(revivalStoneRootComponent.meshEntity);
-        lightenOrbEntity(revivalStoneRootComponent.orbEntity);
+        changeMeshToActive(altarOfResurrectionRootComponent.meshEntity);
+        lightenOrbEntity(altarOfResurrectionRootComponent.orbEntity);
     }
 
-    private void deactivateRevivalStone(EntityRef revivalStone) {
-        RevivalStoneRootComponent revivalStoneRootComponent = revivalStone.getComponent(RevivalStoneRootComponent.class);
-        Vector3f location = revivalStone.getComponent(LocationComponent.class).getWorldPosition();
+    private void deactivateAltarOfResurrection(EntityRef altarOfResurrection) {
+        AltarOfResurrectionRootComponent altarOfResurrectionRootComponent = altarOfResurrection.getComponent(AltarOfResurrectionRootComponent.class);
+        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition();
 
         spawnParticlesOnDeactivate(location);
-        changeMeshToInactive(revivalStoneRootComponent.meshEntity);
-        darkenOrbEntity(revivalStoneRootComponent.orbEntity);
+        changeMeshToInactive(altarOfResurrectionRootComponent.meshEntity);
+        darkenOrbEntity(altarOfResurrectionRootComponent.orbEntity);
     }
 
     private void lightenOrbEntity(EntityRef orbEntity) {
@@ -197,7 +197,7 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
 
     private void spawnParticlesOnActivate(Vector3f spawnPos) {
         // Create rising blue particles
-        EntityBuilder entityBuilder = entityManager.newBuilder("AdventureAssets:revivalStoneParticleEffect");
+        EntityBuilder entityBuilder = entityManager.newBuilder("AdventureAssets:altarOfResurrectionParticleEffect");
         LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
         locationComponent.setWorldPosition(spawnPos);
         entityBuilder.build();

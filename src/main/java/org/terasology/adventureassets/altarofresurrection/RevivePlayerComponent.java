@@ -13,17 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.adventureassets.revivestone;
+package org.terasology.adventureassets.altarofresurrection;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.math.geom.Vector3f;
 import org.terasology.network.Replicate;
-import org.terasology.world.block.ForceBlockActive;
 
 /**
- * This is a marker component that is attached to a the revival stone collider for dealing with the ActivateEvent and
- * AttackEvent.
+ * This component makes a player respawn near the altar of resurrection. It is attached to the clientInfo entity which always
+ * remains active. This is done so that this component can be removed upon the destruction of the concerned altar of resurrection
+ * entity even when the player entity is inactive.
  */
 
-public class RevivalStoneColliderComponent implements Component {
+public class RevivePlayerComponent implements Component {
+    @Replicate
+    public Vector3f location;
+    @Replicate
+    public EntityRef altarOfResurrectionEntity;
 }

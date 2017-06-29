@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.adventureassets.revivestone;
+package org.terasology.adventureassets.altarofresurrection;
 
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
@@ -41,7 +41,7 @@ import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class RevivalStoneServerSystem extends BaseComponentSystem {
+public class ResurrectionServerSystem extends BaseComponentSystem {
 
     @In
     private AssetManager assetManager;
@@ -68,45 +68,45 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
     }
 
     /**
-     * This method creates the collider entity for the model once the Revival Stone is placed in the world, upon
-     * activation of the {@link RevivalStoneRootComponent}.
+     * This method creates the collider entity for the model once the altar of resurrection is placed in the world, upon
+     * activation of the {@link AltarOfResurrectionRootComponent}.
      *
      * @param event
      * @param entity
-     * @param revivalStoneRootComponent
+     * @param altarOfResurrectionRootComponent
      */
-    @ReceiveEvent(components = {RevivalStoneRootComponent.class, BlockComponent.class})
-    public void onRevivalStoneCreated(OnActivatedComponent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
-        Prefab angelColliderPrefab = assetManager.getAsset("AdventureAssets:revivalStoneCollider", Prefab.class).get();
+    @ReceiveEvent(components = {AltarOfResurrectionRootComponent.class, BlockComponent.class})
+    public void onAltarOfResurrectionCreated(OnActivatedComponent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+        Prefab angelColliderPrefab = assetManager.getAsset("AdventureAssets:altarOfResurrectionCollider", Prefab.class).get();
         EntityBuilder angelColliderEntityBuilder = entityManager.newBuilder(angelColliderPrefab);
         angelColliderEntityBuilder.setOwner(entity);
         angelColliderEntityBuilder.setPersistent(true);
         EntityRef angelCollider = angelColliderEntityBuilder.build();
         Location.attachChild(entity, angelCollider, new Vector3f(0, 1f, 0), new Quat4f(Quat4f.IDENTITY));
-        revivalStoneRootComponent.colliderEntity = angelCollider;
-        entity.saveComponent(revivalStoneRootComponent);
+        altarOfResurrectionRootComponent.colliderEntity = angelCollider;
+        entity.saveComponent(altarOfResurrectionRootComponent);
     }
 
     /**
-     * This method deals with the destruction of the revival stone. The collider entity on the server side is destroyed.
-     * In addition, any clientInfo entity that has the {@link RevivePlayerComponent} for the same revival stone entity
+     * This method deals with the destruction of the altar of resurrection. The collider entity on the server side is destroyed.
+     * In addition, any clientInfo entity that has the {@link RevivePlayerComponent} for the same altar of resurrection entity
      * being destroyed, has its {@link RevivePlayerComponent} removed.
      *
      * @param event
      * @param entity
-     * @param revivalStoneRootComponent
+     * @param altarOfResurrectionRootComponent
      */
     @ReceiveEvent
-    public void onRemove(BeforeRemoveComponent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
-        revivalStoneRootComponent.colliderEntity.destroy();
+    public void onRemove(BeforeRemoveComponent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+        altarOfResurrectionRootComponent.colliderEntity.destroy();
 
-        // Removes RevivePlayerComponent from clientInfo upon destruction of a revival stone
+        // Removes RevivePlayerComponent from clientInfo upon destruction of an altar of resurrection
         for (EntityRef clientInfo : entityManager.getEntitiesWith(RevivePlayerComponent.class)) {
             RevivePlayerComponent revivePlayerComponent = clientInfo.getComponent(RevivePlayerComponent.class);
-            if (revivePlayerComponent.revivalStoneEntity.equals(entity)) {
+            if (revivePlayerComponent.altarOfResurrectionEntity.equals(entity)) {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
                 EntityRef client = clientInfo.getComponent(ClientInfoComponent.class).client;
-                client.send(new NotificationMessageEvent("Deactivated Revival Stone due to destruction", client));
+                client.send(new NotificationMessageEvent("Deactivated Altar of Resurrection due to destruction", client));
             }
         }
     }
@@ -117,7 +117,7 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
      * @param event
      * @param entity
      */
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {RevivalStoneColliderComponent.class})
+    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {AltarOfResurrectionColliderComponent.class})
     public void onActivate(ActivateEvent event, EntityRef entity) {
         entity.getOwner().send(event);
         event.consume();
@@ -129,48 +129,48 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
      * @param event
      * @param targetEntity
      */
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {RevivalStoneColliderComponent.class})
+    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {AltarOfResurrectionColliderComponent.class})
     public void onAttackEntity(AttackEvent event, EntityRef targetEntity) {
         targetEntity.getOwner().send(event);
         event.consume();
     }
 
     /**
-     * Handles the ActivateEvent for the root entity. Depending on whether the Revival Stone is activated for the client
-     * or not, the revival stone gets activated or deactivated.
+     * Handles the ActivateEvent for the root entity. Depending on whether the altar of resurrection is activated for the client
+     * or not, the altar of resurrection gets activated or deactivated.
      *
      * @param event
      * @param entity
-     * @param revivalStoneRootComponent
+     * @param altarOfResurrectionRootComponent
      */
     @ReceiveEvent
-    public void onRevivalStoneInteract(ActivateEvent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
+    public void onAltarOfResurrectionInteract(ActivateEvent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
         EntityRef client = event.getInstigator().getOwner();
         EntityRef clientInfo = client.getComponent(ClientComponent.class).clientInfo;
 
         if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
-            EntityRef prevRevivalStone = clientInfo.getComponent(RevivePlayerComponent.class).revivalStoneEntity;
-            if (entity.equals(prevRevivalStone)) {
+            EntityRef prevAltarOfResurrection = clientInfo.getComponent(RevivePlayerComponent.class).altarOfResurrectionEntity;
+            if (entity.equals(prevAltarOfResurrection)) {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
-                client.send(new NotificationMessageEvent("Deactivated Revival Stone", client));
+                client.send(new NotificationMessageEvent("Deactivated the Altar of Resurrection", client));
             } else {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
                 addRevivePlayerComponent(clientInfo, entity);
                 /* Note: Despite a remove and add component happening on the clientInfo entity above, the event is
                    collectively received as a OnChangedComponent on the client system. */
-                client.send(new NotificationMessageEvent("Activated this Revival Stone and deactivated the previous.", client));
+                client.send(new NotificationMessageEvent("Activated this Altar of Resurrection and deactivated the previous.", client));
             }
         } else {
             addRevivePlayerComponent(clientInfo, entity);
-            client.send(new NotificationMessageEvent("Activated Revival Stone", client));
+            client.send(new NotificationMessageEvent("Activated Altar of Resurrection", client));
         }
     }
 
-    private void addRevivePlayerComponent(EntityRef clientInfo, EntityRef revivalStone) {
-        Vector3f location = revivalStone.getComponent(LocationComponent.class).getWorldPosition();
+    private void addRevivePlayerComponent(EntityRef clientInfo, EntityRef altarOfResurrection) {
+        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition();
         RevivePlayerComponent revivePlayerComponent = new RevivePlayerComponent();
         revivePlayerComponent.location = location.add(1, 0, 1);
-        revivePlayerComponent.revivalStoneEntity = revivalStone;
+        revivePlayerComponent.altarOfResurrectionEntity = altarOfResurrection;
         clientInfo.addComponent(revivePlayerComponent);
     }
 }

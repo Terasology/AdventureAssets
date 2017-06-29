@@ -13,24 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.adventureassets.revivestone;
+package org.terasology.adventureassets.altarofresurrection;
 
-import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.network.Replicate;
-import org.terasology.world.block.ForceBlockActive;
-
-import java.util.List;
 
 /**
- * This component is attached to every revival stone root entity.
+ * This is a marker component that is attached to a the altar of resurrection collider for dealing with the ActivateEvent and
+ * AttackEvent.
  */
 
-@ForceBlockActive
-public class RevivalStoneRootComponent implements Component {
-
-    public EntityRef meshEntity;
-    public EntityRef orbEntity;
-    public EntityRef colliderEntity;
+public class AltarOfResurrectionColliderComponent implements Component {
 }
