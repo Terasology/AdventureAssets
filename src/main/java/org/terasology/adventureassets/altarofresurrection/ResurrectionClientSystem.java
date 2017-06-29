@@ -115,10 +115,12 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent(components = {RevivePlayerComponent.class})
     public void onRevivePlayerActivate(OnActivatedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
-        if (altarOfResurrection.exists()) {
-            activateAltarOfResurrection(altarOfResurrection);
-            activatedAltarOfResurrection = altarOfResurrection;
+        if (entity.equals(localPlayer.getClientInfoEntity())) {
+            EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
+            if (altarOfResurrection.exists()) {
+                activateAltarOfResurrection(altarOfResurrection);
+                activatedAltarOfResurrection = altarOfResurrection;
+            }
         }
     }
 
@@ -132,9 +134,11 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onRevivePlayerRemove(BeforeRemoveComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
-        deactivateAltarOfResurrection(altarOfResurrection);
-        activatedAltarOfResurrection = null;
+        if (entity.equals(localPlayer.getClientInfoEntity())) {
+            EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
+            deactivateAltarOfResurrection(altarOfResurrection);
+            activatedAltarOfResurrection = null;
+        }
     }
 
     /**
@@ -147,10 +151,12 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void setRevivePlayerChange(OnChangedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        deactivateAltarOfResurrection(activatedAltarOfResurrection);
-        EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
-        activateAltarOfResurrection(altarOfResurrection);
-        activatedAltarOfResurrection = altarOfResurrection;
+        if (entity.equals(localPlayer.getClientInfoEntity())) {
+            deactivateAltarOfResurrection(activatedAltarOfResurrection);
+            EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
+            activateAltarOfResurrection(altarOfResurrection);
+            activatedAltarOfResurrection = altarOfResurrection;
+        }
     }
 
     private void activateAltarOfResurrection(EntityRef altarOfResurrection) {

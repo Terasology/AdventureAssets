@@ -105,6 +105,8 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
             RevivePlayerComponent revivePlayerComponent = clientInfo.getComponent(RevivePlayerComponent.class);
             if (revivePlayerComponent.altarOfResurrectionEntity.equals(entity)) {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
+                EntityRef client = clientInfo.getComponent(ClientInfoComponent.class).client;
+                client.send(new NotificationMessageEvent("Deactivated Altar of Resurrection due to destruction", client));
             }
         }
     }
