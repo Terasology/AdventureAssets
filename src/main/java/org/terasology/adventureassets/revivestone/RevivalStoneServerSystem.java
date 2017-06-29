@@ -15,8 +15,6 @@
  */
 package org.terasology.adventureassets.revivestone;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -45,8 +43,6 @@ import org.terasology.world.block.BlockComponent;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class RevivalStoneServerSystem extends BaseComponentSystem {
 
-    private static final Logger logger = LoggerFactory.getLogger(RevivalStoneServerSystem.class);
-
     @In
     private AssetManager assetManager;
     @In
@@ -61,7 +57,6 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
      */
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {ClientComponent.class})
     public void setSpawnLocationOnRespawnRequest(RespawnRequestEvent event, EntityRef entity) {
-        logger.info("server setSpawnLocationOnRespawnRequest");
         EntityRef clientInfo = entity.getComponent(ClientComponent.class).clientInfo;
         if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
             Vector3f spawnPosition = clientInfo.getComponent(RevivePlayerComponent.class).location;
@@ -72,9 +67,16 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
         }
     }
 
+    /**
+     * This method creates the collider entity for the model once the Revival Stone is placed in the world, upon
+     * activation of the {@link RevivalStoneRootComponent}.
+     *
+     * @param event
+     * @param entity
+     * @param revivalStoneRootComponent
+     */
     @ReceiveEvent(components = {RevivalStoneRootComponent.class, BlockComponent.class})
     public void onRevivalStoneCreated(OnActivatedComponent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
-        logger.info("server onRevivalStoneCreated");
         Prefab angelColliderPrefab = assetManager.getAsset("AdventureAssets:revivalStoneCollider", Prefab.class).get();
         EntityBuilder angelColliderEntityBuilder = entityManager.newBuilder(angelColliderPrefab);
         angelColliderEntityBuilder.setOwner(entity);
@@ -85,9 +87,17 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
         entity.saveComponent(revivalStoneRootComponent);
     }
 
+    /**
+     * This method deals with the destruction of the revival stone. The collider entity on the server side is destroyed.
+     * In addition, any clientInfo entity that has the {@link RevivePlayerComponent} for the same revival stone entity
+     * being destroyed, has its {@link RevivePlayerComponent} removed.
+     *
+     * @param event
+     * @param entity
+     * @param revivalStoneRootComponent
+     */
     @ReceiveEvent
     public void onRemove(BeforeRemoveComponent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
-        logger.info("server onRemove");
         revivalStoneRootComponent.colliderEntity.destroy();
 
         // Removes RevivePlayerComponent from clientInfo upon destruction of a revival stone
@@ -101,23 +111,40 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
         }
     }
 
+    /**
+     * Receives the ActivateEvent for the activation of the mesh. Passes the ActivateEvent to the root entity.
+     *
+     * @param event
+     * @param entity
+     */
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {RevivalStoneColliderComponent.class})
     public void onActivate(ActivateEvent event, EntityRef entity) {
-        logger.info("server onActivate");
         entity.getOwner().send(event);
         event.consume();
     }
 
+    /**
+     * Receives the AttackEvent for the attack on the mesh. Passes the event to the root entity.
+     *
+     * @param event
+     * @param targetEntity
+     */
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {RevivalStoneColliderComponent.class})
     public void onAttackEntity(AttackEvent event, EntityRef targetEntity) {
-        logger.info("server onAttackEntity");
         targetEntity.getOwner().send(event);
         event.consume();
     }
 
+    /**
+     * Handles the ActivateEvent for the root entity. Depending on whether the Revival Stone is activated for the client
+     * or not, the revival stone gets activated or deactivated.
+     *
+     * @param event
+     * @param entity
+     * @param revivalStoneRootComponent
+     */
     @ReceiveEvent
     public void onRevivalStoneInteract(ActivateEvent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
-        logger.info("server onRevivalStoneInteract");
         EntityRef client = event.getInstigator().getOwner();
         EntityRef clientInfo = client.getComponent(ClientComponent.class).clientInfo;
 
@@ -129,6 +156,8 @@ public class RevivalStoneServerSystem extends BaseComponentSystem {
             } else {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
                 addRevivePlayerComponent(clientInfo, entity);
+                /* Note: Despite a remove and add component happening on the clientInfo entity above, the event is
+                   collectively received as a OnChangedComponent on the client system. */
                 client.send(new NotificationMessageEvent("Activated this Revival Stone and deactivated the previous.", client));
             }
         } else {

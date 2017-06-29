@@ -21,7 +21,8 @@ import org.terasology.network.Replicate;
 import org.terasology.world.block.ForceBlockActive;
 
 /**
- * This is a marker component that is attached to a the revival stone collider for dealing activations etc.
+ * This is a marker component that is attached to a the revival stone collider for dealing with the ActivateEvent and
+ * AttackEvent.
  */
 
 public class RevivalStoneColliderComponent implements Component {

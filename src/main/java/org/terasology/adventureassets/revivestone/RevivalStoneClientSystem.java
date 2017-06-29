@@ -15,8 +15,6 @@
  */
 package org.terasology.adventureassets.revivestone;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -44,8 +42,7 @@ import org.terasology.world.block.BlockComponent;
 @RegisterSystem(RegisterMode.CLIENT)
 public class RevivalStoneClientSystem extends BaseComponentSystem {
 
-    private static final Logger logger = LoggerFactory.getLogger(RevivalStoneClientSystem.class);
-    EntityRef activatedRevivalStone;
+    EntityRef activatedRevivalStone = null;
     @In
     private LocalPlayer localPlayer;
     @In
@@ -55,7 +52,9 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
 
     /**
      * This method creates the mesh and the orb entity for the model visual and lighting once the Revival Stone is
-     * placed in the world, upon activation of the {@link RevivalStoneRootComponent}
+     * placed in the world, upon activation of the {@link RevivalStoneRootComponent}.
+     * It also activates the revival stone entity in case the local player has the same revival stone activated, once
+     * the entity gets loaded.
      *
      * @param event
      * @param entity
@@ -63,7 +62,6 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent(components = {RevivalStoneRootComponent.class, BlockComponent.class})
     public void onRevivalStoneCreated(OnActivatedComponent event, EntityRef entity, RevivalStoneRootComponent revivalStoneRootComponent) {
-        logger.info("client onRevivalStoneCreated");
         Prefab angelMeshPrefab = assetManager.getAsset("AdventureAssets:revivalStoneMesh", Prefab.class).get();
         EntityBuilder angelMeshEntityBuilder = entityManager.newBuilder(angelMeshPrefab);
         angelMeshEntityBuilder.setOwner(entity);
@@ -94,7 +92,7 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
 
     /**
      * This method deals with the destruction of the revival stone. The orb and the mesh entities on the client side
-     * are destroyed. If the revival stone is activated, the {@link RevivePlayerComponent} is removed from the local player.
+     * are destroyed.
      *
      * @param event
      * @param entityRef
@@ -102,14 +100,13 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onRemove(BeforeRemoveComponent event, EntityRef entityRef, RevivalStoneRootComponent revivalStoneRootComponent) {
-        logger.info("client onRemove");
         revivalStoneRootComponent.meshEntity.destroy();
         revivalStoneRootComponent.orbEntity.destroy();
     }
 
     /**
      * This method listens for the activation of the {@link RevivePlayerComponent} which is attached to the client info
-     * when the {@link ActivateEvent} is handled in the {@link RevivalStoneServerSystem}. This method triggers the
+     * entity when the {@link ActivateEvent} is handled in the {@link RevivalStoneServerSystem}. This method triggers the
      * activation of the revival stone which includes texture change and particle effects.
      *
      * @param event
@@ -118,15 +115,16 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent(components = {RevivePlayerComponent.class})
     public void onRevivePlayerActivate(OnActivatedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        logger.info("client onRevivePlayerActivate");
         EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
-        activateRevivalStone(revivalStone);
-        activatedRevivalStone = revivalStone;
+        if (revivalStone.exists()) {
+            activateRevivalStone(revivalStone);
+            activatedRevivalStone = revivalStone;
+        }
     }
 
     /**
      * This method listens for the deactivation of the {@link RevivePlayerComponent}. This happens to an already
-     * activated revival stone upon activation of a new revival stone, or on deactivation/destruction of a revival stone.
+     * activated revival stone upon deactivation/destruction of a revival stone.
      *
      * @param event
      * @param entity
@@ -134,15 +132,21 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onRevivePlayerRemove(BeforeRemoveComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        logger.info("client onRevivePlayerRemove");
         EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
         deactivateRevivalStone(revivalStone);
         activatedRevivalStone = null;
     }
 
+    /**
+     * This method listens for the change in the {@link RevivePlayerComponent}. This happens to an already
+     * activated revival stone upon activation of a new revival stone.
+     *
+     * @param event
+     * @param entity
+     * @param revivePlayerComponent
+     */
     @ReceiveEvent
     public void setRevivePlayerChange(OnChangedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
-        logger.info("client onRevivePlayerChange");
         deactivateRevivalStone(activatedRevivalStone);
         EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
         activateRevivalStone(revivalStone);

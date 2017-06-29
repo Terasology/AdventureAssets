@@ -22,7 +22,9 @@ import org.terasology.network.FieldReplicateType;
 import org.terasology.network.Replicate;
 
 /**
- * This component makes a player respawn near the revival stone
+ * This component makes a player respawn near the revival stone. It is attached to the clientInfo entity which always
+ * remains active. This is done so that this component can be removed upon the destruction of the concerned revival stone
+ * entity even when the player entity is inactive.
  */
 
 public class RevivePlayerComponent implements Component {

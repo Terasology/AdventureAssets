@@ -24,7 +24,7 @@ import org.terasology.world.block.ForceBlockActive;
 import java.util.List;
 
 /**
- * This component is attached to every revival stone
+ * This component is attached to every revival stone root entity.
  */
 
 @ForceBlockActive
