@@ -32,9 +32,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.notifications.NotificationMessageEvent;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.logic.players.PlayerCharacterComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
@@ -82,6 +80,16 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
         Location.attachChild(entity, angelOrb, new Vector3f(1f, 1.7f, 0), new Quat4f(Quat4f.IDENTITY));
         revivalStoneRootComponent.orbEntity = angelOrb;
         entity.saveComponent(revivalStoneRootComponent);
+
+        // If a revival stone entity becomes active later, it is still activated
+        EntityRef clientInfo = localPlayer.getClientInfoEntity();
+        if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
+            RevivePlayerComponent revivePlayerComponent = clientInfo.getComponent(RevivePlayerComponent.class);
+            if (entity.equals(revivePlayerComponent.revivalStoneEntity)) {
+                activateRevivalStone(entity);
+                activatedRevivalStone = entity;
+            }
+        }
     }
 
     /**
@@ -97,20 +105,10 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
         logger.info("client onRemove");
         revivalStoneRootComponent.meshEntity.destroy();
         revivalStoneRootComponent.orbEntity.destroy();
-
-        EntityRef player = localPlayer.getCharacterEntity();
-        if (player.hasComponent(RevivePlayerComponent.class)) {
-            if (activatedRevivalStone.equals(entityRef)) {
-                EntityRef client = localPlayer.getClientEntity();
-                client.send(new NotificationMessageEvent("Deactivated Revival Stone due to destruction", client));
-                activatedRevivalStone = null;
-                player.removeComponent(RevivePlayerComponent.class);
-            }
-        }
     }
 
     /**
-     * This method listens for the activation of the {@link RevivePlayerComponent} which is attached to the player
+     * This method listens for the activation of the {@link RevivePlayerComponent} which is attached to the client info
      * when the {@link ActivateEvent} is handled in the {@link RevivalStoneServerSystem}. This method triggers the
      * activation of the revival stone which includes texture change and particle effects.
      *
@@ -118,7 +116,7 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
      * @param entity
      * @param revivePlayerComponent
      */
-    @ReceiveEvent(components = {RevivePlayerComponent.class, PlayerCharacterComponent.class})
+    @ReceiveEvent(components = {RevivePlayerComponent.class})
     public void onRevivePlayerActivate(OnActivatedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
         logger.info("client onRevivePlayerActivate");
         EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
@@ -138,11 +136,8 @@ public class RevivalStoneClientSystem extends BaseComponentSystem {
     public void onRevivePlayerRemove(BeforeRemoveComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
         logger.info("client onRevivePlayerRemove");
         EntityRef revivalStone = revivePlayerComponent.revivalStoneEntity;
-        // No need to do deactivation if the revival stone has already been destroyed
-        if (activatedRevivalStone != null) {
-            deactivateRevivalStone(revivalStone);
-            activatedRevivalStone = null;
-        }
+        deactivateRevivalStone(revivalStone);
+        activatedRevivalStone = null;
     }
 
     @ReceiveEvent
