@@ -1,7 +1,7 @@
 {
     "location" : {},
     "particleDataSprite": {
-        "texture": "AdventureAssets:blueParticle"
+        "texture": "AdventureAssets:orangeParticle"
     },
     "positionRangeGenerator": {
         "minPosition": [-0.5, 0, -0.5],
@@ -13,7 +13,7 @@
     },
     "scaleRangeGenerator": {
         "minScale": [0.060, 0.060, 0.060],
-        "maxScale": [0.060, 0.060, 0.060]
+        "maxScale": [0.120, 0.120, 0.120]
     },
     "velocityRangeGenerator": {
         "minVelocity": [-0.5, 1, -0.5],
