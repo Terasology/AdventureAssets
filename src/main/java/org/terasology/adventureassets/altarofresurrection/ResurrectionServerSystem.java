@@ -105,8 +105,6 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
             RevivePlayerComponent revivePlayerComponent = clientInfo.getComponent(RevivePlayerComponent.class);
             if (revivePlayerComponent.altarOfResurrectionEntity.equals(entity)) {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
-                EntityRef client = clientInfo.getComponent(ClientInfoComponent.class).client;
-                client.send(new NotificationMessageEvent("Deactivated Altar of Resurrection due to destruction", client));
             }
         }
     }
@@ -145,24 +143,20 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onAltarOfResurrectionInteract(ActivateEvent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
-        EntityRef client = event.getInstigator().getOwner();
-        EntityRef clientInfo = client.getComponent(ClientComponent.class).clientInfo;
+        EntityRef clientInfo = event.getInstigator().getOwner().getComponent(ClientComponent.class).clientInfo;
 
         if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
             EntityRef prevAltarOfResurrection = clientInfo.getComponent(RevivePlayerComponent.class).altarOfResurrectionEntity;
             if (entity.equals(prevAltarOfResurrection)) {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
-                client.send(new NotificationMessageEvent("Deactivated the Altar of Resurrection", client));
             } else {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
                 addRevivePlayerComponent(clientInfo, entity);
                 /* Note: Despite a remove and add component happening on the clientInfo entity above, the event is
                    collectively received as a OnChangedComponent on the client system. */
-                client.send(new NotificationMessageEvent("Activated this Altar of Resurrection and deactivated the previous.", client));
             }
         } else {
             addRevivePlayerComponent(clientInfo, entity);
-            client.send(new NotificationMessageEvent("Activated Altar of Resurrection", client));
         }
     }
 

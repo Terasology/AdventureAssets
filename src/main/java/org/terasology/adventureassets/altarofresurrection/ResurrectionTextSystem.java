@@ -82,7 +82,7 @@ public class ResurrectionTextSystem extends BaseComponentSystem implements Updat
                     floatingTextComponent.text = "Altar of Resurrection Activated";
                     floatingTextComponent.textColor = Color.YELLOW;
                 } else {
-                    floatingTextComponent.text = "Activate to revive here (will deactivate previous)";
+                    floatingTextComponent.text = "Activate to revive here\n(will deactivate previous)";
                     floatingTextComponent.textColor = Color.CYAN;
                 }
             }
