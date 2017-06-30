@@ -25,6 +25,7 @@ import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.location.LocationComponent;
@@ -38,9 +39,9 @@ import org.terasology.world.block.regions.BlockRegionComponent;
 
 /**
  */
-@RegisterSystem
-public class PasswordDoorSystem extends BaseComponentSystem {
-    private static final Logger logger = LoggerFactory.getLogger(PasswordDoorSystem.class);
+@RegisterSystem(RegisterMode.AUTHORITY)
+public class PasswordDoorServerSystem extends BaseComponentSystem {
+    private static final Logger logger = LoggerFactory.getLogger(PasswordDoorServerSystem.class);
 
     @In
     private WorldProvider worldProvider;
@@ -48,12 +49,6 @@ public class PasswordDoorSystem extends BaseComponentSystem {
     private BlockEntityRegistry blockEntityRegistry;
     @In
     private NUIManager nuiManager;
-
-    @ReceiveEvent(components = {PasswordDoorComponent.class, BlockRegionComponent.class})
-    public void onComponentActivated(OnActivatedComponent event, EntityRef entity) {
-        SetPasswordDoorScreen passwordDoorScreen = nuiManager.pushScreen("AdventureAssets:setPasswordDoorScreen", SetPasswordDoorScreen.class);
-        passwordDoorScreen.setDoorEntity(entity);
-    }
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH,
             components = {DoorComponent.class, PasswordDoorComponent.class, BlockRegionComponent.class, LocationComponent.class})
@@ -63,10 +58,8 @@ public class PasswordDoorSystem extends BaseComponentSystem {
         if (door.isOpen) {
             closeDoor(entity, door);
         } else {
-            PasswordDoorScreen passwordDoorScreen = nuiManager.pushScreen("AdventureAssets:passwordDoorScreen", PasswordDoorScreen.class);
-            passwordDoorScreen.setDoorEntity(entity);
+            event.getInstigator().send(new OpenPasswordDoorRequest(entity));
         }
-        entity.saveComponent(door);
     }
 
     private void closeDoor(EntityRef entity, DoorComponent door) {
@@ -80,5 +73,6 @@ public class PasswordDoorSystem extends BaseComponentSystem {
             entity.send(new PlaySoundEvent(door.closeSound, 1f));
         }
         door.isOpen = false;
+        entity.saveComponent(door);
     }
 }
