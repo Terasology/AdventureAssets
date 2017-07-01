@@ -25,9 +25,6 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIText;
 
-/**
- */
-@RegisterSystem
 public class SetPasswordDoorScreen extends CoreScreenLayer {
     private static final Logger logger = LoggerFactory.getLogger(SetPasswordDoorScreen.class);
 
@@ -68,6 +65,7 @@ public class SetPasswordDoorScreen extends CoreScreenLayer {
             passwordDoorComponent.message = message.getText();
             passwordDoorComponent.password = password.getText();
             doorEntity.saveComponent(passwordDoorComponent);
+            logger.info(doorEntity.toFullDescription());
             getManager().popScreen();
         } else {
             invalid.setVisible(true);

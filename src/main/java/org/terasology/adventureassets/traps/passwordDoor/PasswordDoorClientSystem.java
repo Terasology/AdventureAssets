@@ -41,7 +41,6 @@ public class PasswordDoorClientSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void openPasswordDoorRequest(OpenPasswordDoorRequest event, EntityRef player) {
-        logger.info("open req");
         if (player.equals(localPlayer.getCharacterEntity())) {
             PasswordDoorScreen passwordDoorScreen = nuiManager.pushScreen("AdventureAssets:passwordDoorScreen", PasswordDoorScreen.class);
             passwordDoorScreen.setDoorEntity(event.getDoorEntity());
