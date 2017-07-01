@@ -17,31 +17,21 @@ package org.terasology.adventureassets.traps.passwordDoor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
-import org.terasology.audio.events.PlaySoundEvent;
-import org.terasology.core.logic.door.DoorComponent;
+import org.terasology.core.logic.door.OpenDoorEvent;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.Side;
-import org.terasology.math.geom.Quat4f;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
-import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.CoreScreenLayer;
-import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.widgets.UIButton;
-import org.terasology.rendering.nui.widgets.UICheckbox;
 import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIText;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.regions.BlockRegionComponent;
 
 /**
  */
-@RegisterSystem
+
 public class PasswordDoorScreen extends CoreScreenLayer {
     private static final Logger logger = LoggerFactory.getLogger(PasswordDoorScreen.class);
 
@@ -59,6 +49,8 @@ public class PasswordDoorScreen extends CoreScreenLayer {
     private WorldProvider worldProvider;
     @In
     private BlockEntityRegistry blockEntityRegistry;
+    @In
+    private LocalPlayer localPlayer;
 
     @Override
     public void initialise() {
@@ -86,25 +78,12 @@ public class PasswordDoorScreen extends CoreScreenLayer {
     private void onUnlockButton(UIWidget button) {
         String enteredPassword = password.getText();
         if (enteredPassword.equalsIgnoreCase(passwordString)) {
-            DoorComponent doorComponent = doorEntity.getComponent(DoorComponent.class);
-            openDoor(doorEntity, doorComponent);
+            logger.info("sending open door event");
+            localPlayer.getClientEntity().send(new OpenDoorEvent(doorEntity));
             getManager().popScreen();
         } else {
             invalid.setVisible(true);
         }
-    }
-
-    private void openDoor(EntityRef entity, DoorComponent door) {
-        Side newSide = door.openSide;
-        BlockRegionComponent regionComp = entity.getComponent(BlockRegionComponent.class);
-        Block bottomBlock = door.bottomBlockFamily.getBlockForPlacement(worldProvider, blockEntityRegistry, regionComp.region.min(), newSide, Side.TOP);
-        worldProvider.setBlock(regionComp.region.min(), bottomBlock);
-        Block topBlock = door.topBlockFamily.getBlockForPlacement(worldProvider, blockEntityRegistry, regionComp.region.max(), newSide, Side.TOP);
-        worldProvider.setBlock(regionComp.region.max(), topBlock);
-        if (door.openSide != null) {
-            entity.send(new PlaySoundEvent(door.openSound, 1f));
-        }
-        door.isOpen = true;
     }
 
 }
