@@ -1,0 +1,10 @@
+{
+  "persistent": true,
+  "AltarOfResurrectionRoot": {},
+  "PlaySoundAction": {
+    "sounds": "engine:click"
+  },
+  "InteractionTarget": {},
+  "Network": {
+  }
+}

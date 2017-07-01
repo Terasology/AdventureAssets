@@ -1,0 +1,21 @@
+{
+  "AltarOfResurrectionCollider": {},
+  "Location": {},
+  "BoxShape": {
+    "extents" : [0.7, 3, 0.7]
+  },
+  "RigidBody": {
+    "kinematic": true,
+    "collisionGroup": "engine:world",
+    "collidesWith": [
+      "engine:world",
+      "engine:sensor",
+      "engine:character"
+    ]
+  },
+  "PlaySoundAction": {
+    "sounds": "engine:click"
+  },
+  "InteractionTarget": {},
+  "Network": {}
+}
