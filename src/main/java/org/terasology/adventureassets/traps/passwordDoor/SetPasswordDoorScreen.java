@@ -70,7 +70,6 @@ public class SetPasswordDoorScreen extends CoreScreenLayer {
             doorEntity.saveComponent(passwordDoorComponent);
             getManager().popScreen();
         } else {
-            logger.info("invalid");
             invalid.setVisible(true);
         }
     }

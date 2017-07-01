@@ -19,7 +19,9 @@ package org.terasology.adventureassets.traps.passwordDoor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.audio.events.PlaySoundEvent;
+import org.terasology.core.logic.door.CloseDoorEvent;
 import org.terasology.core.logic.door.DoorComponent;
+import org.terasology.core.logic.door.OpenDoorEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.entitySystem.event.EventPriority;
@@ -56,23 +58,14 @@ public class PasswordDoorServerSystem extends BaseComponentSystem {
         event.consume();
         DoorComponent door = entity.getComponent(DoorComponent.class);
         if (door.isOpen) {
-            closeDoor(entity, door);
+            event.getInstigator().send(new CloseDoorEvent(entity));
         } else {
             event.getInstigator().send(new OpenPasswordDoorRequest(entity));
         }
     }
 
-    private void closeDoor(EntityRef entity, DoorComponent door) {
-        Side newSide = door.closedSide;
-        BlockRegionComponent regionComp = entity.getComponent(BlockRegionComponent.class);
-        Block bottomBlock = door.bottomBlockFamily.getBlockForPlacement(worldProvider, blockEntityRegistry, regionComp.region.min(), newSide, Side.TOP);
-        worldProvider.setBlock(regionComp.region.min(), bottomBlock);
-        Block topBlock = door.topBlockFamily.getBlockForPlacement(worldProvider, blockEntityRegistry, regionComp.region.max(), newSide, Side.TOP);
-        worldProvider.setBlock(regionComp.region.max(), topBlock);
-        if (door.closeSound != null) {
-            entity.send(new PlaySoundEvent(door.closeSound, 1f));
-        }
-        door.isOpen = false;
-        entity.saveComponent(door);
+    @ReceiveEvent
+    public void openDoor(OpenDoorEvent event, EntityRef player) {
+        logger.info("opennn");
     }
 }

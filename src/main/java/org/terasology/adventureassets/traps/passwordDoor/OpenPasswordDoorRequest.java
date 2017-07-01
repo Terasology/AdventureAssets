@@ -16,11 +16,16 @@
 package org.terasology.adventureassets.traps.passwordDoor;
 
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.network.NetworkEvent;
-import org.terasology.protobuf.EntityData;
+import org.terasology.entitySystem.event.Event;
+import org.terasology.network.OwnerEvent;
 
-public class OpenPasswordDoorRequest extends NetworkEvent {
+@OwnerEvent
+public class OpenPasswordDoorRequest implements Event {
     private EntityRef doorEntity;
+
+    public OpenPasswordDoorRequest() {
+        doorEntity = EntityRef.NULL;
+    }
 
     public OpenPasswordDoorRequest(EntityRef doorEntity) {
         this.doorEntity = doorEntity;
