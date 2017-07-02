@@ -18,7 +18,7 @@ package org.terasology.adventureassets.traps.fireballlauncher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.BaseInteractionScreen;
@@ -28,9 +28,6 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UICheckbox;
 import org.terasology.rendering.nui.widgets.UIText;
 
-/**
- */
-@RegisterSystem
 public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(FireballLauncherSettingsScreen.class);
 
@@ -49,6 +46,8 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
 
     @In
     private NUIManager nuiManager;
+    @In
+    private LocalPlayer localPlayer;
 
     @Override
     public void initialise() {
@@ -100,10 +99,13 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
             double zValue = Double.parseDouble(z.getText());
             fireballLauncherComponent.direction = new Vector3f((float) xValue, (float) yValue, (float) zValue);
             fireballLauncherComponent.direction.normalize();
+            localPlayer.getCharacterEntity().send(new SetFireballLauncherEvent(fireballLauncherRoot,
+                    fireballLauncherComponent.isFiring, fireballLauncherComponent.timePeriod,
+                    fireballLauncherComponent.offset, fireballLauncherComponent.direction,
+                    fireballLauncherComponent.maxDistance, fireballLauncherComponent.damageAmount));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        fireballLauncherRoot.saveComponent(fireballLauncherComponent);
         getManager().popScreen();
     }
 
