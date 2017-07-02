@@ -17,18 +17,35 @@ package org.terasology.adventureassets.traps.passwordDoor;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
-import org.terasology.network.OwnerEvent;
+import org.terasology.network.ServerEvent;
 
-@OwnerEvent
-public class OpenPasswordDoorRequest implements Event {
+@ServerEvent
+public class SetPasswordDoorEvent implements Event {
     private EntityRef doorEntity;
+    private String title;
+    private String message;
+    private String password;
 
-    public OpenPasswordDoorRequest() {
-        doorEntity = EntityRef.NULL;
+    public SetPasswordDoorEvent() {
     }
 
-    public OpenPasswordDoorRequest(EntityRef doorEntity) {
+    public SetPasswordDoorEvent(EntityRef doorEntity, String title, String message, String password) {
+        this.title = title;
+        this.message = message;
+        this.password = password;
         this.doorEntity = doorEntity;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public EntityRef getDoorEntity() {

@@ -18,9 +18,9 @@ package org.terasology.adventureassets.traps.passwordDoor;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.network.Replicate;
+import org.terasology.world.block.ForceBlockActive;
 
-/**
- */
+@ForceBlockActive
 public class PasswordDoorComponent implements Component {
     @Replicate
     public String title = "title";

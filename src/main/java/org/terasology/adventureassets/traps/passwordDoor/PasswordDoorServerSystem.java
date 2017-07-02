@@ -16,11 +16,8 @@
 
 package org.terasology.adventureassets.traps.passwordDoor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.core.logic.door.CloseDoorEvent;
 import org.terasology.core.logic.door.DoorComponent;
-import org.terasology.core.logic.door.OpenDoorEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -35,11 +32,8 @@ import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
-/**
- */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class PasswordDoorServerSystem extends BaseComponentSystem {
-    private static final Logger logger = LoggerFactory.getLogger(PasswordDoorServerSystem.class);
 
     @In
     private WorldProvider worldProvider;
@@ -58,5 +52,15 @@ public class PasswordDoorServerSystem extends BaseComponentSystem {
         } else {
             event.getInstigator().send(new OpenPasswordDoorRequest(entity));
         }
+    }
+
+    @ReceiveEvent
+    public void setPasswordDoor(SetPasswordDoorEvent event, EntityRef entity) {
+        EntityRef doorEntity = event.getDoorEntity();
+        PasswordDoorComponent passwordDoorComponent = new PasswordDoorComponent();
+        passwordDoorComponent.title = event.getTitle();
+        passwordDoorComponent.message = event.getMessage();
+        passwordDoorComponent.password = event.getPassword();
+        doorEntity.addOrSaveComponent(passwordDoorComponent);
     }
 }
