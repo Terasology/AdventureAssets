@@ -18,7 +18,6 @@ package org.terasology.adventureassets.traps.wipeout;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
 import org.terasology.math.geom.Quat4f;
-import org.terasology.network.Replicate;
 import org.terasology.network.ServerEvent;
 
 @ServerEvent
