@@ -63,11 +63,11 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
      * @param entity
      * @param wipeOutComponent
      */
-    @ReceiveEvent(components = {WipeOutComponent.class, BlockComponent.class, NetworkComponent.class})
-    public void onWipeOutActivated(OnActivatedComponent event, EntityRef entity,
-                                   WipeOutComponent wipeOutComponent) {
-        // So that only the relevant server entity gets a child mesh entity
-        if (entity.getComponent(NetworkComponent.class).getNetworkId() > 0) {
+    @ReceiveEvent(components = {WipeOutComponent.class, BlockComponent.class})
+    public void onWipeOutActivated(OnActivatedComponent event, EntityRef entity, WipeOutComponent wipeOutComponent) {
+        logger.info(entity.toFullDescription());
+        // So that only the relevant server entity (which gets modified by the server system already) is operated on.
+        if (!wipeOutComponent.childrenEntities.isEmpty()) {
             Prefab wipeOutPrefab = assetManager.getAsset("AdventureAssets:wipeOutMesh", Prefab.class).get();
             EntityBuilder wipeOutEntityBuilder = entityManager.newBuilder(wipeOutPrefab);
             wipeOutEntityBuilder.setOwner(entity);
