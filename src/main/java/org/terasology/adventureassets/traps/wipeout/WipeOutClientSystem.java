@@ -23,15 +23,18 @@ import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.entitySystem.entity.lifecycleEvents.OnAddedComponent;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.inventory.InventoryAccessComponent;
 import org.terasology.logic.location.Location;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.network.NetworkComponent;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.OnBlockToItem;
@@ -62,19 +65,27 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
      * @param entity
      * @param wipeOutComponent
      */
-    @ReceiveEvent(components = {WipeOutComponent.class, BlockComponent.class})
+    @ReceiveEvent(components = {WipeOutComponent.class, BlockComponent.class, NetworkComponent.class})
     public void onWipeOutActivated(OnActivatedComponent event, EntityRef entity,
                                    WipeOutComponent wipeOutComponent) {
-        Prefab wipeOutPrefab = assetManager.getAsset("AdventureAssets:wipeOutMesh", Prefab.class).get();
-        EntityBuilder wipeOutEntityBuilder = entityManager.newBuilder(wipeOutPrefab);
-        wipeOutEntityBuilder.setOwner(entity);
-        wipeOutEntityBuilder.setPersistent(false);
-        EntityRef wipeOutMesh = wipeOutEntityBuilder.build();
-        wipeOutComponent.childrenEntities.add(wipeOutMesh);
-        entity.saveComponent(wipeOutComponent);
-        Location.attachChild(entity, wipeOutMesh, new Vector3f(0, 0, 1), new Quat4f(Quat4f.IDENTITY));
+        // So that only the relevant server entity gets a child mesh entity
+        if (entity.getComponent(NetworkComponent.class).getNetworkId() > 0) {
+            Prefab wipeOutPrefab = assetManager.getAsset("AdventureAssets:wipeOutMesh", Prefab.class).get();
+            EntityBuilder wipeOutEntityBuilder = entityManager.newBuilder(wipeOutPrefab);
+            wipeOutEntityBuilder.setOwner(entity);
+            wipeOutEntityBuilder.setPersistent(false);
+            EntityRef wipeOutMesh = wipeOutEntityBuilder.build();
+            wipeOutComponent.childrenEntities.add(wipeOutMesh);
+            entity.saveComponent(wipeOutComponent);
+            Location.attachChild(entity, wipeOutMesh, new Vector3f(0, 0, 1), new Quat4f(Quat4f.IDENTITY));
+        }
     }
 
+    @ReceiveEvent(components = {InventoryAccessComponent.class, BlockComponent.class})
+    public void onWipeOutAdded(OnAddedComponent event, EntityRef entity) {
+        logger.info("added chest");
+        logger.info(entity.toFullDescription());
+    }
     @Override
     public void update(float delta) {
         for (EntityRef wipeOut : entityManager.getEntitiesWith(WipeOutComponent.class, BlockComponent.class)) {

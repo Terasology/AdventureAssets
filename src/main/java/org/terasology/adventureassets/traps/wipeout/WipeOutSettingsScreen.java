@@ -29,9 +29,6 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UICheckbox;
 import org.terasology.rendering.nui.widgets.UIText;
 
-/**
- */
-@RegisterSystem
 public class WipeOutSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(WipeOutSettingsScreen.class);
 
