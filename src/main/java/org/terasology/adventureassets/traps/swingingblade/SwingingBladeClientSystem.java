@@ -65,14 +65,17 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
     @ReceiveEvent(components = {SwingingBladeComponent.class, BlockComponent.class})
     public void onSwingingBladeActivated(OnActivatedComponent event, EntityRef entity,
                                          SwingingBladeComponent swingingBladeComponent) {
-        Prefab swingingBladePrefab = assetManager.getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
-        EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
-        swingingBladeEntityBuilder.setOwner(entity);
-        swingingBladeEntityBuilder.setPersistent(false);
-        EntityRef swingingBladeMesh = swingingBladeEntityBuilder.build();
-        swingingBladeComponent.childrenEntities.add(swingingBladeMesh);
-        entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, swingingBladeMesh, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
+        // So that only the relevant server entity (which gets modified by the server system already) is operated on.
+        if (!swingingBladeComponent.childrenEntities.isEmpty()) {
+            Prefab swingingBladePrefab = assetManager.getAsset("AdventureAssets:swingingBladeMesh", Prefab.class).get();
+            EntityBuilder swingingBladeEntityBuilder = entityManager.newBuilder(swingingBladePrefab);
+            swingingBladeEntityBuilder.setOwner(entity);
+            swingingBladeEntityBuilder.setPersistent(false);
+            EntityRef swingingBladeMesh = swingingBladeEntityBuilder.build();
+            swingingBladeComponent.childrenEntities.add(swingingBladeMesh);
+            entity.saveComponent(swingingBladeComponent);
+            Location.attachChild(entity, swingingBladeMesh, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
+        }
     }
 
     @Override
