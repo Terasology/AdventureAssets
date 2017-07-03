@@ -81,11 +81,6 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
         }
     }
 
-    @ReceiveEvent(components = {InventoryAccessComponent.class, BlockComponent.class})
-    public void onWipeOutAdded(OnAddedComponent event, EntityRef entity) {
-        logger.info("added chest");
-        logger.info(entity.toFullDescription());
-    }
     @Override
     public void update(float delta) {
         for (EntityRef wipeOut : entityManager.getEntitiesWith(WipeOutComponent.class, BlockComponent.class)) {

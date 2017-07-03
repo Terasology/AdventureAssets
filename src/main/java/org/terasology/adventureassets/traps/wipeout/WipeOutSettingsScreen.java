@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.BaseInteractionScreen;
@@ -48,6 +49,8 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
 
     @In
     private NUIManager nuiManager;
+    @In
+    private LocalPlayer localPlayer;
 
     @Override
     public void initialise() {
@@ -97,11 +100,13 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
             double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
             double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));
             locationComponent.setWorldRotation(new Quat4f((float) yawValue, (float) pitchValue, (float) rollValue));
+            wipeOutRoot.saveComponent(wipeOutComponent);
+            wipeOutRoot.saveComponent(locationComponent);
+            localPlayer.getCharacterEntity().send(new SetWipeOutRoot(wipeOutRoot, wipeOutComponent.timePeriod, wipeOutComponent.offset,
+                    wipeOutComponent.isRotating, wipeOutComponent.direction, locationComponent.getWorldRotation()));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        wipeOutRoot.saveComponent(wipeOutComponent);
-        wipeOutRoot.saveComponent(locationComponent);
         getManager().popScreen();
     }
 

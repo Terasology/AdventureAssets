@@ -132,6 +132,20 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
         Location.attachChild(entity, surfboard, new Vector3f(0, 0, 7), new Quat4f(Quat4f.IDENTITY));
     }
 
+    @ReceiveEvent
+    public void onSettingsChanged(SetWipeOutRoot event, EntityRef player) {
+        EntityRef wipeOutRoot = event.getWipeOutRoot();
+        WipeOutComponent wipeOutComponent = wipeOutRoot.getComponent(WipeOutComponent.class);
+        wipeOutComponent.timePeriod = event.getTimePeriod();
+        wipeOutComponent.isRotating = event.isRotating();
+        wipeOutComponent.direction = event.getDirection();
+        wipeOutComponent.offset = event.getOffset();
+        LocationComponent locationComponent = wipeOutRoot.getComponent(LocationComponent.class);
+        locationComponent.setWorldRotation(event.getRotation());
+        wipeOutRoot.saveComponent(wipeOutComponent);
+        wipeOutRoot.saveComponent(locationComponent);
+    }
+
     @Override
     public void update(float delta) {
         for (EntityRef wipeOut : entityManager.getEntitiesWith(WipeOutComponent.class, BlockComponent.class)) {
