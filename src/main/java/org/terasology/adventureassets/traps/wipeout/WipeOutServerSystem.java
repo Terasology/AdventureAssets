@@ -24,6 +24,7 @@ import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -110,7 +111,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
      * @param entity
      * @param wipeOutComponent
      */
-    @ReceiveEvent(components = {WipeOutComponent.class, BlockComponent.class})
+    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {WipeOutComponent.class, BlockComponent.class})
     public void onWipeOutActivated(OnActivatedComponent event, EntityRef entity,
                                    WipeOutComponent wipeOutComponent) {
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:wipeOutRod", Prefab.class).get();
@@ -130,6 +131,20 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
         wipeOutComponent.childrenEntities.add(surfboard);
         entity.saveComponent(wipeOutComponent);
         Location.attachChild(entity, surfboard, new Vector3f(0, 0, 7), new Quat4f(Quat4f.IDENTITY));
+    }
+
+    @ReceiveEvent
+    public void onSettingsChanged(SetWipeOutRoot event, EntityRef player) {
+        EntityRef wipeOutRoot = event.getWipeOutRoot();
+        WipeOutComponent wipeOutComponent = wipeOutRoot.getComponent(WipeOutComponent.class);
+        wipeOutComponent.timePeriod = event.getTimePeriod();
+        wipeOutComponent.isRotating = event.isRotating();
+        wipeOutComponent.direction = event.getDirection();
+        wipeOutComponent.offset = event.getOffset();
+        LocationComponent locationComponent = wipeOutRoot.getComponent(LocationComponent.class);
+        locationComponent.setWorldRotation(event.getRotation());
+        wipeOutRoot.saveComponent(wipeOutComponent);
+        wipeOutRoot.saveComponent(locationComponent);
     }
 
     @Override

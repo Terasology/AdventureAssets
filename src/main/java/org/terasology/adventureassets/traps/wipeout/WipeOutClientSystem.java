@@ -32,6 +32,7 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.Location;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.network.NetworkComponent;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.OnBlockToItem;
@@ -63,16 +64,19 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
      * @param wipeOutComponent
      */
     @ReceiveEvent(components = {WipeOutComponent.class, BlockComponent.class})
-    public void onWipeOutActivated(OnActivatedComponent event, EntityRef entity,
-                                   WipeOutComponent wipeOutComponent) {
-        Prefab wipeOutPrefab = assetManager.getAsset("AdventureAssets:wipeOutMesh", Prefab.class).get();
-        EntityBuilder wipeOutEntityBuilder = entityManager.newBuilder(wipeOutPrefab);
-        wipeOutEntityBuilder.setOwner(entity);
-        wipeOutEntityBuilder.setPersistent(false);
-        EntityRef wipeOutMesh = wipeOutEntityBuilder.build();
-        wipeOutComponent.childrenEntities.add(wipeOutMesh);
-        entity.saveComponent(wipeOutComponent);
-        Location.attachChild(entity, wipeOutMesh, new Vector3f(0, 0, 1), new Quat4f(Quat4f.IDENTITY));
+    public void onWipeOutActivated(OnActivatedComponent event, EntityRef entity, WipeOutComponent wipeOutComponent) {
+        logger.info(entity.toFullDescription());
+        // So that only the relevant server entity (which gets modified by the server system already) is operated on.
+        if (!wipeOutComponent.childrenEntities.isEmpty()) {
+            Prefab wipeOutPrefab = assetManager.getAsset("AdventureAssets:wipeOutMesh", Prefab.class).get();
+            EntityBuilder wipeOutEntityBuilder = entityManager.newBuilder(wipeOutPrefab);
+            wipeOutEntityBuilder.setOwner(entity);
+            wipeOutEntityBuilder.setPersistent(false);
+            EntityRef wipeOutMesh = wipeOutEntityBuilder.build();
+            wipeOutComponent.childrenEntities.add(wipeOutMesh);
+            entity.saveComponent(wipeOutComponent);
+            Location.attachChild(entity, wipeOutMesh, new Vector3f(0, 0, 1), new Quat4f(Quat4f.IDENTITY));
+        }
     }
 
     @Override
