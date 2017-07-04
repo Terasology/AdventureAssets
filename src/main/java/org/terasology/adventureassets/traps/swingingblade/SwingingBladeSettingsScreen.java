@@ -18,8 +18,8 @@ package org.terasology.adventureassets.traps.swingingblade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.BaseInteractionScreen;
@@ -29,9 +29,6 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UICheckbox;
 import org.terasology.rendering.nui.widgets.UIText;
 
-/**
- */
-@RegisterSystem
 public class SwingingBladeSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(SwingingBladeSettingsScreen.class);
 
@@ -50,6 +47,8 @@ public class SwingingBladeSettingsScreen extends BaseInteractionScreen {
 
     @In
     private NUIManager nuiManager;
+    @In
+    private LocalPlayer localPlayer;
 
     @Override
     public void initialise() {
@@ -98,11 +97,12 @@ public class SwingingBladeSettingsScreen extends BaseInteractionScreen {
             double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
             double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));
             locationComponent.setWorldRotation(new Quat4f((float) yawValue, (float) pitchValue, (float) rollValue));
+            localPlayer.getCharacterEntity().send(new SetSwingingBladeRoot(swingingBladeRoot,
+                    swingingBladeComponent.timePeriod, swingingBladeComponent.offset, swingingBladeComponent.isSwinging,
+                    swingingBladeComponent.amplitude, locationComponent.getWorldRotation()));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        swingingBladeRoot.saveComponent(swingingBladeComponent);
-        swingingBladeRoot.saveComponent(locationComponent);
         getManager().popScreen();
     }
 

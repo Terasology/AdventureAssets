@@ -35,11 +35,9 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
-import org.terasology.structureTemplates.events.StructureSpawnerFromToolboxRequest;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.BlockItemComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
@@ -119,7 +117,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
      * @param entity
      * @param swingingBladeComponent
      */
-    @ReceiveEvent(components = {SwingingBladeComponent.class, BlockComponent.class})
+    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {SwingingBladeComponent.class, BlockComponent.class})
     public void onSwingingBladeActivated(OnActivatedComponent event, EntityRef entity,
                                          SwingingBladeComponent swingingBladeComponent) {
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:rod", Prefab.class).get();
@@ -139,6 +137,20 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         swingingBladeComponent.childrenEntities.add(blade);
         entity.saveComponent(swingingBladeComponent);
         Location.attachChild(entity, blade, new Vector3f(0, -7, 0), new Quat4f(Quat4f.IDENTITY));
+    }
+
+    @ReceiveEvent
+    public void onSettingsChanged(SetSwingingBladeRoot event, EntityRef player) {
+        EntityRef swingingBladeRoot = event.getSwingingBladeRoot();
+        SwingingBladeComponent swingingBladeComponent = swingingBladeRoot.getComponent(SwingingBladeComponent.class);
+        swingingBladeComponent.isSwinging = event.isSwinging();
+        swingingBladeComponent.amplitude = event.getAmplitude();
+        swingingBladeComponent.offset = event.getOffset();
+        swingingBladeComponent.timePeriod = event.getTimePeriod();
+        LocationComponent locationComponent = swingingBladeRoot.getComponent(LocationComponent.class);
+        locationComponent.setWorldRotation(event.getRotation());
+        swingingBladeRoot.saveComponent(swingingBladeComponent);
+        swingingBladeRoot.saveComponent(locationComponent);
     }
 
     @Override
