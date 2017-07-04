@@ -78,6 +78,27 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
     }
 
     /**
+     * Saves the settings to the server FireballLauncherRoot entity once the Ok button is clicked on the settings screen.
+     * All changes are then replicated to the client entities.
+     *
+     * @param event
+     * @param player
+     */
+    @ReceiveEvent
+    public void setFireballLauncher(SetFireballLauncherEvent event, EntityRef player) {
+        EntityRef fireballLauncherRoot = event.getFireballLauncherRoot();
+        FireballLauncherComponent fireballLauncherComponent = fireballLauncherRoot.getComponent(FireballLauncherComponent.class);
+        fireballLauncherComponent.isFiring = event.isFiring();
+        fireballLauncherComponent.timePeriod = event.getTimePeriod();
+        fireballLauncherComponent.damageAmount = event.getDamageAmount();
+        fireballLauncherComponent.maxDistance = event.getMaxDistance();
+        fireballLauncherComponent.offset = event.getOffset();
+        fireballLauncherComponent.direction = event.getDirection();
+
+        fireballLauncherRoot.saveComponent(fireballLauncherComponent);
+    }
+
+    /**
      * Find all Fireball Launchers and trigger the launch of a Fireball if it is the right time
      *
      * @param delta The time (in seconds) since the last engine update.
