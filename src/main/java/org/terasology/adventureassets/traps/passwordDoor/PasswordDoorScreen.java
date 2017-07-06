@@ -15,6 +15,7 @@
  */
 package org.terasology.adventureassets.traps.passwordDoor;
 
+import org.terasology.core.logic.door.OpenDoorEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
@@ -65,6 +66,7 @@ public class PasswordDoorScreen extends CoreScreenLayer {
     private void onUnlockButton(UIWidget button) {
         String enteredPassword = password.getText();
         if (enteredPassword.equalsIgnoreCase(passwordString)) {
+            localPlayer.getClientEntity().send(new OpenDoorEvent(doorEntity));
             getManager().popScreen();
         } else {
             invalid.setVisible(true);

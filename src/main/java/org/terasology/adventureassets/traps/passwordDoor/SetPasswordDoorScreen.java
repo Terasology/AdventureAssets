@@ -60,7 +60,7 @@ public class SetPasswordDoorScreen extends CoreScreenLayer {
 
     private void onSaveButton(UIWidget button) {
         if (password.getText().length() > 0 && title.getText().length() > 0 && message.getText().length() > 0) {
-            localPlayer.getCharacterEntity().send(new SetPasswordDoorEvent(doorEntity, title.getText(), message.getText(), password.getText()));
+            localPlayer.getClientEntity().send(new SetPasswordDoorEvent(doorEntity, title.getText(), message.getText(), password.getText()));
             getManager().popScreen();
         } else {
             invalid.setVisible(true);
