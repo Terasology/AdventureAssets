@@ -66,7 +66,7 @@ public class PasswordDoorScreen extends CoreScreenLayer {
     private void onUnlockButton(UIWidget button) {
         String enteredPassword = password.getText();
         if (enteredPassword.equalsIgnoreCase(passwordString)) {
-            localPlayer.getClientEntity().send(new OpenDoorEvent(doorEntity));
+            localPlayer.getCharacterEntity().send(new OpenDoorEvent(doorEntity));
             getManager().popScreen();
         } else {
             invalid.setVisible(true);
