@@ -16,8 +16,6 @@
 
 package org.terasology.adventureassets.traps.passwordDoor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.core.logic.door.DoorPlacedEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -28,11 +26,8 @@ import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.NUIManager;
 
-/**
- */
 @RegisterSystem(RegisterMode.CLIENT)
 public class PasswordDoorClientSystem extends BaseComponentSystem {
-    private static final Logger logger = LoggerFactory.getLogger(PasswordDoorClientSystem.class);
 
     @In
     LocalPlayer localPlayer;
@@ -41,7 +36,6 @@ public class PasswordDoorClientSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void openPasswordDoorRequest(OpenPasswordDoorRequest event, EntityRef player) {
-        logger.info("open req");
         if (player.equals(localPlayer.getCharacterEntity())) {
             PasswordDoorScreen passwordDoorScreen = nuiManager.pushScreen("AdventureAssets:passwordDoorScreen", PasswordDoorScreen.class);
             passwordDoorScreen.setDoorEntity(event.getDoorEntity());

@@ -16,14 +16,9 @@
 
 package org.terasology.adventureassets.traps.passwordDoor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.terasology.audio.events.PlaySoundEvent;
 import org.terasology.core.logic.door.CloseDoorEvent;
 import org.terasology.core.logic.door.DoorComponent;
-import org.terasology.core.logic.door.OpenDoorEvent;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -31,19 +26,14 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.Side;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
-/**
- */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class PasswordDoorServerSystem extends BaseComponentSystem {
-    private static final Logger logger = LoggerFactory.getLogger(PasswordDoorServerSystem.class);
 
     @In
     private WorldProvider worldProvider;
@@ -65,7 +55,12 @@ public class PasswordDoorServerSystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent
-    public void openDoor(OpenDoorEvent event, EntityRef player) {
-        logger.info("opennn");
+    public void setPasswordDoor(SetPasswordDoorEvent event, EntityRef entity) {
+        EntityRef doorEntity = event.getDoorEntity();
+        PasswordDoorComponent passwordDoorComponent = new PasswordDoorComponent();
+        passwordDoorComponent.title = event.getTitle();
+        passwordDoorComponent.message = event.getMessage();
+        passwordDoorComponent.password = event.getPassword();
+        doorEntity.addOrSaveComponent(passwordDoorComponent);
     }
 }

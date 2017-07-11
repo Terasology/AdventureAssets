@@ -15,8 +15,6 @@
  */
 package org.terasology.adventureassets.traps.passwordDoor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.core.logic.door.OpenDoorEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.players.LocalPlayer;
@@ -26,14 +24,8 @@ import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIText;
-import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.WorldProvider;
-
-/**
- */
 
 public class PasswordDoorScreen extends CoreScreenLayer {
-    private static final Logger logger = LoggerFactory.getLogger(PasswordDoorScreen.class);
 
     private UILabel title;
     private UILabel message;
@@ -45,10 +37,6 @@ public class PasswordDoorScreen extends CoreScreenLayer {
     private PasswordDoorComponent passwordDoorComponent;
     private String passwordString;
 
-    @In
-    private WorldProvider worldProvider;
-    @In
-    private BlockEntityRegistry blockEntityRegistry;
     @In
     private LocalPlayer localPlayer;
 
@@ -78,8 +66,7 @@ public class PasswordDoorScreen extends CoreScreenLayer {
     private void onUnlockButton(UIWidget button) {
         String enteredPassword = password.getText();
         if (enteredPassword.equalsIgnoreCase(passwordString)) {
-            logger.info("sending open door event");
-            localPlayer.getClientEntity().send(new OpenDoorEvent(doorEntity));
+            localPlayer.getCharacterEntity().send(new OpenDoorEvent(doorEntity));
             getManager().popScreen();
         } else {
             invalid.setVisible(true);
