@@ -152,10 +152,10 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
                     sb.append(",\n");
                     sb.append("                \"offset\": ");
                     sb.append(swingingBlade.offset);
-                    sb.append("\n");
+                    sb.append(",\n");
                     sb.append("                \"isSwinging\": ");
                     sb.append(swingingBlade.isSwinging);
-                    sb.append(",\n");
+                    sb.append("\n");
                     if (last) {
                         sb.append("            }\n");
                     } else {
