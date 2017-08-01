@@ -70,9 +70,6 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
      * @param transformation
      */
     private void configureFireballLaunchers(AddFireballLauncherComponent addFireballLauncherComponent, BlockRegionTransform transformation) {
-
-        logger.info("configureFireballLaunchers");
-
         for (AddFireballLauncherComponent.FireballLauncherToSpawn f : addFireballLauncherComponent.fireballLaunchersToSpawn) {
             Vector3i absolutePosition = transformation.transformVector3i(f.position);
             EntityRef fireballLauncher = blockEntityRegistry.getBlockEntityAt(absolutePosition);
@@ -81,7 +78,6 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
             fireballLauncherComponent.timePeriod = f.timePeriod;
             fireballLauncherComponent.offset = f.offset;
             fireballLauncherComponent.direction = convertDirectionToAbsolute(f.direction, transformation.transformSide(Side.FRONT));
-            logger.info("Relative direction=" + f.direction + " Actual Direction=" + fireballLauncherComponent.direction + " side=" + transformation.transformSide(Side.FRONT));
             fireballLauncherComponent.maxDistance = f.maxDistance;
             fireballLauncherComponent.damageAmount = f.damageAmount;
             fireballLauncher.saveComponent(fireballLauncherComponent);
@@ -96,8 +92,6 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
         BlockRegionTransform transformToRelative = event.getTransformToRelative();
         BlockFamily blockFamily = blockManager.getBlockFamily("AdventureAssets:FireballLauncherRoot");
 
-        logger.info("onBuildTemplateWithScheduledStructurePlacement");
-
         List<AddFireballLauncherComponent.FireballLauncherToSpawn> fireballLaunchersToSpawn = new ArrayList<>();
 
         for (Vector3i position : event.findAbsolutePositionsOf(blockFamily)) {
@@ -111,7 +105,6 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
             fireballLauncherToSpawn.timePeriod = fireballLauncherComponent.timePeriod;
             fireballLauncherToSpawn.offset = fireballLauncherComponent.offset;
             fireballLauncherToSpawn.direction = convertDirectionToRelative(fireballLauncherComponent.direction, transformToRelative.transformSide(Side.FRONT));
-            logger.info("Actual direction=" + fireballLauncherComponent.direction + " Relative Direction=" + fireballLauncherToSpawn.direction + " side=" + transformToRelative.transformSide(Side.FRONT));
             fireballLauncherToSpawn.damageAmount = fireballLauncherComponent.damageAmount;
             fireballLauncherToSpawn.maxDistance = fireballLauncherComponent.maxDistance;
 
