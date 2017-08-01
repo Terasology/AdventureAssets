@@ -22,9 +22,15 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.NUIManager;
+import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
+import org.terasology.rendering.nui.widgets.TooltipLine;
+import org.terasology.utilities.Assets;
+import org.terasology.worldlyTooltipAPI.events.GetTooltipIconEvent;
+import org.terasology.worldlyTooltipAPI.events.GetTooltipNameEvent;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class PasswordDoorClientSystem extends BaseComponentSystem {
@@ -48,5 +54,21 @@ public class PasswordDoorClientSystem extends BaseComponentSystem {
             SetPasswordDoorScreen passwordDoorScreen = nuiManager.pushScreen("AdventureAssets:setPasswordDoorScreen", SetPasswordDoorScreen.class);
             passwordDoorScreen.setDoorEntity(entity);
         }
+    }
+
+    /*
+     * Sets the Name at the top of the WorldlyTooltip to show "Password Door"
+     */
+    @ReceiveEvent
+    public void getTooltipName(GetTooltipNameEvent event, EntityRef entity, PasswordDoorComponent passwordDoorComponent) {
+        event.setName("Password Door");
+    }
+
+    /*
+     * Adds the Icon to the WorldlyTooltip to show the door icon
+     */
+    @ReceiveEvent
+    public void addIconToWorldlyTooltip(GetTooltipIconEvent event, EntityRef entity, PasswordDoorComponent passwordDoorComponent) {
+        event.setIcon(Assets.getTextureRegion("engine:items#door").get());
     }
 }

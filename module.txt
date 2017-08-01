@@ -14,7 +14,10 @@
     },{
         "id" : "Projectile",
         "minVersion" : "1.0.0"
-     }
+     },{
+        "id" : "WorldlyTooltipAPI",
+        "minVersion" : "0.1.0"
+    }
     ],
     "serverSideOnly" : false
 }
