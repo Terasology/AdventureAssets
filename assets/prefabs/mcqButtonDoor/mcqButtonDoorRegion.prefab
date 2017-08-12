@@ -1,6 +1,6 @@
 {
   "DisplayName": {
-    "name": "Password Door"
+    "name": "MCQ Button Door"
   },
   "Door": {
     "topBlockFamily": "DoorTop",
@@ -8,7 +8,7 @@
     "openSound": "DoorOpen",
     "closeSound": "DoorClose"
   },
-  "PasswordDoor": {},
+  "McqButtonDoor": {},
   "Health": {
     "currentHealth": 5,
     "maxHealth": 5,
@@ -18,7 +18,7 @@
   },
   "BlockDropGrammar": {
     "itemDrops": [
-      "AdventureAssets:passwordDoor"
+      "AdventureAssets:mcqButtonDoor"
     ]
   },
   "ActAsBlock": {
