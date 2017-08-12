@@ -26,7 +26,9 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIText;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SetMcqButtonDoorScreen extends CoreScreenLayer {
@@ -65,14 +67,17 @@ public class SetMcqButtonDoorScreen extends CoreScreenLayer {
     }
 
     private void onSaveButton(UIWidget button) {
-        List<String> optionList = Arrays.asList(options.getText().split("\\s*,\\s*"));
+        List<String> optionList = new ArrayList<String>(Arrays.asList(options.getText().split("\\s*,\\s*")));
+        optionList.removeAll(Collections.singleton(""));
         String passwordText = password.getText();
-        if (!optionList.contains(passwordText)) {
-            invalid.setText("Correct option not present in provided options");
-            invalid.setVisible(true);
-        } else if (passwordText.length() > 0 && title.getText().length() > 0 && message.getText().length() > 0) {
-            localPlayer.getClientEntity().send(new SetMcqButtonDoorEvent(doorEntity, title.getText(), message.getText(), passwordText, optionList));
-            getManager().popScreen();
+        if (optionList.size() > 0 && passwordText.length() > 0 && title.getText().length() > 0 && message.getText().length() > 0) {
+            if (!optionList.contains(passwordText)) {
+                invalid.setText("Correct option not present in provided options");
+                invalid.setVisible(true);
+            } else {
+                localPlayer.getClientEntity().send(new SetMcqButtonDoorEvent(doorEntity, title.getText(), message.getText(), passwordText, optionList));
+                getManager().popScreen();
+            }
         } else {
             invalid.setText("Please fill all fields!");
             invalid.setVisible(true);
