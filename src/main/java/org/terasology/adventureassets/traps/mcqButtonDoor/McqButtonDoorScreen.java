@@ -26,7 +26,6 @@ import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.layouts.RowLayout;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILabel;
-import org.terasology.rendering.nui.widgets.UIText;
 
 import java.util.List;
 
@@ -34,8 +33,6 @@ public class McqButtonDoorScreen extends CoreScreenLayer {
 
     private UILabel title;
     private UILabel message;
-    private UILabel invalid;
-    private UIText password;
     private UIButton backButton;
 
     private EntityRef doorEntity;
@@ -64,8 +61,6 @@ public class McqButtonDoorScreen extends CoreScreenLayer {
         mcqButtonDoorComponent = doorEntity.getComponent(McqButtonDoorComponent.class);
         title.setText(mcqButtonDoorComponent.title);
         message.setText("" + mcqButtonDoorComponent.message);
-        password.setText("");
-        invalid.setVisible(false);
         passwordString = mcqButtonDoorComponent.password;
         options = mcqButtonDoorComponent.options;
 
@@ -83,6 +78,7 @@ public class McqButtonDoorScreen extends CoreScreenLayer {
     }
 
     private void onWrongAnswer(UIWidget uiWidget) {
+        getManager().popScreen();
         localPlayer.getCharacterEntity().send(new DestroyEvent(doorEntity, EntityRef.NULL, EngineDamageTypes.PHYSICAL.get()));
     }
 

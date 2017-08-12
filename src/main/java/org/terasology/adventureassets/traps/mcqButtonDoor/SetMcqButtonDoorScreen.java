@@ -60,6 +60,7 @@ public class SetMcqButtonDoorScreen extends CoreScreenLayer {
         title.setText("");
         message.setText("");
         password.setText("");
+        options.setText("");
         invalid.setVisible(false);
     }
 
