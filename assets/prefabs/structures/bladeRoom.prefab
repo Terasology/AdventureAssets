@@ -3,7 +3,6 @@
   },
   "SpawnBlockRegions": {
     "regionsToFill": [
-      { "blockType": "AdventureAssets:swingingbladeroot.BACK", "region": { "min": [0, 8, 16], "size": [1, 1, 1]}},
       { "blockType": "AdventureAssets:swingingbladeroot.FRONT", "region": { "min": [0, 8, 4], "size": [1, 1, 1]}},
       { "blockType": "AdventureAssets:swingingbladeroot.FRONT", "region": { "min": [0, 8, 6], "size": [1, 1, 1]}},
       { "blockType": "AdventureAssets:swingingbladeroot.FRONT", "region": { "min": [0, 8, 8], "size": [1, 1, 1]}},
@@ -26,13 +25,19 @@
       { "blockType": "core:hardStone", "region": { "min": [-5, 1, 2], "size": [1, 8, 18]}},
       { "blockType": "core:hardStone", "region": { "min": [-5, 9, 2], "size": [11, 1, 18]}},
       { "blockType": "core:hardStone", "region": { "min": [5, 1, 2], "size": [1, 8, 18]}},
+      { "blockType": "core:hardStone", "region": { "min": [-2, 1, 17], "size": [2, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-2, 3, 17], "size": [5, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [1, 1, 17], "size": [2, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-2, 1, 18], "size": [1, 3, 2]}},
+      { "blockType": "core:hardStone", "region": { "min": [-2, 4, 18], "size": [5, 1, 2]}},
+      { "blockType": "core:hardStone", "region": { "min": [2, 1, 18], "size": [1, 3, 2]}},
       { "blockType": "core:hardStone", "region": { "min": [-5, 0, 20], "size": [11, 10, 1]}},
       { "blockType": "engine:air", "region": { "min": [0, 1, 1], "size": [1, 2, 1]}},
       { "blockType": "engine:air", "region": { "min": [-4, 1, 2], "size": [9, 3, 1]}},
       { "blockType": "engine:air", "region": { "min": [-4, 4, 2], "size": [3, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [-4, 5, 2], "size": [9, 3, 1]}},
       { "blockType": "engine:air", "region": { "min": [2, 4, 2], "size": [3, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 1, 3], "size": [9, 7, 16]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 3], "size": [9, 7, 14]}},
       { "blockType": "engine:air", "region": { "min": [-3, 8, 3], "size": [7, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [-3, 8, 4], "size": [3, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [1, 8, 4], "size": [3, 1, 1]}},
@@ -51,13 +56,64 @@
       { "blockType": "engine:air", "region": { "min": [-3, 8, 13], "size": [7, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [-3, 8, 14], "size": [3, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [1, 8, 14], "size": [3, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-3, 8, 15], "size": [7, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-3, 8, 16], "size": [3, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [1, 8, 16], "size": [3, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-3, 8, 17], "size": [7, 1, 2]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 1, 19], "size": [3, 3, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 4, 19], "size": [9, 4, 1]}},
-      { "blockType": "engine:air", "region": { "min": [2, 1, 19], "size": [3, 3, 1]}}
+      { "blockType": "engine:air", "region": { "min": [-3, 8, 15], "size": [7, 1, 4]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 17], "size": [2, 4, 3]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 5, 17], "size": [9, 3, 3]}},
+      { "blockType": "engine:air", "region": { "min": [0, 1, 17], "size": [1, 2, 1]}},
+      { "blockType": "engine:air", "region": { "min": [3, 1, 17], "size": [2, 4, 3]}},
+      { "blockType": "engine:air", "region": { "min": [-1, 1, 18], "size": [3, 3, 1]}}
+    ]
+  },
+  "AddSwingingBlade": {
+    "swingingBladesToSpawn": [
+      {
+        "position": [0, 8, 12],
+        "rotation": [-0.005172745, 0.707086, 0.005172215, 0.7070897],
+        "amplitude": 0.4,
+        "timePeriod": 4.0,
+        "offset": 1.0,
+        "isSwinging": true
+      },
+      {
+        "position": [0, 8, 14],
+        "rotation": [-0.07216903, 0.7034123, 0.07216912, 0.70341617],
+        "amplitude": 0.4,
+        "timePeriod": 4.0,
+        "offset": 0.5,
+        "isSwinging": true
+      },
+      {
+        "position": [0, 8, 8],
+        "rotation": [0.11560679, 0.6975908, -0.115605816, 0.697594],
+        "amplitude": 0.4,
+        "timePeriod": 4.0,
+        "offset": 2.0,
+        "isSwinging": true
+      },
+      {
+        "position": [0, 8, 10],
+        "rotation": [0.06313214, 0.70427686, -0.06313217, 0.7042889],
+        "amplitude": 0.4,
+        "timePeriod": 4.0,
+        "offset": 1.5,
+        "isSwinging": true
+      },
+      {
+        "position": [0, 8, 4],
+        "rotation": [0.12991853, 0.6950665, -0.12991801, 0.69507194],
+        "amplitude": 0.4,
+        "timePeriod": 4.0,
+        "offset": 3.0,
+        "isSwinging": true
+      },
+      {
+        "position": [0, 8, 6],
+        "rotation": [0.139683, 0.6931677, -0.13968107, 0.6931784],
+        "amplitude": 0.4,
+        "timePeriod": 4.0,
+        "offset": 2.5,
+        "isSwinging": true
+      }
     ]
   },
   "AddItemsToChest": {
@@ -69,67 +125,5 @@
         ]
       }
     ]
-  },
-  "AddSwingingBlade": {
-    "swingingBladesToSpawn": [
-      {
-        "position": [0, 8, 4],
-        "rotation": [-0.13738163, 0.69363266, 0.13738163, 0.69363266],
-        "amplitude": 0.4,
-        "timePeriod": 4.0,
-        "offset": 3.0
-      },
-      {
-        "position": [0, 8, 6],
-        "rotation": [-0.13475963, 0.6941468, 0.13475963, 0.6941468],
-        "amplitude": 0.4,
-        "timePeriod": 4.0,
-        "offset": 2.5
-      },
-      {
-        "position": [0, 8, 14],
-        "rotation": [0.09270627, 0.70100325, -0.09270627, 0.70100325],
-        "amplitude": 0.4,
-        "timePeriod": 4.0,
-        "offset": 0.5
-      },
-      {
-        "position": [0, 8, 8],
-        "rotation": [-0.09938995, 0.7000869, 0.09938995, 0.7000869],
-        "amplitude": 0.4,
-        "timePeriod": 4.0,
-        "offset": 2.0
-      },
-      {
-        "position": [0, 8, 12],
-        "rotation": [0.030493421, 0.7064489, -0.030493421, 0.7064489],
-        "amplitude": 0.4,
-        "timePeriod": 4.0,
-        "offset": 1.0
-      },
-      {
-        "position": [0, 8, 10],
-        "rotation": [-0.039415896, 0.7060073, 0.039415896, 0.7060073],
-        "amplitude": 0.4,
-        "timePeriod": 4.0,
-        "offset": 1.5
-      },
-      {
-        "position": [0, 8, 16],
-        "rotation": [0.1319045, 0.69469506, -0.1319045, 0.69469506],
-        "amplitude": 0.4,
-        "timePeriod": 4.0,
-        "offset": 0.0
-      }
-    ]
-  },
-/* For debugging purposes it is an item: */
-  "parent" : "engine:iconItem",
-  "DisplayName" : {
-    "name" : "A room with swinging blades"
-  },
-  "Item" : {
-    "icon" : "engine:items#whiteRecipe"
-  },
-  "SpawnStructureAction": {}
+  }
 }

@@ -5,10 +5,10 @@
     "regionsToFill": [
       { "blockType": "AdventureAssets:FireballLauncherRoot.FRONT", "region": { "min": [5, 2, 5], "size": [1, 1, 1]}},
       { "blockType": "AdventureAssets:FireballLauncherRoot.FRONT", "region": { "min": [-5, 1, 9], "size": [1, 1, 1]}},
-      { "blockType": "AdventureAssets:FireballLauncherRoot.LEFT", "region": { "min": [5, 2, 15], "size": [1, 1, 1]}},
+      { "blockType": "AdventureAssets:FireballLauncherRoot.LEFT", "region": { "min": [5, 2, 14], "size": [1, 1, 1]}},
       { "blockType": "AdventureAssets:FireballLauncherRoot.RIGHT", "region": { "min": [-5, 1, 5], "size": [1, 1, 1]}},
       { "blockType": "AdventureAssets:FireballLauncherRoot.RIGHT", "region": { "min": [5, 2, 9], "size": [1, 1, 1]}},
-      { "blockType": "AdventureAssets:FireballLauncherRoot.RIGHT", "region": { "min": [-5, 1, 15], "size": [1, 1, 1]}},
+      { "blockType": "AdventureAssets:FireballLauncherRoot.RIGHT", "region": { "min": [-5, 1, 14], "size": [1, 1, 1]}},
       { "blockType": "AdventureAssets:swingingbladeroot.FRONT", "region": { "min": [0, 8, 8], "size": [1, 1, 1]}},
       { "blockType": "AdventureAssets:swingingbladeroot.FRONT", "region": { "min": [0, 8, 10], "size": [1, 1, 1]}},
       { "blockType": "Core:Chest.FRONT", "region": { "min": [0, 1, 19], "size": [1, 1, 1]}},
@@ -35,20 +35,26 @@
       { "blockType": "core:hardStone", "region": { "min": [-5, 2, 9], "size": [1, 7, 1]}},
       { "blockType": "core:hardStone", "region": { "min": [5, 1, 9], "size": [1, 1, 1]}},
       { "blockType": "core:hardStone", "region": { "min": [5, 3, 9], "size": [1, 6, 1]}},
-      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 10], "size": [1, 8, 5]}},
-      { "blockType": "core:hardStone", "region": { "min": [5, 1, 10], "size": [1, 8, 5]}},
-      { "blockType": "core:hardStone", "region": { "min": [-5, 2, 15], "size": [1, 7, 1]}},
-      { "blockType": "core:hardStone", "region": { "min": [5, 1, 15], "size": [1, 1, 1]}},
-      { "blockType": "core:hardStone", "region": { "min": [5, 3, 15], "size": [1, 6, 1]}},
-      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 16], "size": [1, 8, 4]}},
-      { "blockType": "core:hardStone", "region": { "min": [5, 1, 16], "size": [1, 8, 4]}},
+      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 10], "size": [1, 8, 4]}},
+      { "blockType": "core:hardStone", "region": { "min": [5, 1, 10], "size": [1, 8, 4]}},
+      { "blockType": "core:hardStone", "region": { "min": [-5, 2, 14], "size": [1, 7, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [5, 1, 14], "size": [1, 1, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [5, 3, 14], "size": [1, 6, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-5, 1, 15], "size": [1, 8, 5]}},
+      { "blockType": "core:hardStone", "region": { "min": [5, 1, 15], "size": [1, 8, 5]}},
+      { "blockType": "core:hardStone", "region": { "min": [-2, 1, 17], "size": [2, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-2, 3, 17], "size": [5, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [1, 1, 17], "size": [2, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-2, 1, 18], "size": [1, 3, 2]}},
+      { "blockType": "core:hardStone", "region": { "min": [-2, 4, 18], "size": [5, 1, 2]}},
+      { "blockType": "core:hardStone", "region": { "min": [2, 1, 18], "size": [1, 3, 2]}},
       { "blockType": "core:hardStone", "region": { "min": [-5, 0, 20], "size": [11, 10, 1]}},
       { "blockType": "engine:air", "region": { "min": [0, 1, 1], "size": [1, 2, 1]}},
       { "blockType": "engine:air", "region": { "min": [-4, 1, 2], "size": [9, 3, 1]}},
       { "blockType": "engine:air", "region": { "min": [-4, 4, 2], "size": [3, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [-4, 5, 2], "size": [9, 3, 1]}},
       { "blockType": "engine:air", "region": { "min": [2, 4, 2], "size": [3, 1, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 1, 3], "size": [9, 7, 16]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 3], "size": [9, 7, 14]}},
       { "blockType": "engine:air", "region": { "min": [-3, 8, 3], "size": [7, 1, 5]}},
       { "blockType": "engine:air", "region": { "min": [-3, 8, 8], "size": [3, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [1, 8, 8], "size": [3, 1, 1]}},
@@ -56,37 +62,29 @@
       { "blockType": "engine:air", "region": { "min": [-3, 8, 10], "size": [3, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [1, 8, 10], "size": [3, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [-3, 8, 11], "size": [7, 1, 8]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 1, 19], "size": [3, 3, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-4, 4, 19], "size": [9, 4, 1]}},
-      { "blockType": "engine:air", "region": { "min": [2, 1, 19], "size": [3, 3, 1]}}
-    ]
-  },
-  "AddItemsToChest": {
-    "chestsToFill": [
-      {
-        "position": [0, 1, 19],
-        "items": [
-          {"slot": 0, "blockFamiliy": "core:companion", "amount": 99}
-        ]
-      }
+      { "blockType": "engine:air", "region": { "min": [-4, 1, 17], "size": [2, 4, 3]}},
+      { "blockType": "engine:air", "region": { "min": [-4, 5, 17], "size": [9, 3, 3]}},
+      { "blockType": "engine:air", "region": { "min": [0, 1, 17], "size": [1, 2, 1]}},
+      { "blockType": "engine:air", "region": { "min": [3, 1, 17], "size": [2, 4, 3]}},
+      { "blockType": "engine:air", "region": { "min": [-1, 1, 18], "size": [3, 3, 1]}}
     ]
   },
   "AddSwingingBlade": {
     "swingingBladesToSpawn": [
       {
-        "position": [0, 8, 8],
-        "rotation": [0.11812842, 0.6971697, -0.11812839, 0.69716984],
-        "amplitude": 0.4,
-        "timePeriod": 2.0,
-        "offset": 0.0,
-        "isSwinging": true
-      },
-      {
         "position": [0, 8, 10],
-        "rotation": [-0.028688315, 0.7065246, 0.028688334, 0.7065245],
+        "rotation": [-0.14034903, 0.6930291, 0.14034542, 0.69304836],
         "amplitude": 0.4,
         "timePeriod": 2.0,
         "offset": 1.2,
+        "isSwinging": true
+      },
+      {
+        "position": [0, 8, 8],
+        "rotation": [-0.05691899, 0.7047975, 0.056917064, 0.704827],
+        "amplitude": 0.4,
+        "timePeriod": 2.0,
+        "offset": 0.0,
         "isSwinging": true
       }
     ]
@@ -94,25 +92,7 @@
   "AddFireballLauncher": {
     "fireballLaunchersToSpawn": [
       {
-        "position": [-5, 1, 9],
-        "isFiring": true,
-        "timePeriod": 1.0,
-        "offset": 0.0,
-        "direction": [1.0, 0.0, 0.0],
-        "maxDistance": 8,
-        "damageAmount": 200
-      },
-      {
-        "position": [5, 2, 5],
-        "isFiring": true,
-        "timePeriod": 1.0,
-        "offset": 0.0,
-        "direction": [-1.0, 0.0, 0.0],
-        "maxDistance": 8,
-        "damageAmount": 200
-      },
-      {
-        "position": [-5, 1, 15],
+        "position": [-5, 1, 14],
         "isFiring": true,
         "timePeriod": 1.0,
         "offset": 0.0,
@@ -139,7 +119,25 @@
         "damageAmount": 200
       },
       {
-        "position": [5, 2, 15],
+        "position": [5, 2, 14],
+        "isFiring": true,
+        "timePeriod": 1.0,
+        "offset": 0.0,
+        "direction": [-1.0, 0.0, 0.0],
+        "maxDistance": 8,
+        "damageAmount": 200
+      },
+      {
+        "position": [-5, 1, 9],
+        "isFiring": true,
+        "timePeriod": 1.0,
+        "offset": 0.0,
+        "direction": [1.0, 0.0, 0.0],
+        "maxDistance": 8,
+        "damageAmount": 200
+      },
+      {
+        "position": [5, 2, 5],
         "isFiring": true,
         "timePeriod": 1.0,
         "offset": 0.0,
@@ -148,5 +146,16 @@
         "damageAmount": 200
       }
     ]
+  },
+  "AddItemsToChest": {
+    "chestsToFill": [
+      {
+        "position": [0, 1, 19],
+        "items": [
+          {"slot": 0, "blockFamiliy": "core:companion", "amount": 99}
+        ]
+      }
+    ]
   }
 }
+

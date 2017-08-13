@@ -44,6 +44,12 @@
       { "blockType": "core:hardStone", "region": { "min": [-8, -4, 37], "size": [17, 5, 4]}},
       { "blockType": "core:hardStone", "region": { "min": [-8, 1, 37], "size": [1, 8, 4]}},
       { "blockType": "core:hardStone", "region": { "min": [8, 1, 37], "size": [1, 8, 4]}},
+      { "blockType": "core:hardStone", "region": { "min": [-3, 1, 38], "size": [3, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-3, 3, 38], "size": [7, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [1, 1, 38], "size": [3, 2, 1]}},
+      { "blockType": "core:hardStone", "region": { "min": [-3, 1, 39], "size": [1, 3, 2]}},
+      { "blockType": "core:hardStone", "region": { "min": [-3, 4, 39], "size": [7, 1, 2]}},
+      { "blockType": "core:hardStone", "region": { "min": [3, 1, 39], "size": [1, 3, 2]}},
       { "blockType": "core:hardStone", "region": { "min": [-8, -4, 41], "size": [17, 14, 1]}},
       { "blockType": "engine:air", "region": { "min": [-8, 10, 1], "size": [17, 1, 41]}},
       { "blockType": "engine:air", "region": { "min": [0, 1, 1], "size": [1, 2, 1]}},
@@ -78,27 +84,33 @@
       { "blockType": "engine:air", "region": { "min": [-7, 1, 29], "size": [15, 7, 1]}},
       { "blockType": "engine:air", "region": { "min": [1, 0, 29], "size": [7, 1, 1]}},
       { "blockType": "engine:air", "region": { "min": [-7, 0, 30], "size": [15, 8, 7]}},
-      { "blockType": "engine:air", "region": { "min": [-7, 1, 37], "size": [15, 7, 3]}},
-      { "blockType": "engine:air", "region": { "min": [-7, 1, 40], "size": [6, 3, 1]}},
-      { "blockType": "engine:air", "region": { "min": [-7, 4, 40], "size": [15, 4, 1]}},
-      { "blockType": "engine:air", "region": { "min": [2, 1, 40], "size": [6, 3, 1]}}
+      { "blockType": "engine:air", "region": { "min": [-7, 1, 37], "size": [15, 7, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-7, 1, 38], "size": [4, 4, 3]}},
+      { "blockType": "engine:air", "region": { "min": [-7, 5, 38], "size": [15, 3, 3]}},
+      { "blockType": "engine:air", "region": { "min": [0, 1, 38], "size": [1, 2, 1]}},
+      { "blockType": "engine:air", "region": { "min": [4, 1, 38], "size": [4, 4, 3]}},
+      { "blockType": "engine:air", "region": { "min": [-2, 1, 39], "size": [5, 3, 1]}},
+      { "blockType": "engine:air", "region": { "min": [-2, 1, 40], "size": [1, 3, 1]}},
+      { "blockType": "engine:air", "region": { "min": [2, 1, 40], "size": [1, 3, 1]}}
     ]
   },
   "AddWipeOut": {
     "WipeOutsToSpawn": [
       {
-        "position": [0, 1, 28],
-        "rotation": [0.0, 0.809017, 0.0, -0.5877852],
+        "position": [0, 1, 12],
+        "rotation": [0.0, -0.6312755, 0.0, -0.77555865],
         "direction": 1,
         "timePeriod": 15.0,
-        "offset": 0.0
+        "offset": 7.5,
+        "isRotating": true
       },
       {
-        "position": [0, 1, 12],
-        "rotation": [0.0, 0.58778524, 0.0, 0.809017],
+        "position": [0, 1, 28],
+        "rotation": [-0.0, -0.7755586, 0.0, 0.63127553],
         "direction": 1,
         "timePeriod": 15.0,
-        "offset": 7.5
+        "offset": 0.0,
+        "isRotating": true
       }
     ]
   },
@@ -113,3 +125,4 @@
     ]
   }
 }
+
