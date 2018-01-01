@@ -10,7 +10,7 @@
       "minVersion" : "1.0.0"
     },{
        "id" : "StructureTemplates",
-       "minVersion" : "0.2.0"
+       "minVersion" : "0.3.0"
     },{
         "id" : "Projectile",
         "minVersion" : "1.0.0"
