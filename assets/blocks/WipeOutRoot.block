@@ -3,7 +3,7 @@
   "hardness": 12,
   "mass": 50,
   "attachmentAllowed": false,
-  "rotation": "horizontal",
+  "family": "horizontal",
   "tiles": {
     "sides": "WipeOutSides",
     "front": "WipeOutFront",
