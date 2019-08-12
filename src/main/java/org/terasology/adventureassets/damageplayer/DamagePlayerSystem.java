@@ -25,7 +25,7 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.AliveCharacterComponent;
 import org.terasology.logic.characters.CharacterImpulseEvent;
-import org.terasology.logic.health.DoDamageEvent;
+import org.terasology.logic.health.event.DoDamageEvent;
 import org.terasology.logic.health.EngineDamageTypes;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector3f;
@@ -33,7 +33,7 @@ import org.terasology.physics.events.CollideEvent;
 import org.terasology.registry.In;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class DamagePlayerSystem extends BaseComponentSystem{
+public class DamagePlayerSystem extends BaseComponentSystem {
 
     private static final Logger logger = LoggerFactory.getLogger(DamagePlayerSystem.class);
 
@@ -44,7 +44,7 @@ public class DamagePlayerSystem extends BaseComponentSystem{
     public void onCollide(CollideEvent event, EntityRef entity, DamagePlayerComponent damagePlayerComponent) {
         EntityRef player = event.getOtherEntity();
         if (player.hasComponent(AliveCharacterComponent.class)) {
-            player.send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-1*damagePlayerComponent.recoil)));
+            player.send(new CharacterImpulseEvent(new Vector3f(event.getNormal()).mul(-1 * damagePlayerComponent.recoil)));
             player.send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
         }
     }
