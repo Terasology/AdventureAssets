@@ -208,7 +208,7 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
         locationComponent.setWorldPosition(spawnPos);
         entityBuilder.build();
         // Create a smoke explosion
-        entityBuilder = entityManager.newBuilder("core:smokeExplosion");
+        entityBuilder = entityManager.newBuilder("CoreAssets:smokeExplosion");
         locationComponent = entityBuilder.getComponent(LocationComponent.class);
         locationComponent.setWorldPosition(spawnPos);
         entityBuilder.build();
@@ -216,7 +216,7 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
 
     private void spawnParticlesOnDeactivate(Vector3f spawnPos) {
         // Create a smoke explosion
-        EntityBuilder entityBuilder = entityManager.newBuilder("core:smokeExplosion");
+        EntityBuilder entityBuilder = entityManager.newBuilder("CoreAssets:smokeExplosion");
         LocationComponent locationComponent = entityBuilder.getComponent(LocationComponent.class);
         locationComponent.setWorldPosition(spawnPos);
         entityBuilder.build();

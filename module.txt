@@ -1,11 +1,12 @@
 {
     "id" : "AdventureAssets",
-    "version" : "0.1.2-SNAPSHOT",
+    "version" : "0.1.3-SNAPSHOT",
     "author" : "flo, nihal111",
     "displayName" : "AdventureAssets",
     "description" : "",
     "dependencies" : [
         {"id" : "Core", "minVersion" : "2.0.0"},
+        {"id" : "CoreBlocks", "minVersion" : "1.0.0"},
         {"id" : "StructureTemplates", "minVersion" : "0.3.0"},
         {"id" : "Projectile", "minVersion" : "1.0.0"},
         {"id" : "WorldlyTooltipAPI", "minVersion" : "0.1.0"}

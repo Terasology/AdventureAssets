@@ -22,7 +22,7 @@
     ]
   },
   "ActAsBlock": {
-    "block": "core:DoorTop"
+    "block": "CoreBlocks:DoorTop"
   },
   "Network": {}
 }
