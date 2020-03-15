@@ -32,7 +32,7 @@ import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.notifications.NotificationMessageEvent;
-import org.terasology.logic.players.event.RespawnRequestEvent;
+import org.terasology.logic.players.event.BeforeRespawnEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.network.ClientComponent;
@@ -49,14 +49,14 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
     private EntityManager entityManager;
 
     /**
-     * This method intercepts the RespawnRequestEvent and makes a change to the LocationComponent of the client after
-     * the LocationComponent has already been changed to have the spawn location according to World Generator information.
+     * This method makes a change to the LocationComponent of the client after the LocationComponent has already been
+     * changed by using the BeforeRespawnEvent to have the spawn location according to World Generator information.
      *
      * @param event
      * @param entity
      */
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {ClientComponent.class})
-    public void setSpawnLocationOnRespawnRequest(RespawnRequestEvent event, EntityRef entity) {
+    @ReceiveEvent(components = {ClientComponent.class})
+    public void setSpawnLocationBeforeRespawn(BeforeRespawnEvent event, EntityRef entity) {
         EntityRef clientInfo = entity.getComponent(ClientComponent.class).clientInfo;
         if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
             Vector3f spawnPosition = clientInfo.getComponent(RevivePlayerComponent.class).location;
@@ -66,7 +66,6 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
             entity.saveComponent(loc);
         }
     }
-
     /**
      * This method creates the collider entity for the model once the altar of resurrection is placed in the world, upon
      * activation of the {@link AltarOfResurrectionRootComponent}.
