@@ -57,13 +57,15 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
      */
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {ClientComponent.class})
     public void setSpawnLocationOnRespawnRequest(RespawnRequestEvent event, EntityRef entity) {
-        EntityRef clientInfo = entity.getComponent(ClientComponent.class).clientInfo;
+        ClientComponent clientComponent = entity.getComponent(ClientComponent.class);
+        EntityRef character = clientComponent.character;
+        EntityRef clientInfo = clientComponent.clientInfo;
         if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
             Vector3f spawnPosition = clientInfo.getComponent(RevivePlayerComponent.class).location;
-            LocationComponent loc = entity.getComponent(LocationComponent.class);
+            LocationComponent loc = character.getComponent(LocationComponent.class);
             loc.setWorldPosition(spawnPosition);
             loc.setLocalRotation(new Quat4f());
-            entity.saveComponent(loc);
+            character.saveComponent(loc);
         }
     }
 
