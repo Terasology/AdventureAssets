@@ -24,12 +24,12 @@
     "waitBeforeRegen": 2,
     "destroyEntityOnNoHealth": true
   },
-  "BlockDropGrammar": {
+  "DropGrammar": {
     "itemDrops": [
       "AdventureAssets:mcqButtonDoor"
     ]
   },
   "ActAsBlock": {
-    "block": "CoreBlocks:DoorTop"
+    "block": "CoreAdventureAssets:DoorTop"
   }
 }

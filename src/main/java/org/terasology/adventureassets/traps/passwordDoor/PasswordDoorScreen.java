@@ -15,8 +15,8 @@
  */
 package org.terasology.adventureassets.traps.passwordDoor;
 
-import org.terasology.core.logic.door.OpenDoorEvent;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.furnishings.logic.door.OpenDoorEvent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
