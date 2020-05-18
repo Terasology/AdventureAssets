@@ -15,8 +15,8 @@
  */
 package org.terasology.adventureassets.traps.mcqButtonDoor;
 
-import org.terasology.core.logic.door.OpenDoorEvent;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.furnishings.logic.door.OpenDoorEvent;
 import org.terasology.logic.health.DestroyEvent;
 import org.terasology.logic.health.EngineDamageTypes;
 import org.terasology.logic.players.LocalPlayer;

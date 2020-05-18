@@ -16,14 +16,14 @@
 
 package org.terasology.adventureassets.traps.passwordDoor;
 
-import org.terasology.core.logic.door.CloseDoorEvent;
-import org.terasology.core.logic.door.DoorComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.furnishings.logic.door.CloseDoorEvent;
+import org.terasology.furnishings.logic.door.DoorComponent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.registry.In;
