@@ -9,9 +9,9 @@
         { "id": "CoreAssets", "minVersion": "2.0.1" },
         { "id": "Drops", "minVersion": "1.0.1" },
         { "id": "Furnishings", "minVersion": "1.1.0" },
-        { "id": "Projectile", "minVersion": "1.0.0" },
-        { "id": "StructureTemplates", "minVersion": "0.3.0" },
-        { "id": "WorldlyTooltipAPI", "minVersion": "0.1.0" }
+        { "id": "Projectile", "minVersion": "1.1.0" },
+        { "id": "StructureTemplates", "minVersion": "1.0.0" },
+        { "id": "WorldlyTooltipAPI", "minVersion": "1.0.0" }
     ],
     "serverSideOnly": false,
     "isAsset": true,
