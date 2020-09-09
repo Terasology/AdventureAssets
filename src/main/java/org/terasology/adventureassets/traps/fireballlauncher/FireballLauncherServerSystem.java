@@ -1,43 +1,30 @@
-/*
- * Copyright 2017 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.adventureassets.traps.fireballlauncher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.core.Time;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.BlockComponent;
+import org.terasology.engine.world.block.items.BlockItemComponent;
+import org.terasology.engine.world.block.items.OnBlockItemPlaced;
+import org.terasology.engine.world.block.items.OnBlockToItem;
 import org.terasology.gestalt.assets.management.AssetManager;
-import org.terasology.logic.health.HealthComponent;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.health.logic.HealthComponent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.projectile.FireProjectileEvent;
 import org.terasology.projectile.ProjectileActionComponent;
-import org.terasology.registry.In;
-import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.items.BlockItemComponent;
-import org.terasology.world.block.items.OnBlockItemPlaced;
-import org.terasology.world.block.items.OnBlockToItem;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class FireballLauncherServerSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -59,7 +46,8 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
      * @param fireballLauncherComponent
      */
     @ReceiveEvent
-    public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, FireballLauncherComponent fireballLauncherComponent) {
+    public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity,
+                              FireballLauncherComponent fireballLauncherComponent) {
         event.getItem().addOrSaveComponent(fireballLauncherComponent);
     }
 
@@ -78,8 +66,8 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
     }
 
     /**
-     * Saves the settings to the server FireballLauncherRoot entity once the Ok button is clicked on the settings screen.
-     * All changes are then replicated to the client entities.
+     * Saves the settings to the server FireballLauncherRoot entity once the Ok button is clicked on the settings
+     * screen. All changes are then replicated to the client entities.
      *
      * @param event
      * @param player
@@ -87,7 +75,8 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
     @ReceiveEvent
     public void setFireballLauncher(SetFireballLauncherEvent event, EntityRef player) {
         EntityRef fireballLauncherRoot = event.getFireballLauncherRoot();
-        FireballLauncherComponent fireballLauncherComponent = fireballLauncherRoot.getComponent(FireballLauncherComponent.class);
+        FireballLauncherComponent fireballLauncherComponent =
+                fireballLauncherRoot.getComponent(FireballLauncherComponent.class);
         fireballLauncherComponent.isFiring = event.isFiring();
         fireballLauncherComponent.timePeriod = event.getTimePeriod();
         fireballLauncherComponent.damageAmount = event.getDamageAmount();
@@ -105,14 +94,17 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
      */
     @Override
     public void update(float delta) {
-        for (EntityRef fireballLauncher : entityManager.getEntitiesWith(FireballLauncherComponent.class, BlockComponent.class)) {
-            FireballLauncherComponent fireballLauncherComponent = fireballLauncher.getComponent(FireballLauncherComponent.class);
+        for (EntityRef fireballLauncher : entityManager.getEntitiesWith(FireballLauncherComponent.class,
+                BlockComponent.class)) {
+            FireballLauncherComponent fireballLauncherComponent =
+                    fireballLauncher.getComponent(FireballLauncherComponent.class);
             if (fireballLauncherComponent.isFiring && time.getGameTime() > fireballLauncherComponent.timePeriod + fireballLauncherComponent.lastShotTime) {
                 Prefab fireballPrefab = assetManager.getAsset("Projectile:fireball", Prefab.class).get();
                 EntityBuilder fireballEntityBuilder = entityManager.newBuilder(fireballPrefab);
                 EntityRef fireball = fireballEntityBuilder.build();
 
-                ProjectileActionComponent projectileActionComponent = fireball.getComponent(ProjectileActionComponent.class);
+                ProjectileActionComponent projectileActionComponent =
+                        fireball.getComponent(ProjectileActionComponent.class);
                 projectileActionComponent.maxDistance = fireballLauncherComponent.maxDistance;
                 fireball.saveComponent(projectileActionComponent);
 
@@ -124,7 +116,8 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
                 Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition();
                 fireball.send(new FireProjectileEvent(pos, fireballLauncherComponent.direction));
 
-                fireballLauncherComponent.lastShotTime = (float) Math.floor(time.getGameTime() / fireballLauncherComponent.timePeriod)
+                fireballLauncherComponent.lastShotTime =
+                        (float) Math.floor(time.getGameTime() / fireballLauncherComponent.timePeriod)
                         * fireballLauncherComponent.timePeriod + fireballLauncherComponent.offset;
                 fireballLauncher.saveComponent(fireballLauncherComponent);
             }

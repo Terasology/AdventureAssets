@@ -1,43 +1,30 @@
-/*
- * Copyright 2017 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.adventureassets.altarofresurrection;
 
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
-import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.entitySystem.entity.lifecycleEvents.OnChangedComponent;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
+import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnChangedComponent;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.common.ActivateEvent;
+import org.terasology.engine.logic.location.Location;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.logic.LightComponent;
+import org.terasology.engine.rendering.logic.MeshComponent;
+import org.terasology.engine.utilities.Assets;
+import org.terasology.engine.world.block.BlockComponent;
 import org.terasology.gestalt.assets.management.AssetManager;
-import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.location.Location;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.registry.In;
-import org.terasology.rendering.logic.LightComponent;
-import org.terasology.rendering.logic.MeshComponent;
-import org.terasology.utilities.Assets;
-import org.terasology.world.block.BlockComponent;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class ResurrectionClientSystem extends BaseComponentSystem {
@@ -51,17 +38,18 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
     private EntityManager entityManager;
 
     /**
-     * This method creates the mesh and the orb entity for the model visual and lighting once the altar of resurrection is
-     * placed in the world, upon activation of the {@link AltarOfResurrectionRootComponent}.
-     * It also activates the altar of resurrection entity in case the local player has the same altar of resurrection activated, once
-     * the entity gets loaded.
+     * This method creates the mesh and the orb entity for the model visual and lighting once the altar of resurrection
+     * is placed in the world, upon activation of the {@link AltarOfResurrectionRootComponent}. It also activates the
+     * altar of resurrection entity in case the local player has the same altar of resurrection activated, once the
+     * entity gets loaded.
      *
      * @param event
      * @param entity
      * @param altarOfResurrectionRootComponent
      */
     @ReceiveEvent(components = {AltarOfResurrectionRootComponent.class, BlockComponent.class})
-    public void onAltarOfResurrectionCreated(OnActivatedComponent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+    public void onAltarOfResurrectionCreated(OnActivatedComponent event, EntityRef entity,
+                                             AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
         Prefab angelMeshPrefab = assetManager.getAsset("AdventureAssets:altarOfResurrectionMesh", Prefab.class).get();
         EntityBuilder angelMeshEntityBuilder = entityManager.newBuilder(angelMeshPrefab);
         angelMeshEntityBuilder.setOwner(entity);
@@ -91,30 +79,32 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
     }
 
     /**
-     * This method deals with the destruction of the altar of resurrection. The orb and the mesh entities on the client side
-     * are destroyed.
+     * This method deals with the destruction of the altar of resurrection. The orb and the mesh entities on the client
+     * side are destroyed.
      *
      * @param event
      * @param entityRef
      * @param altarOfResurrectionRootComponent
      */
     @ReceiveEvent
-    public void onRemove(BeforeRemoveComponent event, EntityRef entityRef, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+    public void onRemove(BeforeRemoveComponent event, EntityRef entityRef,
+                         AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
         altarOfResurrectionRootComponent.meshEntity.destroy();
         altarOfResurrectionRootComponent.orbEntity.destroy();
     }
 
     /**
      * This method listens for the activation of the {@link RevivePlayerComponent} which is attached to the client info
-     * entity when the {@link ActivateEvent} is handled in the {@link ResurrectionServerSystem}. This method triggers the
-     * activation of the altar of resurrection which includes texture change and particle effects.
+     * entity when the {@link ActivateEvent} is handled in the {@link ResurrectionServerSystem}. This method triggers
+     * the activation of the altar of resurrection which includes texture change and particle effects.
      *
      * @param event
      * @param entity
      * @param revivePlayerComponent
      */
     @ReceiveEvent(components = {RevivePlayerComponent.class})
-    public void onRevivePlayerActivate(OnActivatedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
+    public void onRevivePlayerActivate(OnActivatedComponent event, EntityRef entity,
+                                       RevivePlayerComponent revivePlayerComponent) {
         if (entity.equals(localPlayer.getClientInfoEntity())) {
             EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
             if (altarOfResurrection.exists()) {
@@ -133,7 +123,8 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
      * @param revivePlayerComponent
      */
     @ReceiveEvent
-    public void onRevivePlayerRemove(BeforeRemoveComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
+    public void onRevivePlayerRemove(BeforeRemoveComponent event, EntityRef entity,
+                                     RevivePlayerComponent revivePlayerComponent) {
         if (entity.equals(localPlayer.getClientInfoEntity())) {
             EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
             deactivateAltarOfResurrection(altarOfResurrection);
@@ -142,15 +133,16 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
     }
 
     /**
-     * This method listens for the change in the {@link RevivePlayerComponent}. This happens to an already
-     * activated altar of resurrection upon activation of a new altar of resurrection.
+     * This method listens for the change in the {@link RevivePlayerComponent}. This happens to an already activated
+     * altar of resurrection upon activation of a new altar of resurrection.
      *
      * @param event
      * @param entity
      * @param revivePlayerComponent
      */
     @ReceiveEvent
-    public void setRevivePlayerChange(OnChangedComponent event, EntityRef entity, RevivePlayerComponent revivePlayerComponent) {
+    public void setRevivePlayerChange(OnChangedComponent event, EntityRef entity,
+                                      RevivePlayerComponent revivePlayerComponent) {
         if (entity.equals(localPlayer.getClientInfoEntity())) {
             deactivateAltarOfResurrection(activatedAltarOfResurrection);
             EntityRef altarOfResurrection = revivePlayerComponent.altarOfResurrectionEntity;
@@ -160,7 +152,8 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
     }
 
     private void activateAltarOfResurrection(EntityRef altarOfResurrection) {
-        AltarOfResurrectionRootComponent altarOfResurrectionRootComponent = altarOfResurrection.getComponent(AltarOfResurrectionRootComponent.class);
+        AltarOfResurrectionRootComponent altarOfResurrectionRootComponent =
+                altarOfResurrection.getComponent(AltarOfResurrectionRootComponent.class);
         Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition();
 
         spawnParticlesOnActivate(location);
@@ -169,7 +162,8 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
     }
 
     private void deactivateAltarOfResurrection(EntityRef altarOfResurrection) {
-        AltarOfResurrectionRootComponent altarOfResurrectionRootComponent = altarOfResurrection.getComponent(AltarOfResurrectionRootComponent.class);
+        AltarOfResurrectionRootComponent altarOfResurrectionRootComponent =
+                altarOfResurrection.getComponent(AltarOfResurrectionRootComponent.class);
         Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition();
 
         spawnParticlesOnDeactivate(location);

@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.adventureassets.traps.mcqButtonDoor;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.destruction.DestroyEvent;
+import org.terasology.engine.logic.destruction.EngineDamageTypes;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.nui.CoreScreenLayer;
 import org.terasology.furnishings.logic.door.OpenDoorEvent;
-import org.terasology.logic.health.DestroyEvent;
-import org.terasology.logic.health.EngineDamageTypes;
-import org.terasology.logic.players.LocalPlayer;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.nui.UIWidget;
 import org.terasology.nui.layouts.RowLayout;
 import org.terasology.nui.widgets.UIButton;
@@ -66,7 +66,8 @@ public class McqButtonDoorScreen extends CoreScreenLayer {
 
     private void onWrongAnswer(UIWidget uiWidget) {
         getManager().popScreen();
-        localPlayer.getCharacterEntity().send(new DestroyEvent(doorEntity, EntityRef.NULL, EngineDamageTypes.PHYSICAL.get()));
+        localPlayer.getCharacterEntity().send(new DestroyEvent(doorEntity, EntityRef.NULL,
+                EngineDamageTypes.PHYSICAL.get()));
     }
 
     private void onCorrectAnswer(UIWidget uiWidget) {

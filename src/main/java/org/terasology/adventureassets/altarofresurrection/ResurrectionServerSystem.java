@@ -1,44 +1,31 @@
-/*
- * Copyright 2017 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.adventureassets.altarofresurrection;
 
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
-import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.entitySystem.event.EventPriority;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
+import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.engine.entitySystem.event.EventPriority;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.characters.events.AttackEvent;
+import org.terasology.engine.logic.common.ActivateEvent;
+import org.terasology.engine.logic.location.Location;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.notifications.NotificationMessageEvent;
+import org.terasology.engine.logic.players.event.RespawnRequestEvent;
+import org.terasology.engine.network.ClientComponent;
+import org.terasology.engine.network.ClientInfoComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.BlockComponent;
 import org.terasology.gestalt.assets.management.AssetManager;
-import org.terasology.logic.characters.events.AttackEvent;
-import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.location.Location;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.notifications.NotificationMessageEvent;
-import org.terasology.logic.players.event.RespawnRequestEvent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.network.ClientComponent;
-import org.terasology.network.ClientInfoComponent;
-import org.terasology.registry.In;
-import org.terasology.world.block.BlockComponent;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class ResurrectionServerSystem extends BaseComponentSystem {
@@ -50,7 +37,8 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
 
     /**
      * This method intercepts the RespawnRequestEvent and makes a change to the LocationComponent of the client after
-     * the LocationComponent has already been changed to have the spawn location according to World Generator information.
+     * the LocationComponent has already been changed to have the spawn location according to World Generator
+     * information.
      *
      * @param event
      * @param entity
@@ -78,8 +66,10 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
      * @param altarOfResurrectionRootComponent
      */
     @ReceiveEvent(components = {AltarOfResurrectionRootComponent.class, BlockComponent.class})
-    public void onAltarOfResurrectionCreated(OnActivatedComponent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
-        Prefab angelColliderPrefab = assetManager.getAsset("AdventureAssets:altarOfResurrectionCollider", Prefab.class).get();
+    public void onAltarOfResurrectionCreated(OnActivatedComponent event, EntityRef entity,
+                                             AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+        Prefab angelColliderPrefab = assetManager.getAsset("AdventureAssets:altarOfResurrectionCollider",
+                Prefab.class).get();
         EntityBuilder angelColliderEntityBuilder = entityManager.newBuilder(angelColliderPrefab);
         angelColliderEntityBuilder.setOwner(entity);
         angelColliderEntityBuilder.setPersistent(true);
@@ -90,16 +80,17 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
     }
 
     /**
-     * This method deals with the destruction of the altar of resurrection. The collider entity on the server side is destroyed.
-     * In addition, any clientInfo entity that has the {@link RevivePlayerComponent} for the same altar of resurrection entity
-     * being destroyed, has its {@link RevivePlayerComponent} removed.
+     * This method deals with the destruction of the altar of resurrection. The collider entity on the server side is
+     * destroyed. In addition, any clientInfo entity that has the {@link RevivePlayerComponent} for the same altar of
+     * resurrection entity being destroyed, has its {@link RevivePlayerComponent} removed.
      *
      * @param event
      * @param entity
      * @param altarOfResurrectionRootComponent
      */
     @ReceiveEvent
-    public void onRemove(BeforeRemoveComponent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+    public void onRemove(BeforeRemoveComponent event, EntityRef entity,
+                         AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
         altarOfResurrectionRootComponent.colliderEntity.destroy();
 
         // Removes RevivePlayerComponent from clientInfo upon destruction of an altar of resurrection
@@ -108,7 +99,8 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
             if (revivePlayerComponent.altarOfResurrectionEntity.equals(entity)) {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
                 EntityRef client = clientInfo.getComponent(ClientInfoComponent.class).client;
-                client.send(new NotificationMessageEvent("Deactivated Altar of Resurrection due to destruction", client));
+                client.send(new NotificationMessageEvent("Deactivated Altar of Resurrection due to destruction",
+                        client));
             }
         }
     }
@@ -138,19 +130,21 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
     }
 
     /**
-     * Handles the ActivateEvent for the root entity. Depending on whether the altar of resurrection is activated for the client
-     * or not, the altar of resurrection gets activated or deactivated.
+     * Handles the ActivateEvent for the root entity. Depending on whether the altar of resurrection is activated for
+     * the client or not, the altar of resurrection gets activated or deactivated.
      *
      * @param event
      * @param entity
      * @param altarOfResurrectionRootComponent
      */
     @ReceiveEvent
-    public void onAltarOfResurrectionInteract(ActivateEvent event, EntityRef entity, AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
+    public void onAltarOfResurrectionInteract(ActivateEvent event, EntityRef entity,
+                                              AltarOfResurrectionRootComponent altarOfResurrectionRootComponent) {
         EntityRef clientInfo = event.getInstigator().getOwner().getComponent(ClientComponent.class).clientInfo;
 
         if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
-            EntityRef prevAltarOfResurrection = clientInfo.getComponent(RevivePlayerComponent.class).altarOfResurrectionEntity;
+            EntityRef prevAltarOfResurrection =
+                    clientInfo.getComponent(RevivePlayerComponent.class).altarOfResurrectionEntity;
             if (entity.equals(prevAltarOfResurrection)) {
                 clientInfo.removeComponent(RevivePlayerComponent.class);
             } else {

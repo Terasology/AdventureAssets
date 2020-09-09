@@ -4,21 +4,21 @@ package org.terasology.adventureassets.altarofresurrection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.input.cameraTarget.CameraTargetSystem;
-import org.terasology.logic.location.Location;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.LocalPlayer;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.input.cameraTarget.CameraTargetSystem;
+import org.terasology.engine.logic.location.Location;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.logic.FloatingTextComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.registry.In;
-import org.terasology.rendering.logic.FloatingTextComponent;
 import org.terasology.nui.Color;
 
 @RegisterSystem(RegisterMode.CLIENT)
@@ -64,7 +64,8 @@ public class ResurrectionTextSystem extends BaseComponentSystem implements Updat
 
             EntityRef clientInfo = localPlayer.getClientInfoEntity();
             if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
-                EntityRef activatedAltarOfResurrection = clientInfo.getComponent(RevivePlayerComponent.class).altarOfResurrectionEntity;
+                EntityRef activatedAltarOfResurrection =
+                        clientInfo.getComponent(RevivePlayerComponent.class).altarOfResurrectionEntity;
                 if (activatedAltarOfResurrection.equals(targetEntity)) {
                     floatingTextComponent.text = "Altar of Resurrection Activated";
                     floatingTextComponent.textColor = Color.YELLOW;

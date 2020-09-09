@@ -4,12 +4,12 @@ package org.terasology.adventureassets.traps.fireballlauncher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.players.LocalPlayer;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.nui.BaseInteractionScreen;
+import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.math.geom.Vector3f;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.BaseInteractionScreen;
-import org.terasology.rendering.nui.NUIManager;
 import org.terasology.nui.UIWidget;
 import org.terasology.nui.widgets.UIButton;
 import org.terasology.nui.widgets.UICheckbox;
