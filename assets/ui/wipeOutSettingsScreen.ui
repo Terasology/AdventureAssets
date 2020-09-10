@@ -55,7 +55,7 @@
                   "text": "Time Period"
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "timePeriod",
                   "layoutInfo": {}
                 },
@@ -64,7 +64,7 @@
                   "text": "Offset (A fraction of Time Period)"
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "offset",
                   "layoutInfo": {}
                 }
@@ -94,7 +94,7 @@
                   "text": "Yaw:"
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "yaw"
                 },
                 {
@@ -102,7 +102,7 @@
                   "text": "Pitch: "
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "pitch"
                 },
                 {
@@ -110,7 +110,7 @@
                   "text": "Roll: "
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "roll"
                 },
                 {
@@ -167,7 +167,7 @@
         }
       },
       {
-        "type": "engine:RowLayout",
+        "type": "nui:rowLayout",
         "id": "actionsRow",
         "contents": [
           {

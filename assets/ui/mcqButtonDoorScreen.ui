@@ -37,7 +37,7 @@
         }
       },
       {
-        "type": "engine:RowLayout",
+        "type": "nui:rowLayout",
         "id": "actionsRow",
         "contents": [
           {

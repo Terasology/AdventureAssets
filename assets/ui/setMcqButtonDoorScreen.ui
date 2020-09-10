@@ -32,7 +32,7 @@
                   "text": "Title"
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "title",
                   "layoutInfo": {}
                 },
@@ -41,7 +41,7 @@
                   "text": "Message"
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "message",
                   "layoutInfo": {},
                   "multiline": true
@@ -51,7 +51,7 @@
                   "text": "Options (comma separated)"
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "options",
                   "layoutInfo": {}
                 },
@@ -60,7 +60,7 @@
                   "text": "Correct option"
                 },
                 {
-                  "type": "engine:UIText",
+                  "type": "nui:UIText",
                   "id": "password",
                   "layoutInfo": {}
                 }
@@ -82,7 +82,7 @@
         }
       },
       {
-        "type": "engine:RowLayout",
+        "type": "nui:rowLayout",
         "id": "actionsRow",
         "contents": [
           {
