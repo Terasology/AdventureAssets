@@ -5,7 +5,7 @@ package org.terasology.adventureassets.traps.swingingblade.structuretemplateinte
 import org.terasology.engine.entitySystem.Component;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.reflection.MappedContainer;
+import org.terasology.nui.reflection.MappedContainer;
 import org.terasology.structureTemplates.events.SpawnStructureEvent;
 
 import java.util.List;
