@@ -16,6 +16,7 @@
 package org.terasology.adventureassets.traps.wipeout;
 
 import com.google.common.collect.Lists;
+import org.joml.Quaternionf;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.math.geom.Quat4f;
@@ -58,7 +59,7 @@ public class WipeOutComponent implements Component {
      * Saved rotation extracted when block turns to item
      */
     @Replicate
-    public Quat4f rotation = new Quat4f(Quat4f.IDENTITY);
+    public Quaternionf rotation = new Quaternionf();
 
     @Replicate
     public List<EntityRef> childrenEntities = Lists.newArrayList();

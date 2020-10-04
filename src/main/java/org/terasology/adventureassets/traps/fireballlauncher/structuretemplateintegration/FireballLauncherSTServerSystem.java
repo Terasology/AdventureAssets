@@ -15,6 +15,8 @@
  */
 package org.terasology.adventureassets.traps.fireballlauncher.structuretemplateintegration;
 
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.adventureassets.traps.fireballlauncher.FireballLauncherComponent;
@@ -24,9 +26,8 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.Side;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
@@ -98,7 +99,7 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
             FireballLauncherComponent fireballLauncherComponent = blockEntity.getComponent(FireballLauncherComponent.class);
             AddFireballLauncherComponent.FireballLauncherToSpawn fireballLauncherToSpawn = new AddFireballLauncherComponent.FireballLauncherToSpawn();
-            Vector3i absolutePosition = new Vector3i(blockComponent.getPosition());
+            Vector3i absolutePosition = new Vector3i(JomlUtil.from(blockComponent.position));
             fireballLauncherToSpawn.position = transformToRelative.transformVector3i(absolutePosition);
             fireballLauncherToSpawn.isFiring = fireballLauncherComponent.isFiring;
             fireballLauncherToSpawn.timePeriod = fireballLauncherComponent.timePeriod;
@@ -119,23 +120,23 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
 
     private Vector3f convertDirectionToRelative(Vector3f direction, Side side) {
         Vector3f relativeDirection = new Vector3f();
-        relativeDirection.y = direction.getY();
+        relativeDirection.y = direction.y();
         switch (side) {
             case FRONT:
-                relativeDirection.z = direction.getZ();
-                relativeDirection.x = direction.getX();
+                relativeDirection.z = direction.z();
+                relativeDirection.x = direction.x();
                 break;
             case RIGHT:
-                relativeDirection.z = -1 * direction.getX();
-                relativeDirection.x = direction.getZ();
+                relativeDirection.z = -1 * direction.x();
+                relativeDirection.x = direction.z();
                 break;
             case BACK:
-                relativeDirection.x = -1 * direction.getX();
-                relativeDirection.z = -1 * direction.getZ();
+                relativeDirection.x = -1 * direction.x();
+                relativeDirection.z = -1 * direction.z();
                 break;
             case LEFT:
-                relativeDirection.z = direction.getX();
-                relativeDirection.x = -1 * direction.getZ();
+                relativeDirection.z = direction.x();
+                relativeDirection.x = -1 * direction.z();
                 break;
         }
         return relativeDirection;
@@ -143,23 +144,23 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
 
     private Vector3f convertDirectionToAbsolute(Vector3f direction, Side side) {
         Vector3f absoluteDirection = new Vector3f();
-        absoluteDirection.y = direction.getY();
+        absoluteDirection.y = direction.y();
         switch (side) {
             case FRONT:
-                absoluteDirection.z = direction.getZ();
-                absoluteDirection.x = direction.getX();
+                absoluteDirection.z = direction.z();
+                absoluteDirection.x = direction.x();
                 break;
             case RIGHT:
-                absoluteDirection.z = direction.getX();
-                absoluteDirection.x = -1 * direction.getZ();
+                absoluteDirection.z = direction.x();
+                absoluteDirection.x = -1 * direction.z();
                 break;
             case BACK:
-                absoluteDirection.x = -1 * direction.getX();
-                absoluteDirection.z = -1 * direction.getZ();
+                absoluteDirection.x = -1 * direction.x();
+                absoluteDirection.z = -1 * direction.z();
                 break;
             case LEFT:
-                absoluteDirection.z = -1 * direction.getX();
-                absoluteDirection.x = direction.getZ();
+                absoluteDirection.z = -1 * direction.x();
+                absoluteDirection.x = direction.z();
                 break;
         }
         return absoluteDirection;
@@ -172,43 +173,43 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
         sb.append("    \"AddFireballLauncher\": {\n");
         sb.append("        \"fireballLaunchersToSpawn\": [\n");
         ListUtil.visitList(component.fireballLaunchersToSpawn,
-                (AddFireballLauncherComponent.FireballLauncherToSpawn fireballLauncher, boolean last) -> {
-                    sb.append("            {\n");
-                    sb.append("                \"position\": [");
-                    sb.append(fireballLauncher.position.x);
-                    sb.append(", ");
-                    sb.append(fireballLauncher.position.y);
-                    sb.append(", ");
-                    sb.append(fireballLauncher.position.z);
-                    sb.append("],\n");
-                    sb.append("                \"isFiring\": ");
-                    sb.append(fireballLauncher.isFiring);
-                    sb.append(",\n");
-                    sb.append("                \"timePeriod\": ");
-                    sb.append(fireballLauncher.timePeriod);
-                    sb.append(",\n");
-                    sb.append("                \"offset\": ");
-                    sb.append(fireballLauncher.offset);
-                    sb.append(",\n");
-                    sb.append("                \"direction\": [");
-                    sb.append(fireballLauncher.direction.x);
-                    sb.append(", ");
-                    sb.append(fireballLauncher.direction.y);
-                    sb.append(", ");
-                    sb.append(fireballLauncher.direction.z);
-                    sb.append("],\n");
-                    sb.append("                \"maxDistance\": ");
-                    sb.append(fireballLauncher.maxDistance);
-                    sb.append(",\n");
-                    sb.append("                \"damageAmount\": ");
-                    sb.append(fireballLauncher.damageAmount);
-                    sb.append("\n");
-                    if (last) {
-                        sb.append("            }\n");
-                    } else {
-                        sb.append("            },\n");
-                    }
-                });
+            (AddFireballLauncherComponent.FireballLauncherToSpawn fireballLauncher, boolean last) -> {
+                sb.append("            {\n");
+                sb.append("                \"position\": [");
+                sb.append(fireballLauncher.position.x);
+                sb.append(", ");
+                sb.append(fireballLauncher.position.y);
+                sb.append(", ");
+                sb.append(fireballLauncher.position.z);
+                sb.append("],\n");
+                sb.append("                \"isFiring\": ");
+                sb.append(fireballLauncher.isFiring);
+                sb.append(",\n");
+                sb.append("                \"timePeriod\": ");
+                sb.append(fireballLauncher.timePeriod);
+                sb.append(",\n");
+                sb.append("                \"offset\": ");
+                sb.append(fireballLauncher.offset);
+                sb.append(",\n");
+                sb.append("                \"direction\": [");
+                sb.append(fireballLauncher.direction.x);
+                sb.append(", ");
+                sb.append(fireballLauncher.direction.y);
+                sb.append(", ");
+                sb.append(fireballLauncher.direction.z);
+                sb.append("],\n");
+                sb.append("                \"maxDistance\": ");
+                sb.append(fireballLauncher.maxDistance);
+                sb.append(",\n");
+                sb.append("                \"damageAmount\": ");
+                sb.append(fireballLauncher.damageAmount);
+                sb.append("\n");
+                if (last) {
+                    sb.append("            }\n");
+                } else {
+                    sb.append("            },\n");
+                }
+            });
         sb.append("        ]\n");
         sb.append("    }");
         event.addJsonForComponent(sb.toString(), AddFireballLauncherComponent.class);

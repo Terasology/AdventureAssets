@@ -15,8 +15,8 @@
  */
 package org.terasology.adventureassets.traps.fireballlauncher;
 
+import org.joml.Vector3f;
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.network.Replicate;
 import org.terasology.world.block.ForceBlockActive;
 
@@ -40,8 +40,8 @@ public class FireballLauncherComponent implements Component {
     public float timePeriod = 2f;
 
     /**
-     * Time offset for synchronization of multiple launchers
-     * Two launchers having the same time period can operate at offsets to fire at different instances
+     * Time offset for synchronization of multiple launchers Two launchers having the same time period can operate at
+     * offsets to fire at different instances
      */
     @Replicate
     public float offset = 0f;
@@ -56,7 +56,7 @@ public class FireballLauncherComponent implements Component {
      * Direction to fire
      */
     @Replicate
-    public Vector3f direction = Vector3f.north();
+    public Vector3f direction = new Vector3f(0, 0, 1);
 
     /**
      * Distance till which fireball lasts

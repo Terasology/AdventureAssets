@@ -15,6 +15,8 @@
  */
 package org.terasology.adventureassets.traps.wipeout.structuretemplateintegration;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.adventureassets.traps.wipeout.WipeOutComponent;
@@ -24,8 +26,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.math.JomlUtil;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
@@ -62,10 +63,10 @@ public class WipeOutSTServerSystem extends BaseComponentSystem {
     }
 
     /**
-     * This method is used to retrieve the stored settings for each WipeOut once it is spawned.
-     * This method is called only after the OnActivatedComponent for the {@link WipeOutComponent} has executed.<br/>
-     * Note: only the properties of the Wipe Out should be overwritten in the {@link WipeOutComponent},
-     * since the existing {@link WipeOutComponent} already has a list for childrenEntities (rod, blade and mesh).
+     * This method is used to retrieve the stored settings for each WipeOut once it is spawned. This method is called
+     * only after the OnActivatedComponent for the {@link WipeOutComponent} has executed.<br/> Note: only the properties
+     * of the Wipe Out should be overwritten in the {@link WipeOutComponent}, since the existing {@link
+     * WipeOutComponent} already has a list for childrenEntities (rod, blade and mesh).
      *
      * @param addWipeOutComponent
      * @param transformation
@@ -73,7 +74,7 @@ public class WipeOutSTServerSystem extends BaseComponentSystem {
     private void configureWipeOut(AddWipeOutComponent addWipeOutComponent, BlockRegionTransform transformation) {
         for (AddWipeOutComponent.WipeOutsToSpawn w : addWipeOutComponent.wipeOutsToSpawn) {
             Vector3i absolutePosition = transformation.transformVector3i(w.position);
-            Quat4f absoluteRotation = transformation.transformRotation(w.rotation);
+            Quaternionf absoluteRotation = transformation.transformRotation(w.rotation);
             EntityRef wipeOut = blockEntityRegistry.getBlockEntityAt(absolutePosition);
             WipeOutComponent wipeOutComponent = wipeOut.getComponent(WipeOutComponent.class);
             wipeOutComponent.direction = w.direction;
@@ -102,9 +103,9 @@ public class WipeOutSTServerSystem extends BaseComponentSystem {
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
             WipeOutComponent wipeOutComponent = blockEntity.getComponent(WipeOutComponent.class);
             AddWipeOutComponent.WipeOutsToSpawn wipeOutToSpawn = new AddWipeOutComponent.WipeOutsToSpawn();
-            Vector3i absolutePosition = new Vector3i(blockComponent.getPosition());
+            Vector3i absolutePosition = new Vector3i(JomlUtil.from(blockComponent.position));
             wipeOutToSpawn.position = transformToRelative.transformVector3i(absolutePosition);
-            wipeOutToSpawn.rotation = transformToRelative.transformRotation(blockEntity.getComponent(LocationComponent.class).getWorldRotation());
+            wipeOutToSpawn.rotation = transformToRelative.transformRotation(blockEntity.getComponent(LocationComponent.class).getWorldRotation(new Quaternionf()));
             wipeOutToSpawn.direction = wipeOutComponent.direction;
             wipeOutToSpawn.timePeriod = wipeOutComponent.timePeriod;
             wipeOutToSpawn.offset = wipeOutComponent.offset;
@@ -127,42 +128,42 @@ public class WipeOutSTServerSystem extends BaseComponentSystem {
         sb.append("    \"AddWipeOut\": {\n");
         sb.append("        \"WipeOutsToSpawn\": [\n");
         ListUtil.visitList(component.wipeOutsToSpawn,
-                (AddWipeOutComponent.WipeOutsToSpawn wipeOut, boolean last) -> {
-                    sb.append("            {\n");
-                    sb.append("                \"position\": [");
-                    sb.append(wipeOut.position.x);
-                    sb.append(", ");
-                    sb.append(wipeOut.position.y);
-                    sb.append(", ");
-                    sb.append(wipeOut.position.z);
-                    sb.append("],\n");
-                    sb.append("                \"rotation\": [");
-                    sb.append(wipeOut.rotation.x);
-                    sb.append(", ");
-                    sb.append(wipeOut.rotation.y);
-                    sb.append(", ");
-                    sb.append(wipeOut.rotation.z);
-                    sb.append(", ");
-                    sb.append(wipeOut.rotation.w);
-                    sb.append("],\n");
-                    sb.append("                \"direction\": ");
-                    sb.append(wipeOut.direction);
-                    sb.append(",\n");
-                    sb.append("                \"timePeriod\": ");
-                    sb.append(wipeOut.timePeriod);
-                    sb.append(",\n");
-                    sb.append("                \"offset\": ");
-                    sb.append(wipeOut.offset);
-                    sb.append(",\n");
-                    sb.append("                \"isRotating\": ");
-                    sb.append(wipeOut.isRotating);
-                    sb.append("\n");
-                    if (last) {
-                        sb.append("            }\n");
-                    } else {
-                        sb.append("            },\n");
-                    }
-                });
+            (AddWipeOutComponent.WipeOutsToSpawn wipeOut, boolean last) -> {
+                sb.append("            {\n");
+                sb.append("                \"position\": [");
+                sb.append(wipeOut.position.x);
+                sb.append(", ");
+                sb.append(wipeOut.position.y);
+                sb.append(", ");
+                sb.append(wipeOut.position.z);
+                sb.append("],\n");
+                sb.append("                \"rotation\": [");
+                sb.append(wipeOut.rotation.x);
+                sb.append(", ");
+                sb.append(wipeOut.rotation.y);
+                sb.append(", ");
+                sb.append(wipeOut.rotation.z);
+                sb.append(", ");
+                sb.append(wipeOut.rotation.w);
+                sb.append("],\n");
+                sb.append("                \"direction\": ");
+                sb.append(wipeOut.direction);
+                sb.append(",\n");
+                sb.append("                \"timePeriod\": ");
+                sb.append(wipeOut.timePeriod);
+                sb.append(",\n");
+                sb.append("                \"offset\": ");
+                sb.append(wipeOut.offset);
+                sb.append(",\n");
+                sb.append("                \"isRotating\": ");
+                sb.append(wipeOut.isRotating);
+                sb.append("\n");
+                if (last) {
+                    sb.append("            }\n");
+                } else {
+                    sb.append("            },\n");
+                }
+            });
         sb.append("        ]\n");
         sb.append("    }");
         event.addJsonForComponent(sb.toString(), AddWipeOutComponent.class);

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.adventureassets.traps.wipeout;
 
+import org.joml.Quaternionf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -85,11 +86,14 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
             double yawValue = Math.toRadians(Double.parseDouble(yaw.getText()));
             double pitchValue = Math.toRadians(Double.parseDouble(pitch.getText()));
             double rollValue = Math.toRadians(Double.parseDouble(roll.getText()));
-            locationComponent.setWorldRotation(new Quat4f((float) yawValue, (float) pitchValue, (float) rollValue));
+            locationComponent.setWorldRotation(new Quaternionf().rotationYXZ((float) yawValue, (float) pitchValue,
+                (float) rollValue));
             wipeOutRoot.saveComponent(wipeOutComponent);
             wipeOutRoot.saveComponent(locationComponent);
-            localPlayer.getCharacterEntity().send(new SetWipeOutRoot(wipeOutRoot, wipeOutComponent.timePeriod, wipeOutComponent.offset,
-                    wipeOutComponent.isRotating, wipeOutComponent.direction, locationComponent.getWorldRotation()));
+            localPlayer.getCharacterEntity().send(new SetWipeOutRoot(wipeOutRoot, wipeOutComponent.timePeriod,
+                wipeOutComponent.offset,
+                wipeOutComponent.isRotating, wipeOutComponent.direction,
+                locationComponent.getWorldRotation(new Quaternionf())));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -99,5 +103,4 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
     private void onCancelButton(UIWidget button) {
         getManager().popScreen();
     }
-
 }

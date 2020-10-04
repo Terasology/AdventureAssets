@@ -15,9 +15,9 @@
  */
 package org.terasology.adventureassets.altarofresurrection;
 
+import org.joml.Vector3f;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.network.Replicate;
 
 /**

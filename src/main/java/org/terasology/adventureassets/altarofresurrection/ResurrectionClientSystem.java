@@ -15,6 +15,8 @@
  */
 package org.terasology.adventureassets.altarofresurrection;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -31,8 +33,6 @@ import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.logic.LightComponent;
 import org.terasology.rendering.logic.MeshComponent;
@@ -67,7 +67,7 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
         angelMeshEntityBuilder.setOwner(entity);
         angelMeshEntityBuilder.setPersistent(false);
         EntityRef angelMesh = angelMeshEntityBuilder.build();
-        Location.attachChild(entity, angelMesh, new Vector3f(0, 1f, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, angelMesh, new Vector3f(0, 1f, 0), new Quaternionf());
         altarOfResurrectionRootComponent.meshEntity = angelMesh;
 
         Prefab angelOrbPrefab = assetManager.getAsset("AdventureAssets:altarOfResurrectionOrb", Prefab.class).get();
@@ -75,7 +75,7 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
         angelOrbEntityBuilder.setOwner(entity);
         angelOrbEntityBuilder.setPersistent(false);
         EntityRef angelOrb = angelOrbEntityBuilder.build();
-        Location.attachChild(entity, angelOrb, new Vector3f(1f, 1.7f, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, angelOrb, new Vector3f(1f, 1.7f, 0), new Quaternionf());
         altarOfResurrectionRootComponent.orbEntity = angelOrb;
         entity.saveComponent(altarOfResurrectionRootComponent);
 
@@ -161,7 +161,7 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
 
     private void activateAltarOfResurrection(EntityRef altarOfResurrection) {
         AltarOfResurrectionRootComponent altarOfResurrectionRootComponent = altarOfResurrection.getComponent(AltarOfResurrectionRootComponent.class);
-        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition();
+        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
 
         spawnParticlesOnActivate(location);
         changeMeshToActive(altarOfResurrectionRootComponent.meshEntity);
@@ -170,7 +170,7 @@ public class ResurrectionClientSystem extends BaseComponentSystem {
 
     private void deactivateAltarOfResurrection(EntityRef altarOfResurrection) {
         AltarOfResurrectionRootComponent altarOfResurrectionRootComponent = altarOfResurrection.getComponent(AltarOfResurrectionRootComponent.class);
-        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition();
+        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
 
         spawnParticlesOnDeactivate(location);
         changeMeshToInactive(altarOfResurrectionRootComponent.meshEntity);

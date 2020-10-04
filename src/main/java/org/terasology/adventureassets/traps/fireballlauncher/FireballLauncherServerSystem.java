@@ -15,6 +15,7 @@
  */
 package org.terasology.adventureassets.traps.fireballlauncher;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
@@ -30,7 +31,6 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.health.HealthComponent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.projectile.FireProjectileEvent;
 import org.terasology.projectile.ProjectileActionComponent;
 import org.terasology.registry.In;
@@ -121,7 +121,7 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
                 healthComponent.currentHealth = fireballLauncherComponent.damageAmount;
                 fireball.saveComponent(healthComponent);
 
-                Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition();
+                Vector3f pos = fireballLauncher.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
                 fireball.send(new FireProjectileEvent(pos, fireballLauncherComponent.direction));
 
                 fireballLauncherComponent.lastShotTime = (float) Math.floor(time.getGameTime() / fireballLauncherComponent.timePeriod)
