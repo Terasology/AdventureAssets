@@ -16,9 +16,10 @@
 package org.terasology.adventureassets.traps.wipeout;
 
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Quat4f;
+import org.terasology.math.JomlUtil;
 
 final class WipeOutUtilities {
     private WipeOutUtilities() {
@@ -30,11 +31,11 @@ final class WipeOutUtilities {
         if (locationComponent != null && wipeOutComponent.isRotating) {
             float timePeriod = wipeOutComponent.timePeriod;
             float offset = wipeOutComponent.offset;
-            float angle =
-                (float) (((gameTime + offset) % timePeriod) * (2 * Math.PI / timePeriod)) * wipeOutComponent.direction;
-            Quat4f rotation = locationComponent.getLocalRotation();
-            locationComponent.setLocalRotation(new Quaternionf().rotationYXZ(angle, rotation.getPitch(),
-                rotation.getRoll()));
+            float angle = (float) (((gameTime + offset) % timePeriod) * (2 * Math.PI / timePeriod)) * wipeOutComponent.direction;
+            Quaternionf rotation = JomlUtil.from(locationComponent.getLocalRotation());
+            Vector3f rr = new Vector3f();
+            rotation.getEulerAnglesXYZ(rr);
+            locationComponent.setLocalRotation(new Quaternionf().rotationYXZ(angle, rr.y(), rotation.z()));
             wipeOut.saveComponent(locationComponent);
         }
     }

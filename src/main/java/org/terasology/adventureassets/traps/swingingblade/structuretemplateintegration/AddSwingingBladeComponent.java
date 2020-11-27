@@ -15,9 +15,9 @@
  */
 package org.terasology.adventureassets.traps.swingingblade.structuretemplateintegration;
 
-import org.terasology.entitySystem.Component;
 import org.joml.Quaternionf;
 import org.joml.Vector3i;
+import org.terasology.entitySystem.Component;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.structureTemplates.events.SpawnStructureEvent;
 
@@ -35,7 +35,7 @@ public class AddSwingingBladeComponent implements Component {
     @MappedContainer
     public static class SwingingBladesToSpawn {
         public Vector3i position;
-        public Quaternionf rotation = new Quaternionf(0, 0, 0, 1);
+        public Quaternionf rotation = new Quaternionf();
         public float timePeriod = 2f;
         public float amplitude = 3.14f / 6;
         public float offset = 0f;

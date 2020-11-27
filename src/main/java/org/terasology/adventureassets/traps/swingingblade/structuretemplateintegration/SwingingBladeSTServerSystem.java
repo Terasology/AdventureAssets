@@ -15,7 +15,8 @@
  */
 package org.terasology.adventureassets.traps.swingingblade.structuretemplateintegration;
 
-import org.joml.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
@@ -25,15 +26,13 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.joml.Quaternionf;
-import org.joml.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
 import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;
 import org.terasology.structureTemplates.internal.events.BuildStructureTemplateStringEvent;
-import org.terasology.structureTemplates.util.ListUtil;
 import org.terasology.structureTemplates.util.BlockRegionTransform;
+import org.terasology.structureTemplates.util.ListUtil;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;

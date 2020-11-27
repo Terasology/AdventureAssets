@@ -19,7 +19,6 @@ import com.google.common.collect.Lists;
 import org.joml.Quaternionf;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.math.geom.Quat4f;
 import org.terasology.network.Replicate;
 import org.terasology.world.block.ForceBlockActive;
 

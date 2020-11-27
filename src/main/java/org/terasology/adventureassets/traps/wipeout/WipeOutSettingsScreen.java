@@ -3,12 +3,12 @@
 package org.terasology.adventureassets.traps.wipeout;
 
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.geom.Quat4f;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.NUIManager;
@@ -70,10 +70,12 @@ public class WipeOutSettingsScreen extends BaseInteractionScreen {
         timePeriod.setText("" + wipeOutComponent.timePeriod);
         offset.setText("" + wipeOutComponent.offset);
 
-        Quat4f q = locationComponent.getWorldRotation();
-        pitch.setText(String.format("%.2f", Math.toDegrees(q.getPitch())));
-        yaw.setText(String.format("%.2f", Math.toDegrees(q.getYaw())));
-        roll.setText(String.format("%.2f", Math.toDegrees(q.getRoll())));
+        Quaternionf q = locationComponent.getWorldRotation(new Quaternionf());
+        Vector3f angles = new Vector3f();
+        q.getEulerAnglesXYZ(angles);
+        pitch.setText(String.format("%.2f", Math.toDegrees(angles.x())));
+        yaw.setText(String.format("%.2f", Math.toDegrees(angles.y())));
+        roll.setText(String.format("%.2f", Math.toDegrees(angles.z())));
 
     }
 
