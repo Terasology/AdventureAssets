@@ -15,9 +15,9 @@
  */
 package org.terasology.adventureassets.traps.wipeout;
 
+import org.joml.Quaternionf;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
-import org.terasology.math.geom.Quat4f;
 import org.terasology.network.ServerEvent;
 
 @ServerEvent
@@ -27,12 +27,12 @@ public class SetWipeOutRoot implements Event {
     private float offset = 0f;
     private boolean isRotating = true;
     private int direction = 1;
-    private Quat4f rotation;
+    private Quaternionf rotation;
 
     public SetWipeOutRoot() {
     }
 
-    public SetWipeOutRoot(EntityRef wipeOutRoot, float timePeriod, float offset, boolean isRotating, int direction, Quat4f rotation) {
+    public SetWipeOutRoot(EntityRef wipeOutRoot, float timePeriod, float offset, boolean isRotating, int direction, Quaternionf rotation) {
         this.wipeOutRoot = wipeOutRoot;
         this.timePeriod = timePeriod;
         this.offset = offset;
@@ -57,7 +57,7 @@ public class SetWipeOutRoot implements Event {
         return direction;
     }
 
-    public Quat4f getRotation() {
+    public Quaternionf getRotation() {
         return rotation;
     }
 

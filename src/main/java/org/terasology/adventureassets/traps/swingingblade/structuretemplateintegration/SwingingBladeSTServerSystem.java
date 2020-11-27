@@ -15,6 +15,8 @@
  */
 package org.terasology.adventureassets.traps.swingingblade.structuretemplateintegration;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.adventureassets.traps.swingingblade.SwingingBladeComponent;
@@ -24,15 +26,13 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
 import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;
 import org.terasology.structureTemplates.internal.events.BuildStructureTemplateStringEvent;
-import org.terasology.structureTemplates.util.ListUtil;
 import org.terasology.structureTemplates.util.BlockRegionTransform;
+import org.terasology.structureTemplates.util.ListUtil;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
@@ -73,7 +73,7 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
     private void configureSwingingBlades(AddSwingingBladeComponent addSwingingBladeComponent, BlockRegionTransform transformation) {
         for (AddSwingingBladeComponent.SwingingBladesToSpawn s : addSwingingBladeComponent.swingingBladesToSpawn) {
             Vector3i absolutePosition = transformation.transformVector3i(s.position);
-            Quat4f absoluteRotation = transformation.transformRotation(s.rotation);
+            Quaternionf absoluteRotation = transformation.transformRotation(s.rotation);
             EntityRef swingingBlade = blockEntityRegistry.getBlockEntityAt(absolutePosition);
             SwingingBladeComponent swingingBladeComponent = swingingBlade.getComponent(SwingingBladeComponent.class);
             swingingBladeComponent.amplitude = s.amplitude;
@@ -101,9 +101,9 @@ public class SwingingBladeSTServerSystem extends BaseComponentSystem {
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
             SwingingBladeComponent swingingBladeComponent = blockEntity.getComponent(SwingingBladeComponent.class);
             AddSwingingBladeComponent.SwingingBladesToSpawn swingingBladeToSpawn = new AddSwingingBladeComponent.SwingingBladesToSpawn();
-            Vector3i absolutePosition = new Vector3i(blockComponent.getPosition());
+            Vector3i absolutePosition = new Vector3i(blockComponent.getPosition(new Vector3i()));
             swingingBladeToSpawn.position = transformToRelative.transformVector3i(absolutePosition);
-            swingingBladeToSpawn.rotation = transformToRelative.transformRotation(blockEntity.getComponent(LocationComponent.class).getWorldRotation());
+            swingingBladeToSpawn.rotation = transformToRelative.transformRotation(blockEntity.getComponent(LocationComponent.class).getWorldRotation(new Quaternionf()));
             swingingBladeToSpawn.amplitude = swingingBladeComponent.amplitude;
             swingingBladeToSpawn.timePeriod = swingingBladeComponent.timePeriod;
             swingingBladeToSpawn.offset = swingingBladeComponent.offset;

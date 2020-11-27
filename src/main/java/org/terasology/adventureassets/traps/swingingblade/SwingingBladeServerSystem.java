@@ -16,6 +16,8 @@
 package org.terasology.adventureassets.traps.swingingblade;
 
 import com.google.common.collect.Lists;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
@@ -35,8 +37,6 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.BlockItemComponent;
@@ -100,7 +100,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
             e.destroy();
         }
         swingingBladeComponent.childrenEntities = Lists.newArrayList();
-        swingingBladeComponent.rotation = blockEntity.getComponent(LocationComponent.class).getWorldRotation();
+        swingingBladeComponent.rotation = blockEntity.getComponent(LocationComponent.class).getWorldRotation(new Quaternionf());
         event.getItem().addOrSaveComponent(swingingBladeComponent);
     }
 
@@ -127,7 +127,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         EntityRef rod = rodEntityBuilder.build();
         swingingBladeComponent.childrenEntities.add(rod);
         entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, rod, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, rod, new Vector3f(0, -1, 0), new Quaternionf());
 
         Prefab bladePrefab = assetManager.getAsset("AdventureAssets:blade", Prefab.class).get();
         EntityBuilder bladeEntityBuilder = entityManager.newBuilder(bladePrefab);
@@ -136,7 +136,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         EntityRef blade = bladeEntityBuilder.build();
         swingingBladeComponent.childrenEntities.add(blade);
         entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, blade, new Vector3f(0, -7, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, blade, new Vector3f(0, -7, 0), new Quaternionf());
     }
 
     @ReceiveEvent

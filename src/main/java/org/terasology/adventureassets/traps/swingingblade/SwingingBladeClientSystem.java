@@ -15,6 +15,8 @@
  */
 package org.terasology.adventureassets.traps.swingingblade;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
@@ -30,8 +32,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.Location;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.OnBlockToItem;
@@ -74,7 +74,7 @@ public class SwingingBladeClientSystem extends BaseComponentSystem implements Up
             EntityRef swingingBladeMesh = swingingBladeEntityBuilder.build();
             swingingBladeComponent.childrenEntities.add(swingingBladeMesh);
             entity.saveComponent(swingingBladeComponent);
-            Location.attachChild(entity, swingingBladeMesh, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
+            Location.attachChild(entity, swingingBladeMesh, new Vector3f(0, -1, 0), new Quaternionf());
         }
     }
 

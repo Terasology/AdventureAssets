@@ -16,6 +16,8 @@
 package org.terasology.adventureassets.traps.wipeout;
 
 import com.google.common.collect.Lists;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
@@ -34,8 +36,6 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.BlockItemComponent;
@@ -94,7 +94,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
             e.destroy();
         }
         wipeOutComponent.childrenEntities = Lists.newArrayList();
-        wipeOutComponent.rotation = blockEntity.getComponent(LocationComponent.class).getWorldRotation();
+        wipeOutComponent.rotation = blockEntity.getComponent(LocationComponent.class).getWorldRotation(new Quaternionf());
         event.getItem().addOrSaveComponent(wipeOutComponent);
     }
 
@@ -121,7 +121,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
         EntityRef rod = rodEntityBuilder.build();
         wipeOutComponent.childrenEntities.add(rod);
         entity.saveComponent(wipeOutComponent);
-        Location.attachChild(entity, rod, new Vector3f(0, 0, 3), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, rod, new Vector3f(0, 0, 3), new Quaternionf());
 
         Prefab surfboardPrefab = assetManager.getAsset("AdventureAssets:wipeOutSurfboard", Prefab.class).get();
         EntityBuilder surfboardEntityBuilder = entityManager.newBuilder(surfboardPrefab);
@@ -130,7 +130,7 @@ public class WipeOutServerSystem extends BaseComponentSystem implements UpdateSu
         EntityRef surfboard = surfboardEntityBuilder.build();
         wipeOutComponent.childrenEntities.add(surfboard);
         entity.saveComponent(wipeOutComponent);
-        Location.attachChild(entity, surfboard, new Vector3f(0, 0, 7), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, surfboard, new Vector3f(0, 0, 7), new Quaternionf());
     }
 
     @ReceiveEvent
