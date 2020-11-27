@@ -31,7 +31,6 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.health.HealthComponent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.projectile.FireProjectileEvent;
 import org.terasology.projectile.ProjectileActionComponent;
 import org.terasology.registry.In;
@@ -132,4 +131,3 @@ public class FireballLauncherServerSystem extends BaseComponentSystem implements
         }
     }
 }
-
