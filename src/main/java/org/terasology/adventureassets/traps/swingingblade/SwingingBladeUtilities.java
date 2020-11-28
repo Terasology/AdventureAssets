@@ -15,6 +15,7 @@
  */
 package org.terasology.adventureassets.traps.swingingblade;
 
+import org.joml.Quaternionf;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
@@ -25,13 +26,14 @@ class SwingingBladeUtilities {
         LocationComponent locationComponent = blade.getComponent(LocationComponent.class);
         SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
         if (locationComponent != null && swingingBladeComponent.isSwinging) {
-            float t = gameTime;
             float timePeriod = swingingBladeComponent.timePeriod;
-            float pitch, A = swingingBladeComponent.amplitude, phi = swingingBladeComponent.offset;
+            float pitch;
+            float a = swingingBladeComponent.amplitude;
+            float phi = swingingBladeComponent.offset;
             float w = (float) (2 * Math.PI / timePeriod);
-            pitch = (float) (A * Math.cos(w * t + phi));
+            pitch = (float) (a * Math.cos(w * gameTime + phi));
             Quat4f rotation = locationComponent.getLocalRotation();
-            locationComponent.setLocalRotation(new Quat4f(rotation.getYaw(), pitch, rotation.getRoll()));
+            locationComponent.setLocalRotation(new Quaternionf().rotationYXZ(rotation.getYaw(), pitch, rotation.getRoll()));
             blade.saveComponent(locationComponent);
         }
     }

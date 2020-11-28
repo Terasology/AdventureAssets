@@ -16,9 +16,9 @@
 package org.terasology.adventureassets.traps.wipeout.structuretemplateintegration;
 
 import com.google.common.collect.Lists;
+import org.joml.Quaternionf;
+import org.joml.Vector3i;
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.structureTemplates.events.SpawnStructureEvent;
 
@@ -36,7 +36,7 @@ public class AddWipeOutComponent implements Component {
     @MappedContainer
     public static class WipeOutsToSpawn {
         public Vector3i position;
-        public Quat4f rotation = new Quat4f(0, 0, 0, 1);
+        public Quaternionf rotation = new Quaternionf();
         public float timePeriod = 2f;
         public int direction = 1;
         public float offset = 0f;

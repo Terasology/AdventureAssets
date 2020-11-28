@@ -15,6 +15,8 @@
  */
 package org.terasology.adventureassets.traps.wipeout;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
@@ -30,9 +32,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.Location;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.network.NetworkComponent;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.OnBlockToItem;
@@ -74,7 +73,7 @@ public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSu
             EntityRef wipeOutMesh = wipeOutEntityBuilder.build();
             wipeOutComponent.childrenEntities.add(wipeOutMesh);
             entity.saveComponent(wipeOutComponent);
-            Location.attachChild(entity, wipeOutMesh, new Vector3f(0, 0, 1), new Quat4f(Quat4f.IDENTITY));
+            Location.attachChild(entity, wipeOutMesh, new Vector3f(0, 0, 1), new Quaternionf());
         }
     }
 

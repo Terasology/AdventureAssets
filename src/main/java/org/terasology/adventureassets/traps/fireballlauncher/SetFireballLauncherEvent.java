@@ -15,9 +15,9 @@
  */
 package org.terasology.adventureassets.traps.fireballlauncher;
 
+import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.network.ServerEvent;
 
 @ServerEvent
@@ -26,7 +26,7 @@ public class SetFireballLauncherEvent implements Event {
     private boolean isFiring = true;
     private float timePeriod = 2f;
     private float offset = 0f;
-    private Vector3f direction = Vector3f.north();
+    private Vector3f direction = new Vector3f(0,0,1);
     private int maxDistance = 24;
     private int damageAmount = 20;
 

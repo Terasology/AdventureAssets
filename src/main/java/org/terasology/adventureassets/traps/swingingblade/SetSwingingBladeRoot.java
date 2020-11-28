@@ -15,9 +15,9 @@
  */
 package org.terasology.adventureassets.traps.swingingblade;
 
+import org.joml.Quaternionf;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
-import org.terasology.math.geom.Quat4f;
 import org.terasology.network.ServerEvent;
 
 @ServerEvent
@@ -27,12 +27,12 @@ public class SetSwingingBladeRoot implements Event {
     private float offset = 0f;
     private boolean isSwinging = true;
     private float amplitude = 3.14f / 6;
-    private Quat4f rotation;
+    private Quaternionf rotation;
 
     public SetSwingingBladeRoot() {
     }
 
-    public SetSwingingBladeRoot(EntityRef swingingBladeRoot, float timePeriod, float offset, boolean isSwinging, float amplitude, Quat4f rotation) {
+    public SetSwingingBladeRoot(EntityRef swingingBladeRoot, float timePeriod, float offset, boolean isSwinging, float amplitude, Quaternionf rotation) {
         this.swingingBladeRoot = swingingBladeRoot;
         this.timePeriod = timePeriod;
         this.offset = offset;
@@ -49,7 +49,7 @@ public class SetSwingingBladeRoot implements Event {
         return offset;
     }
 
-    public Quat4f getRotation() {
+    public Quaternionf getRotation() {
         return rotation;
     }
 
