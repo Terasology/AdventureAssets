@@ -15,6 +15,7 @@
  */
 package org.terasology.adventureassets.damageplayer;
 
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -25,11 +26,9 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.AliveCharacterComponent;
 import org.terasology.logic.characters.CharacterImpulseEvent;
-import org.terasology.logic.health.event.DoDamageEvent;
 import org.terasology.logic.health.EngineDamageTypes;
-import org.terasology.math.JomlUtil;
+import org.terasology.logic.health.event.DoDamageEvent;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.physics.events.CollideEvent;
 import org.terasology.registry.In;
 
@@ -45,7 +44,7 @@ public class DamagePlayerSystem extends BaseComponentSystem {
     public void onCollide(CollideEvent event, EntityRef entity, DamagePlayerComponent damagePlayerComponent) {
         EntityRef player = event.getOtherEntity();
         if (player.hasComponent(AliveCharacterComponent.class)) {
-            player.send(new CharacterImpulseEvent(JomlUtil.from(event.getNormal()).mul(-1 * damagePlayerComponent.recoil)));
+            player.send(new CharacterImpulseEvent(event.getNormal().mul(-1 * damagePlayerComponent.recoil, new Vector3f())));
             player.send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
         }
     }
