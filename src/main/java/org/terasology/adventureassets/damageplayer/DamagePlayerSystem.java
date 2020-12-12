@@ -45,7 +45,7 @@ public class DamagePlayerSystem extends BaseComponentSystem {
     public void onCollide(CollideEvent event, EntityRef entity, DamagePlayerComponent damagePlayerComponent) {
         EntityRef player = event.getOtherEntity();
         if (player.hasComponent(AliveCharacterComponent.class)) {
-            player.send(new CharacterImpulseEvent(event.getNormal().mul(-1 * damagePlayerComponent.recoil)));
+            player.send(new CharacterImpulseEvent(event.getNormal().mul(-1 * damagePlayerComponent.recoil, new org.joml.Vector3f())));
             player.send(new DoDamageEvent(TeraMath.floorToInt(damagePlayerComponent.damage), EngineDamageTypes.PHYSICAL.get(), entity));
         }
     }
