@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.geom.Vector3f;
+import org.joml.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.NUIManager;
@@ -69,9 +69,9 @@ public class FireballLauncherSettingsScreen extends BaseInteractionScreen {
         damageAmount.setText("" + fireballLauncherComponent.damageAmount);
         Vector3f direction = fireballLauncherComponent.direction;
 
-        x.setText(String.format("%.2f", direction.getX()));
-        y.setText(String.format("%.2f", direction.getY()));
-        z.setText(String.format("%.2f", direction.getZ()));
+        x.setText(String.format("%.2f", direction.x()));
+        y.setText(String.format("%.2f", direction.y()));
+        z.setText(String.format("%.2f", direction.z()));
     }
 
     private void onSaveButton(UIWidget button) {

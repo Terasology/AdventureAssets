@@ -16,6 +16,8 @@
 package org.terasology.adventureassets.traps.swingingblade;
 
 import com.google.common.collect.Lists;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.assets.management.AssetManager;
@@ -35,8 +37,6 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.BlockItemComponent;
@@ -63,12 +63,11 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
     }
 
     /**
-     * This method transfers the saved block properties from the item to the block. <br/>
-     * Note that this method is called after the OnActivatedComponent event handler
-     * {@link SwingingBladeServerSystem#onSwingingBladeActivated(OnActivatedComponent, EntityRef, SwingingBladeComponent)}
-     * filtering the {@link SwingingBladeComponent} gets executed.
-     * So the placedBlock entity already has the right childrenEntities and only needs the trap properties to be
-     * transferred.
+     * This method transfers the saved block properties from the item to the block. <br/> Note that this method is
+     * called after the OnActivatedComponent event handler
+     * {@link SwingingBladeServerSystem#onSwingingBladeActivated(OnActivatedComponent,
+     * EntityRef, SwingingBladeComponent)} filtering the {@link SwingingBladeComponent} gets executed. So the
+     * placedBlock entity already has the right childrenEntities and only needs the trap properties to be transferred.
      *
      * @param event
      * @param itemEntity
@@ -87,8 +86,8 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
     }
 
     /**
-     * This method transfers the stored properties in the block's {@link SwingingBladeComponent} to the new item created.
-     * It also destroys the children entities, i.e. the rod, blade and the mesh.
+     * This method transfers the stored properties in the block's {@link SwingingBladeComponent} to the new item
+     * created. It also destroys the children entities, i.e. the rod, blade and the mesh.
      *
      * @param event
      * @param blockEntity
@@ -100,18 +99,18 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
             e.destroy();
         }
         swingingBladeComponent.childrenEntities = Lists.newArrayList();
-        swingingBladeComponent.rotation = blockEntity.getComponent(LocationComponent.class).getWorldRotation();
+        swingingBladeComponent.rotation = blockEntity.getComponent(LocationComponent.class).getWorldRotation(new Quaternionf());
         event.getItem().addOrSaveComponent(swingingBladeComponent);
     }
 
     /**
-     * This method creates the rod and blade entities when the {@link SwingingBladeComponent} is activated. The rod and blade
-     * entities are saved in the childrenEntities list inside the {@link SwingingBladeComponent}.
-     * A similar method in the {@link SwingingBladeClientSystem} adds the mesh entity to the childrenEntities list.<br/>
-     * Note this happens before the block is actually placed in the world i.e. before the OnBlockItemPlacedEvent handler-
-     * {@link SwingingBladeServerSystem#onBlockToItem(OnBlockToItem, EntityRef, SwingingBladeComponent)} gets called.
-     * So, the saved properties (amplitude, time-period, offset etc) are transferred after this, maintaining
-     * only the childrenEntities list created here.
+     * This method creates the rod and blade entities when the {@link SwingingBladeComponent} is activated. The rod and
+     * blade entities are saved in the childrenEntities list inside the {@link SwingingBladeComponent}. A similar method
+     * in the {@link SwingingBladeClientSystem} adds the mesh entity to the childrenEntities list.<br/> Note this
+     * happens before the block is actually placed in the world i.e. before the OnBlockItemPlacedEvent handler- {@link
+     * SwingingBladeServerSystem#onBlockToItem(OnBlockToItem, EntityRef, SwingingBladeComponent)} gets called. So, the
+     * saved properties (amplitude, time-period, offset etc) are transferred after this, maintaining only the
+     * childrenEntities list created here.
      *
      * @param event
      * @param entity
@@ -127,7 +126,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         EntityRef rod = rodEntityBuilder.build();
         swingingBladeComponent.childrenEntities.add(rod);
         entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, rod, new Vector3f(0, -1, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, rod, new Vector3f(0, -1, 0), new Quaternionf());
 
         Prefab bladePrefab = assetManager.getAsset("AdventureAssets:blade", Prefab.class).get();
         EntityBuilder bladeEntityBuilder = entityManager.newBuilder(bladePrefab);
@@ -136,7 +135,7 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
         EntityRef blade = bladeEntityBuilder.build();
         swingingBladeComponent.childrenEntities.add(blade);
         entity.saveComponent(swingingBladeComponent);
-        Location.attachChild(entity, blade, new Vector3f(0, -7, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, blade, new Vector3f(0, -7, 0), new Quaternionf());
     }
 
     @ReceiveEvent

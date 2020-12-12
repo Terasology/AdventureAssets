@@ -15,6 +15,8 @@
  */
 package org.terasology.adventureassets.altarofresurrection;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -33,8 +35,6 @@ import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.notifications.NotificationMessageEvent;
 import org.terasology.logic.players.event.RespawnRequestEvent;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.network.ClientComponent;
 import org.terasology.network.ClientInfoComponent;
 import org.terasology.registry.In;
@@ -64,7 +64,7 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
             Vector3f spawnPosition = clientInfo.getComponent(RevivePlayerComponent.class).location;
             LocationComponent loc = character.getComponent(LocationComponent.class);
             loc.setWorldPosition(spawnPosition);
-            loc.setLocalRotation(new Quat4f());
+            loc.setLocalRotation(new Quaternionf());
             character.saveComponent(loc);
         }
     }
@@ -84,7 +84,7 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
         angelColliderEntityBuilder.setOwner(entity);
         angelColliderEntityBuilder.setPersistent(true);
         EntityRef angelCollider = angelColliderEntityBuilder.build();
-        Location.attachChild(entity, angelCollider, new Vector3f(0, 1f, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(entity, angelCollider, new Vector3f(0, 1f, 0), new Quaternionf());
         altarOfResurrectionRootComponent.colliderEntity = angelCollider;
         entity.saveComponent(altarOfResurrectionRootComponent);
     }
@@ -165,7 +165,7 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
     }
 
     private void addRevivePlayerComponent(EntityRef clientInfo, EntityRef altarOfResurrection) {
-        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition();
+        Vector3f location = altarOfResurrection.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
         RevivePlayerComponent revivePlayerComponent = new RevivePlayerComponent();
         revivePlayerComponent.location = location.add(1, 0, 1);
         revivePlayerComponent.altarOfResurrectionEntity = altarOfResurrection;

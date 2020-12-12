@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.adventureassets.altarofresurrection;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityBuilder;
@@ -15,8 +17,6 @@ import org.terasology.input.cameraTarget.CameraTargetSystem;
 import org.terasology.logic.location.Location;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
 import org.terasology.rendering.logic.FloatingTextComponent;
 import org.terasology.nui.Color;
@@ -60,23 +60,23 @@ public class ResurrectionTextSystem extends BaseComponentSystem implements Updat
                 targetEntity = targetEntity.getOwner();
             }
             floatingTextComponent.text = "Activate to revive here";
-            floatingTextComponent.textColor = Color.GREEN;
+            floatingTextComponent.textColor = new Color(Color.green);
 
             EntityRef clientInfo = localPlayer.getClientInfoEntity();
             if (clientInfo.hasComponent(RevivePlayerComponent.class)) {
                 EntityRef activatedAltarOfResurrection = clientInfo.getComponent(RevivePlayerComponent.class).altarOfResurrectionEntity;
                 if (activatedAltarOfResurrection.equals(targetEntity)) {
                     floatingTextComponent.text = "Altar of Resurrection Activated";
-                    floatingTextComponent.textColor = Color.YELLOW;
+                    floatingTextComponent.textColor = new Color(Color.yellow);
                 } else {
                     floatingTextComponent.text = "Activate to revive here\n(will deactivate previous)";
-                    floatingTextComponent.textColor = Color.CYAN;
+                    floatingTextComponent.textColor = new Color(Color.cyan);
                 }
             }
 
             floatingTextEntity.addOrSaveComponent(floatingTextComponent);
             floatingTextEntity.addOrSaveComponent(locationComponent);
-            Location.attachChild(targetEntity, floatingTextEntity, new Vector3f(0, 1.0f, 0), new Quat4f(1, 0, 0, 0));
+            Location.attachChild(targetEntity, floatingTextEntity, new Vector3f(0, 1.0f, 0), new Quaternionf(1, 0, 0, 0));
         }
     }
 }
