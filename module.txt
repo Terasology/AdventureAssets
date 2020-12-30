@@ -1,21 +1,48 @@
 {
-    "id": "AdventureAssets",
-    "version": "1.0.0",
-    "author": "flo, nihal111",
-    "displayName": "AdventureAssets",
-    "description": "This module adds logic and assets related to adventuring",
-    "dependencies": [
-        { "id": "CoreAdvancedAssets", "minVersion": "1.1.0" },
-        { "id": "CoreAssets", "minVersion": "2.0.1" },
-        { "id": "Drops", "minVersion": "1.0.1" },
-        { "id": "Furnishings", "minVersion": "1.1.0" },
-        { "id": "Health", "minVersion": "1.0.1" },
-        { "id": "Inventory", "minVersion": "1.1.0" },
-        { "id": "Projectile", "minVersion": "1.1.0" },
-        { "id": "StructureTemplates", "minVersion": "1.0.0" },
-        { "id": "WorldlyTooltipAPI", "minVersion": "1.0.0" }
-    ],
-    "serverSideOnly": false,
-    "isAsset": true,
-    "isLibrary": true
+  "id": "AdventureAssets",
+  "version": "1.1.0-SNAPSHOT",
+  "author": "flo, nihal111",
+  "displayName": "AdventureAssets",
+  "description": "This module adds logic and assets related to adventuring",
+  "dependencies": [
+    {
+      "id": "CoreAdvancedAssets",
+      "minVersion": "1.1.0"
+    },
+    {
+      "id": "CoreAssets",
+      "minVersion": "2.0.1"
+    },
+    {
+      "id": "Drops",
+      "minVersion": "1.0.1"
+    },
+    {
+      "id": "Furnishings",
+      "minVersion": "1.1.0"
+    },
+    {
+      "id": "Health",
+      "minVersion": "1.0.1"
+    },
+    {
+      "id": "Inventory",
+      "minVersion": "1.1.0"
+    },
+    {
+      "id": "Projectile",
+      "minVersion": "1.1.0"
+    },
+    {
+      "id": "StructureTemplates",
+      "minVersion": "1.0.0"
+    },
+    {
+      "id": "WorldlyTooltipAPI",
+      "minVersion": "1.0.0"
+    }
+  ],
+  "serverSideOnly": false,
+  "isAsset": true,
+  "isLibrary": true
 }
