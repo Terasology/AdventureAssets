@@ -61,5 +61,8 @@ public class WipeOutComponent implements Component {
     public Quaternionf rotation = new Quaternionf();
 
     @Replicate
+    public float lastAngle = 0f;
+
+    @Replicate
     public List<EntityRef> childrenEntities = Lists.newArrayList();
 }

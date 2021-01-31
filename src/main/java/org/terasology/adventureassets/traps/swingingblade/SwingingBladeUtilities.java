@@ -16,8 +16,11 @@
 package org.terasology.adventureassets.traps.swingingblade;
 
 import org.joml.Quaternionf;
+import org.joml.Quaternionfc;
+import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Quat4f;
 
 class SwingingBladeUtilities {
@@ -27,13 +30,17 @@ class SwingingBladeUtilities {
         SwingingBladeComponent swingingBladeComponent = blade.getComponent(SwingingBladeComponent.class);
         if (locationComponent != null && swingingBladeComponent.isSwinging) {
             float timePeriod = swingingBladeComponent.timePeriod;
-            float pitch;
             float a = swingingBladeComponent.amplitude;
             float phi = swingingBladeComponent.offset;
             float w = (float) (2 * Math.PI / timePeriod);
-            pitch = (float) (a * Math.cos(w * gameTime + phi));
-            Quat4f rotation = locationComponent.getLocalRotation();
-            locationComponent.setLocalRotation(new Quaternionf().rotationYXZ(rotation.getYaw(), pitch, rotation.getRoll()));
+            float pitch = (float) (a * Math.cos(w * gameTime + phi));
+
+            float delta = pitch - swingingBladeComponent.lastAngle;
+            swingingBladeComponent.lastAngle = pitch;
+            //FIXME: the blades always swing around the X-axis and don't adapt to how the anchor block is rotated
+            locationComponent.setLocalRotation(
+                    locationComponent.getLocalRotation().rotateLocalX(delta, new Quaternionf())
+            );
             blade.saveComponent(locationComponent);
         }
     }
