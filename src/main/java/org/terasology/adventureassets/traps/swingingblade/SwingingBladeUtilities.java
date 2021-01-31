@@ -16,12 +16,8 @@
 package org.terasology.adventureassets.traps.swingingblade;
 
 import org.joml.Quaternionf;
-import org.joml.Quaternionfc;
-import org.joml.Vector3f;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
-import org.terasology.math.geom.Quat4f;
 
 class SwingingBladeUtilities {
 
