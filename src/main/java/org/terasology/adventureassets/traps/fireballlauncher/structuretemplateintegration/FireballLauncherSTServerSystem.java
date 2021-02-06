@@ -1,18 +1,5 @@
-/*
- * Copyright 2017 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.adventureassets.traps.fireballlauncher.structuretemplateintegration;
 
 import org.joml.Vector3f;
@@ -26,15 +13,14 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.math.Side;
 import org.terasology.registry.In;
 import org.terasology.structureTemplates.events.BuildStructureTemplateEntityEvent;
 import org.terasology.structureTemplates.events.SpawnTemplateEvent;
 import org.terasology.structureTemplates.events.StructureBlocksSpawnedEvent;
 import org.terasology.structureTemplates.internal.events.BuildStructureTemplateStringEvent;
-import org.terasology.structureTemplates.util.ListUtil;
 import org.terasology.structureTemplates.util.BlockRegionTransform;
+import org.terasology.structureTemplates.util.ListUtil;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
@@ -99,7 +85,7 @@ public class FireballLauncherSTServerSystem extends BaseComponentSystem {
             BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
             FireballLauncherComponent fireballLauncherComponent = blockEntity.getComponent(FireballLauncherComponent.class);
             AddFireballLauncherComponent.FireballLauncherToSpawn fireballLauncherToSpawn = new AddFireballLauncherComponent.FireballLauncherToSpawn();
-            Vector3i absolutePosition = new Vector3i(JomlUtil.from(blockComponent.position));
+            Vector3i absolutePosition = blockComponent.getPosition(new Vector3i());
             fireballLauncherToSpawn.position = transformToRelative.transformVector3i(absolutePosition);
             fireballLauncherToSpawn.isFiring = fireballLauncherComponent.isFiring;
             fireballLauncherToSpawn.timePeriod = fireballLauncherComponent.timePeriod;
