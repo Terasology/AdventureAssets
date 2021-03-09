@@ -16,9 +16,9 @@
 package org.terasology.adventureassets.altarofresurrection;
 
 import org.joml.Vector3f;
-import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.network.Replicate;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.network.Replicate;
 
 /**
  * This component makes a player respawn near the altar of resurrection. It is attached to the clientInfo entity which always

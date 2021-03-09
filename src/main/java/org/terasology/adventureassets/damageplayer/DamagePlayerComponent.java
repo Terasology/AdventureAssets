@@ -15,7 +15,7 @@
  */
 package org.terasology.adventureassets.damageplayer;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 
 /**
  * This component marks a rigid body for dealing damage to the player.

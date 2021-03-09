@@ -15,7 +15,7 @@
  */
 package org.terasology.adventureassets.altarofresurrection;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 
 /**
  * This is a marker component that is attached to a the altar of resurrection collider for dealing with the ActivateEvent and

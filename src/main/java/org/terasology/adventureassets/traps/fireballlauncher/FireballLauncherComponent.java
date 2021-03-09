@@ -16,9 +16,9 @@
 package org.terasology.adventureassets.traps.fireballlauncher;
 
 import org.joml.Vector3f;
-import org.terasology.entitySystem.Component;
-import org.terasology.network.Replicate;
-import org.terasology.world.block.ForceBlockActive;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.network.Replicate;
+import org.terasology.engine.world.block.ForceBlockActive;
 
 /**
  * This component holds the data for a Fireball Launcher

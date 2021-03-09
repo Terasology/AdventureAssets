@@ -16,11 +16,10 @@
 package org.terasology.adventureassets.traps.wipeout;
 
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.location.LocationComponent;
 
 final class WipeOutUtilities {
 

@@ -6,16 +6,16 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.LocalPlayer;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.nui.BaseInteractionScreen;
+import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.nui.UIWidget;
 import org.terasology.nui.widgets.UIButton;
 import org.terasology.nui.widgets.UICheckbox;
 import org.terasology.nui.widgets.UIText;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.BaseInteractionScreen;
-import org.terasology.rendering.nui.NUIManager;
 
 public class SwingingBladeSettingsScreen extends BaseInteractionScreen {
     private static final Logger logger = LoggerFactory.getLogger(SwingingBladeSettingsScreen.class);

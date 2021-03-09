@@ -16,9 +16,9 @@
 package org.terasology.adventureassets.traps.fireballlauncher;
 
 import org.joml.Vector3f;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.Event;
-import org.terasology.network.ServerEvent;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.Event;
+import org.terasology.engine.network.ServerEvent;
 
 @ServerEvent
 public class SetFireballLauncherEvent implements Event {

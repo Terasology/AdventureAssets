@@ -17,7 +17,7 @@ package org.terasology.adventureassets.traps.fireballlauncher.structuretemplatei
 
 import org.joml.Vector3f;
 import org.joml.Vector3i;
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.structureTemplates.events.SpawnStructureEvent;
 

@@ -18,7 +18,7 @@ package org.terasology.adventureassets.traps.wipeout.structuretemplateintegratio
 import com.google.common.collect.Lists;
 import org.joml.Quaternionf;
 import org.joml.Vector3i;
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.structureTemplates.events.SpawnStructureEvent;
 

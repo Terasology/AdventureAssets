@@ -4,10 +4,10 @@ package org.terasology.adventureassets.traps.mcqButtonDoor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.players.LocalPlayer;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.CoreScreenLayer;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.nui.CoreScreenLayer;
 import org.terasology.nui.UIWidget;
 import org.terasology.nui.widgets.UIButton;
 import org.terasology.nui.widgets.UILabel;

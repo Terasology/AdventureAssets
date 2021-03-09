@@ -16,21 +16,21 @@
 
 package org.terasology.adventureassets.traps.passwordDoor;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.EventPriority;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.EventPriority;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.common.ActivateEvent;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.nui.NUIManager;
+import org.terasology.engine.world.BlockEntityRegistry;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.regions.BlockRegionComponent;
 import org.terasology.furnishings.logic.door.CloseDoorEvent;
 import org.terasology.furnishings.logic.door.DoorComponent;
-import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.NUIManager;
-import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.regions.BlockRegionComponent;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class PasswordDoorServerSystem extends BaseComponentSystem {

@@ -18,19 +18,19 @@ package org.terasology.adventureassets.damageplayer;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.characters.AliveCharacterComponent;
-import org.terasology.logic.characters.CharacterImpulseEvent;
-import org.terasology.logic.health.EngineDamageTypes;
-import org.terasology.logic.health.event.DoDamageEvent;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.characters.AliveCharacterComponent;
+import org.terasology.engine.logic.characters.CharacterImpulseEvent;
+import org.terasology.engine.logic.health.EngineDamageTypes;
+import org.terasology.engine.logic.health.event.DoDamageEvent;
+import org.terasology.engine.physics.events.CollideEvent;
+import org.terasology.engine.registry.In;
 import org.terasology.math.TeraMath;
-import org.terasology.physics.events.CollideEvent;
-import org.terasology.registry.In;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class DamagePlayerSystem extends BaseComponentSystem {

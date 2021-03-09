@@ -17,7 +17,7 @@ package org.terasology.adventureassets.traps.swingingblade.structuretemplateinte
 
 import org.joml.Quaternionf;
 import org.joml.Vector3i;
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.structureTemplates.events.SpawnStructureEvent;
 
