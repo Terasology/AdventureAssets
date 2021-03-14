@@ -3,8 +3,8 @@
 package org.terasology.adventureassets.traps.mcqButtonDoor;
 
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.logic.health.DestroyEvent;
-import org.terasology.engine.logic.health.EngineDamageTypes;
+import org.terasology.logic.health.DestroyEvent;
+import org.terasology.logic.health.EngineDamageTypes;
 import org.terasology.engine.logic.players.LocalPlayer;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.rendering.nui.CoreScreenLayer;
