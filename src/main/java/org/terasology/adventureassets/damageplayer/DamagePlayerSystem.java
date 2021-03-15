@@ -26,7 +26,7 @@ import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.characters.AliveCharacterComponent;
 import org.terasology.engine.logic.characters.CharacterImpulseEvent;
-import org.terasology.logic.health.EngineDamageTypes;
+import org.terasology.engine.logic.health.EngineDamageTypes;
 import org.terasology.logic.health.event.DoDamageEvent;
 import org.terasology.engine.physics.events.CollideEvent;
 import org.terasology.engine.registry.In;
