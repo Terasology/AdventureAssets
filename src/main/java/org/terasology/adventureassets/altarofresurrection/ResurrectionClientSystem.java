@@ -17,7 +17,7 @@ package org.terasology.adventureassets.altarofresurrection;
 
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.terasology.assets.management.AssetManager;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
