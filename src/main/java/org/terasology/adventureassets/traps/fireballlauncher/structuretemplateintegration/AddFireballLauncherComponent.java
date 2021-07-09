@@ -1,27 +1,15 @@
-/*
- * Copyright 2017 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.adventureassets.traps.fireballlauncher.structuretemplateintegration;
 
 import org.joml.Vector3f;
 import org.joml.Vector3i;
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.structureTemplates.events.SpawnStructureEvent;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This component is intended to be used in structure templates.
@@ -29,8 +17,15 @@ import java.util.List;
  * It adds items (incl. block items) to one ore more chests when the entity receives a
  * {@link SpawnStructureEvent}.
  */
-public class AddFireballLauncherComponent implements Component {
+public class AddFireballLauncherComponent implements Component<AddFireballLauncherComponent> {
     public List<FireballLauncherToSpawn> fireballLaunchersToSpawn;
+
+    @Override
+    public void copy(AddFireballLauncherComponent other) {
+        this.fireballLaunchersToSpawn = other.fireballLaunchersToSpawn.stream()
+                .map(FireballLauncherToSpawn::copy)
+                .collect(Collectors.toList());
+    }
 
     @MappedContainer
     public static class FireballLauncherToSpawn {
@@ -41,5 +36,17 @@ public class AddFireballLauncherComponent implements Component {
         public Vector3f direction;
         public int maxDistance;
         public int damageAmount;
+
+        FireballLauncherToSpawn copy() {
+            FireballLauncherToSpawn newFL = new FireballLauncherToSpawn();
+            newFL.position = new Vector3i(this.position);
+            newFL.isFiring = this.isFiring;
+            newFL.timePeriod = this.timePeriod;
+            newFL.offset = this.offset;
+            newFL.direction = new Vector3f(this.direction);
+            newFL.maxDistance = this.maxDistance;
+            newFL.damageAmount = this.damageAmount;
+            return newFL;
+        }
     }
 }
