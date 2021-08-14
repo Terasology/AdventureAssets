@@ -21,7 +21,7 @@ public class AddSwingingBladeComponent implements Component<AddSwingingBladeComp
     public List<SwingingBladesToSpawn> swingingBladesToSpawn;
 
     @Override
-    public void copy(AddSwingingBladeComponent other) {
+    public void copyFrom(AddSwingingBladeComponent other) {
         this.swingingBladesToSpawn = other.swingingBladesToSpawn.stream()
                 .map(SwingingBladesToSpawn::copy)
                 .collect(Collectors.toList());

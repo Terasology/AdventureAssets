@@ -17,7 +17,7 @@ public class PasswordDoorComponent implements Component<PasswordDoorComponent> {
     public String password = "password";
 
     @Override
-    public void copy(PasswordDoorComponent other) {
+    public void copyFrom(PasswordDoorComponent other) {
         this.title = other.title;
         this.message = other.message;
         this.password = other.password;

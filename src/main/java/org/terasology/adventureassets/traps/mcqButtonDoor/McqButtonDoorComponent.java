@@ -23,7 +23,7 @@ public class McqButtonDoorComponent implements Component<McqButtonDoorComponent>
     public List<String> options = Arrays.asList("password", "password1", "password2");
 
     @Override
-    public void copy(McqButtonDoorComponent other) {
+    public void copyFrom(McqButtonDoorComponent other) {
         this.title = other.title;
         this.message = other.message;
         this.password = other.password;

@@ -54,7 +54,7 @@ public class SwingingBladeComponent implements Component<SwingingBladeComponent>
     public List<EntityRef> childrenEntities = Lists.newArrayList();
 
     @Override
-    public void copy(SwingingBladeComponent other) {
+    public void copyFrom(SwingingBladeComponent other) {
         this.timePeriod = other.timePeriod;
         this.amplitude = other.amplitude;
         this.offset = other.offset;

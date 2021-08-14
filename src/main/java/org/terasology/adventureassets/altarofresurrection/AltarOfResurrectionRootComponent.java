@@ -18,7 +18,7 @@ public class AltarOfResurrectionRootComponent implements Component<AltarOfResurr
     public EntityRef colliderEntity;
 
     @Override
-    public void copy(AltarOfResurrectionRootComponent other) {
+    public void copyFrom(AltarOfResurrectionRootComponent other) {
         this.meshEntity = other.meshEntity;
         this.orbEntity = other.meshEntity;
         this.colliderEntity = other.colliderEntity;

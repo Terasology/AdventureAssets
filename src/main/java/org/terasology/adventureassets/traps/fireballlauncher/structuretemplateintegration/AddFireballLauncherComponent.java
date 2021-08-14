@@ -21,7 +21,7 @@ public class AddFireballLauncherComponent implements Component<AddFireballLaunch
     public List<FireballLauncherToSpawn> fireballLaunchersToSpawn;
 
     @Override
-    public void copy(AddFireballLauncherComponent other) {
+    public void copyFrom(AddFireballLauncherComponent other) {
         this.fireballLaunchersToSpawn = other.fireballLaunchersToSpawn.stream()
                 .map(FireballLauncherToSpawn::copy)
                 .collect(Collectors.toList());

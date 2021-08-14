@@ -13,7 +13,7 @@ public class DamagePlayerComponent implements Component<DamagePlayerComponent> {
     public float recoil = 5;
 
     @Override
-    public void copy(DamagePlayerComponent other) {
+    public void copyFrom(DamagePlayerComponent other) {
         this.damage = other.damage;
         this.recoil = other.recoil;
     }

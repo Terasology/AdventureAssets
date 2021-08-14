@@ -20,7 +20,7 @@ public class RevivePlayerComponent implements Component<RevivePlayerComponent> {
     public EntityRef altarOfResurrectionEntity;
 
     @Override
-    public void copy(RevivePlayerComponent other) {
+    public void copyFrom(RevivePlayerComponent other) {
         this.location = new Vector3f(other.location);
         this.altarOfResurrectionEntity = other.altarOfResurrectionEntity;
     }

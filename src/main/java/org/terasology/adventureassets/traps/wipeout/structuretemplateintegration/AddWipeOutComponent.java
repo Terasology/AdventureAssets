@@ -22,7 +22,7 @@ public class AddWipeOutComponent implements Component<AddWipeOutComponent> {
     public List<WipeOutsToSpawn> wipeOutsToSpawn = Lists.newArrayList();
 
     @Override
-    public void copy(AddWipeOutComponent other) {
+    public void copyFrom(AddWipeOutComponent other) {
         this.wipeOutsToSpawn = other.wipeOutsToSpawn.stream()
                 .map(WipeOutsToSpawn::copy)
                 .collect(Collectors.toList());

@@ -58,7 +58,7 @@ public class FireballLauncherComponent implements Component<FireballLauncherComp
     public int damageAmount = 20;
 
     @Override
-    public void copy(FireballLauncherComponent other) {
+    public void copyFrom(FireballLauncherComponent other) {
         this.isFiring = other.isFiring;
         this.timePeriod = other.timePeriod;
         this.offset = other.offset;

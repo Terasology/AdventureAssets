@@ -54,7 +54,7 @@ public class WipeOutComponent implements Component<WipeOutComponent> {
     public List<EntityRef> childrenEntities = Lists.newArrayList();
 
     @Override
-    public void copy(WipeOutComponent other) {
+    public void copyFrom(WipeOutComponent other) {
         this.timePeriod = other.timePeriod;
         this.offset = other.offset;
         this.isRotating = other.isRotating;
