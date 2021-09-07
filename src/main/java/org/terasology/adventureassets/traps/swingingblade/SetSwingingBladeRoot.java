@@ -17,8 +17,8 @@ package org.terasology.adventureassets.traps.swingingblade;
 
 import org.joml.Quaternionf;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.entitySystem.event.Event;
 import org.terasology.engine.network.ServerEvent;
+import org.terasology.gestalt.entitysystem.event.Event;
 
 @ServerEvent
 public class SetSwingingBladeRoot implements Event {
