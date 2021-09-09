@@ -20,7 +20,6 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.core.Time;
 import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
@@ -28,13 +27,13 @@ import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.engine.entitySystem.event.EventPriority;
+import org.terasology.engine.entitySystem.event.Priority;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.logic.location.Location;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.registry.In;
@@ -42,6 +41,8 @@ import org.terasology.engine.world.block.BlockComponent;
 import org.terasology.engine.world.block.items.BlockItemComponent;
 import org.terasology.engine.world.block.items.OnBlockItemPlaced;
 import org.terasology.engine.world.block.items.OnBlockToItem;
+import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.module.inventory.systems.InventoryManager;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class SwingingBladeServerSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
@@ -116,7 +117,8 @@ public class SwingingBladeServerSystem extends BaseComponentSystem implements Up
      * @param entity
      * @param swingingBladeComponent
      */
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {SwingingBladeComponent.class, BlockComponent.class})
+    @Priority(EventPriority.PRIORITY_HIGH)
+    @ReceiveEvent(components = {SwingingBladeComponent.class, BlockComponent.class})
     public void onSwingingBladeActivated(OnActivatedComponent event, EntityRef entity,
                                          SwingingBladeComponent swingingBladeComponent) {
         Prefab rodPrefab = assetManager.getAsset("AdventureAssets:rod", Prefab.class).get();

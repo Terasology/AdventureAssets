@@ -27,10 +27,10 @@ import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.characters.AliveCharacterComponent;
 import org.terasology.engine.logic.characters.CharacterImpulseEvent;
 import org.terasology.engine.logic.health.EngineDamageTypes;
-import org.terasology.module.health.events.DoDamageEvent;
 import org.terasology.engine.physics.events.CollideEvent;
 import org.terasology.engine.registry.In;
 import org.terasology.math.TeraMath;
+import org.terasology.module.health.events.DoDamageEvent;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class DamagePlayerSystem extends BaseComponentSystem {
