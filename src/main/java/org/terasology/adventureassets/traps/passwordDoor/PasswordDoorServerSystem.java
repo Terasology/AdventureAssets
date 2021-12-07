@@ -18,7 +18,7 @@ package org.terasology.adventureassets.traps.passwordDoor;
 
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.EventPriority;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.event.Priority;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
@@ -31,6 +31,7 @@ import org.terasology.engine.world.WorldProvider;
 import org.terasology.engine.world.block.regions.BlockRegionComponent;
 import org.terasology.furnishings.logic.door.CloseDoorEvent;
 import org.terasology.furnishings.logic.door.DoorComponent;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class PasswordDoorServerSystem extends BaseComponentSystem {
@@ -42,8 +43,10 @@ public class PasswordDoorServerSystem extends BaseComponentSystem {
     @In
     private NUIManager nuiManager;
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH,
-            components = {DoorComponent.class, PasswordDoorComponent.class, BlockRegionComponent.class, LocationComponent.class})
+    @Priority(EventPriority.PRIORITY_HIGH)
+    @ReceiveEvent(components =
+            {DoorComponent.class, PasswordDoorComponent.class, BlockRegionComponent.class, LocationComponent.class}
+    )
     public void onFrob(ActivateEvent event, EntityRef entity) {
         event.consume();
         DoorComponent door = entity.getComponent(DoorComponent.class);

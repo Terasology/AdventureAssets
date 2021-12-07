@@ -19,13 +19,11 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.core.Time;
 import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
@@ -35,6 +33,8 @@ import org.terasology.engine.logic.location.Location;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.BlockComponent;
 import org.terasology.engine.world.block.items.OnBlockToItem;
+import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class WipeOutClientSystem extends BaseComponentSystem implements UpdateSubscriberSystem {

@@ -17,14 +17,13 @@ package org.terasology.adventureassets.altarofresurrection;
 
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.engine.entitySystem.entity.EntityBuilder;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.BeforeRemoveComponent;
 import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.engine.entitySystem.event.EventPriority;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.event.Priority;
 import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
@@ -39,6 +38,8 @@ import org.terasology.engine.network.ClientComponent;
 import org.terasology.engine.network.ClientInfoComponent;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.BlockComponent;
+import org.terasology.gestalt.assets.management.AssetManager;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class ResurrectionServerSystem extends BaseComponentSystem {
@@ -55,7 +56,8 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
      * @param event
      * @param entity
      */
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {ClientComponent.class})
+    @Priority(EventPriority.PRIORITY_HIGH)
+    @ReceiveEvent(components = {ClientComponent.class})
     public void setSpawnLocationOnRespawnRequest(RespawnRequestEvent event, EntityRef entity) {
         ClientComponent clientComponent = entity.getComponent(ClientComponent.class);
         EntityRef character = clientComponent.character;
@@ -119,7 +121,8 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
      * @param event
      * @param entity
      */
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {AltarOfResurrectionColliderComponent.class})
+    @Priority(EventPriority.PRIORITY_HIGH)
+    @ReceiveEvent(components = {AltarOfResurrectionColliderComponent.class})
     public void onActivate(ActivateEvent event, EntityRef entity) {
         entity.getOwner().send(event);
         event.consume();
@@ -131,7 +134,8 @@ public class ResurrectionServerSystem extends BaseComponentSystem {
      * @param event
      * @param targetEntity
      */
-    @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {AltarOfResurrectionColliderComponent.class})
+    @Priority(EventPriority.PRIORITY_HIGH)
+    @ReceiveEvent(components = AltarOfResurrectionColliderComponent.class)
     public void onAttackEntity(AttackEvent event, EntityRef targetEntity) {
         targetEntity.getOwner().send(event);
         event.consume();
